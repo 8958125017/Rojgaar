@@ -1,0 +1,303 @@
+<div class="dash-head">
+  <p>Training Center Search</p>
+</div>
+<div class="page-filters">
+  <h2>
+    <a href="javascript:void(0);">
+      <i class="fa fa-filter" aria-hidden="true"></i> Apply Filters
+      <span (click)="changeStatus()"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+    </a>
+  </h2>
+  <form action="" [formGroup]="TCSearchForm">
+    <div class="filter-wrapper">
+      <div class="form-group">
+        <div class="col-md-3 col-sm-6">
+          <label>State<span class="mandatory">*</span></label>
+          <select class="form-control" required formControlName="Stateid" (change)="GetDistrict($event)">
+            Add Work Location
+            <option value="" class="" selected="selected">-- Select --</option>
+            <option *ngFor="let state of states" [value]="state.id">{{state.stateName}}</option>
+          </select>
+          <errors [control]="TCSearchForm.controls.Stateid"></errors>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label>District<span class="mandatory"></span></label>
+          <select class="form-control" formControlName="Districtid">
+            <option value="0" selected="selected">-- Select --</option>
+            <option *ngFor="let district of district1" [value]="district.id">{{district.districtName}}</option>
+          </select>
+          <errors [control]="TCSearchForm.controls.Districtid"></errors>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label>Sector<span class="mandatory"></span></label>
+          <select class="form-control" formControlName="Sector">
+            <option value="" selected>--Select Sector--</option>
+            <option *ngFor="let st of sectors" [value]="st.id">{{st.name}}</option>
+          </select>
+          <errors [control]="TCSearchForm.controls.Sector"></errors>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+          <label>Training Center Name<span></span></label>
+          <input type="text" class="form-control" formControlName="tcName" placeholder="Training Center Name" />
+        </div>
+      </div>
+      <div class="row text-center m-t-5">
+        <button type="reset" (click)="ResetFilterResult()" class="btn btn-w-shadow no-rd">Reset</button>
+        <button class="btn btn-w-shadow no-rd filter-toggle" (click)="tcSearch()" [disabled]="!(TCSearchForm.valid)"
+          type="submit">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="col-md-12" *ngIf="searchItem">
+  <div class="col-md-12 jd-detail job-wrapper searchResults">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-12">
+          <h4 class="m-b-0">Search Result</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <span class="text-strong">State</span>: {{ShowPushData.TC_state}}
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <span class="text-strong">District</span>: {{ShowPushData.TC_district}}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <span class="text-strong">Sector</span>: {{ShowPushData.Sector}}
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <span class="text-strong">TC Name</span>: {{ShowPushData.tcName}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12" *ngIf="ShowView">
+  <div class="all-jobs-list" *ngIf="showTclist">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper ps-relative" *ngFor="let tcDetail of tcDetails">
+          <h2 class="job-title fnt-16"><a href="javascript:void(0)">{{tcDetail.tcname}}</a></h2>
+          <div class="clearfix"></div>
+          <h3 class="company-name" style="text-transform:capitalize">{{tcDetail.managedby}}</h3>
+          <div class="clearfix"></div>
+          <div class="form-group m-b-0">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Centre Incharge : </span> {{tcDetail.tcIncharge}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group m-b-0">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Address : </span><span [innerHtml]="tcDetail.address1?tcDetail.address1:'NA' | KeepHtml: 'html'"
+                  style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group m-b-0">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Email : </span> <span class="txt-lowercase">{{tcDetail.emailAddress}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group m-b-0">
+            <div class="row">
+              <div class="col-md-6">
+                <span class="text-strong">Mobile No. : </span> {{tcDetail.mobile}}
+              </div>
+              <div class="col-md-6">
+                <span class="text-strong">State : </span> {{tcDetail.stateName}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group m-b-0">
+            <div class="row">
+
+              <div class="col-md-6">
+                <span class="text-strong">Total Batches :</span> {{tcDetail.totalbatches ? tcDetail.totalbatches
+                :'NA'}}
+              </div>
+              <div class="col-md-6">
+                <span class="text-strong">Running Batch :</span> {{tcDetail.runningbatch ? tcDetail.runningbatch :
+                'NA'}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group m-b-0">
+            <div class="row">
+              <div class="col-md-6">
+                <span class="text-strong">Total Enrolled :</span> {{tcDetail.totalenrolled ? tcDetail.totalenrolled :
+                'NA'}}
+              </div>
+              <div class="col-md-6">
+                <span class="text-strong">Total Trained :</span> {{tcDetail.totaltrained ? tcDetail.totaltrained :
+                'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group m-b-0">
+            <div class="row">
+              <div class="col-md-12 lang-ellip" title="{{tcDetail.sector?tcDetail.sector:'NA'}}/{{tcDetail.trade?tcDetail.trade:'NA'}}">
+                <span class="text-strong">Trade : </span><span [innerHtml]="tcDetail.trade?tcDetail.trade:'NA' | KeepHtml: 'html'"
+                  style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="job-list-action card-view-btns" *ngIf="tcDetail.totalbatches">
+              <a class="postit" href="javascript:void(0)" (click)="Getbatchcandidate(tcDetail.id)" title="View this job">View</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="col-md-12" *ngIf="ShowView2">
+  <div class="predictive-listing">
+    <h4>
+      Batch Details
+      <button class="btn btn-w-shadow no-rd pull-right" tabindex="0" title="Go Back" (click)="ListRedirection()">Back</button>
+    </h4>
+
+    <div class="all-jobs-list">
+      <div id="" class="searchResults">
+        <ul class="joblist-wrapper agency-job-listing">
+          <li class="job-wrapper ps-relative  {{GetDatas.isclosed?'closed':''}}" *ngFor="let GetDatas of GetData">
+            <!-- <div class="job-list-action">
+    <a class="postit" href="javascript:void(0)" title="View" (click)="batchCode(predictive.batchid)">View</a>
+  </div> -->
+            <div class="clearfix"></div>
+            <p class="comp-name fnt-16"><strong>Training Patner : {{GetDatas.trainig_parter_name}}</strong></p>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Training Center : </strong> {{GetDatas.training_center_address}}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Sector:</strong> {{GetDatas.sector_Name}}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Trade:</strong> {{GetDatas.trade_Name}}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Batch Number:</strong> {{GetDatas.batch_no}}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6"><strong>Start Date:</strong> {{GetDatas.start_date}}</div>
+                <div class="col-md-6"><strong>End Date:</strong> {{GetDatas.expected_date}}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="job-list-action card-view-btns">
+                <a class="postit" href="javascript:void(0)" title="View" (click)="batchCode(GetDatas.batchid,0,'')">View</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12" *ngIf="batchStatus == true">
+  <div class="predictive-listing">
+    <!--<h4 *ngIf="candidatelist?.length>0">Candidate Listing</h4>-->
+    <h4>
+      Candidate Listing
+      <button class="btn btn-w-shadow no-rd pull-right" tabindex="0" (click)="batchCodeReturn()" title="Go Back">Back</button>
+    </h4>
+    <div class="all-jobs-list">
+      <div id="" class="searchResults">
+        <ul class="joblist-wrapper">
+          <li class="job-wrapper ps-relative candidate-searc-card" *ngFor="let batch of batchcodeId">
+
+            <div class="job-view">
+              <div class="p-l-0">
+                <img onError="this.src='../../../../assets/images/NoImage.png'" src="{{batch.imagepath!=''?batch.imagepath:'assets/images/NoImage.png'}}"
+                  class="img-thumbnail" alt="{{batch.imagepath!=''?batch.name:'No image'}}" width="60" height="40">
+              </div>
+              <div>
+                <div class="clearfix"></div>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <span class="text-strong">Name : </span> <span>{{batch.name}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <a href="javascript:void(0)" title="show" (click)="mobshow(batch.id,mobv=!mobv)">
+                        <span class="text-strong">
+                          Mobile No. :
+                        </span>
+                        <span>{{mobv==true && phone==batch.id?batch.mobileno:'XXX-XXX-XXXX'}}</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" *ngIf="batch.districtname">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <span class="text-strong">District : </span> <span>{{batch.districtname}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" *ngIf="batch.sectorname">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <span class="text-strong">Sector : </span> <span>{{batch.sectorname}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" *ngIf="batch.tradename">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <span class="text-strong">Trade : </span> <span>{{batch.tradename}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="job-list-action card-view-btns">
+                    <a class="postit" href="javascript:void(0)" title="View" (click)="viewCandidateDetails(template,batch.id)">View</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<app-CommonView-Layout></app-CommonView-Layout>

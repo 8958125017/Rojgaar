@@ -1,0 +1,204 @@
+<header class="main-header">
+  <div class="pull-left">
+    <span class="help-desk-number"><i class="fa fa-phone m-t-2" aria-hidden="true"></i> +91-120-4786300</span>
+    <a href="javascript:void(0)" class="help-desk-number" title="Feedback" (click)="feedback(template)"><i class="fa fa-commenting m-t-2" aria-hidden="true"></i> <span class="hidden-xs">Feedback</span></a>
+  </div>
+  <!--<a href="#" class="sm-logo-head"><img alt="Rojgaar Logo" src="assets/images/rojgaar-fav.png" /></a>-->
+  <nav class="dash-navigation">
+    <ul>
+      <li><a [routerLink]="'/Dashboard'" title="Dashboard"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+      <li><a href="javascript:void(0)" (click)="confirmBox(confirm)" title="Logout"><i class="fa fa-power-off" aria-hidden="true"></i></a></li>
+    </ul>
+  </nav>
+  <div dropdown>
+    <a dropdownToggle class="dropdown-toggle" aria-controls="dropdown-basic" href="javascript:void(0)">
+      <p class="welcome-text">
+
+        <span class="sm-ellipsis"><b>Welcome ({{UserInfo.loginType == 'Employer' ? "Recruiter": 'Consultant'}})</b> , {{ UserInfo.fullName ? UserInfo.fullName : 'NA' }} </span>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+      </p>
+    </a>
+    <ul *dropdownMenu class="dropdown-menu pull-right"
+        role="menu" aria-labelledby="button-basic">
+      <li>
+        <a [routerLink]="'/updateprofile'">Update Profile</a>
+      </li>
+
+      <li>
+        <a [routerLink]="'/companyprofile'">Company Profile</a>
+      </li>
+
+      <li>
+        <a href="javascript:void(0)" data-toggle="modal" data-target="#changePassword">Change Password</a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" (click)="confirmBox(confirm)">Logout</a>
+      </li>
+    </ul>
+  </div>
+
+  <span class="left-sm-nav-tgl"><i aria-hidden="true" class="fa fa-bars"></i></span>
+</header>
+
+
+<div id="changePassword" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="login-table">
+          <div class="login-left-wrapper">
+            <div class="message-wrapper">
+              <p class="msg">Welcome Recruiters</p>
+              <p> <i class="fa fa-quote-left" aria-hidden="true"></i> You're not just recruiting employees, but are sowing the seeds of your reputation.<i class="fa fa-quote-right" aria-hidden="true"></i></p>
+            </div>
+
+          </div>
+          <div class="login-right-wrapper">
+            <button (click)="clearUpdatePasswordForm()" type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Change <span class="theme-color">Password</span></h4>
+            <form novalidate [formGroup]="UpdatePasswordForm" (ngSubmit)="UpdatePassword(UpdatePasswordForm.value)">
+
+              <div class="group-wrapper">
+                <input (keyup)="checkCurrentPassword($event)" type="password" formControlName="current_password" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <errors [control]="UpdatePasswordForm.controls.current_password"></errors>
+                <span class="mandatory" *ngIf="errmsg.length>0">{{this.errmsg}}</span>
+                <label>Current Password </label>
+                <div class="pass-instructions">
+                  <img class="tool-new-img" src="../../../assets/images/info.png" width="20">
+                  <p class="tool-new-pass">
+                    Atleast 1 Digit.<br>
+                    Atleast 1 small-case letter.<br>
+                    Atleast 1 Capital letter.<br>
+                    Atleast 1 Special character.<br>
+                    Length should be between 6-24 characters.
+                  </p>
+                </div>
+              </div>
+
+               
+              <div class="group-wrapper">
+                <input id="new_password" type="password" formControlName="new_password" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <errors [control]="UpdatePasswordForm.controls.new_password"></errors>
+                <label>New Password </label>
+                <div class="pass-instructions">
+                  <img class="tool-new-img" src="../../../assets/images/info.png" width="20">
+                  <p class="tool-new-pass">
+                    Atleast 1 Digit.<br>
+                    Atleast 1 small-case letter.<br>
+                    Atleast 1 Capital letter.<br>
+                    Atleast 1 Special character.<br>
+                    Length should be between 6-24 characters.
+                  </p>
+                </div>
+              </div>
+
+              <div class="group-wrapper">
+                <input id="reenter_new_password" type="password" formControlName="reenter_new_password" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <errors [control]="UpdatePasswordForm.controls.reenter_new_password"></errors>
+                <label>Confirm Password </label>
+              </div>
+
+              <div class="form-group">
+                <button [disabled]="!(UpdatePasswordForm.valid)" class="btn btn-w-shadow no-rd btn-block" type="submit" id="btnLogin">Change Password <span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #template>
+  <div class="modal-content">
+    <input autocomplete="off" id="checkLogintype" type="hidden">
+    <div class="modal-body">
+      <div class="login-table">
+        <div class="login-left-wrapper">
+          <div class="message-wrapper">
+            <!--<p class="msg">Your feedback is importance to us</p>-->
+            <p> <i aria-hidden="true" class="fa fa-quote-left"></i> Your feedback is very important to us. We appreciate your feedback and will use it to evaluate changes and make improvements in our site. <i aria-hidden="true" class="fa fa-quote-right"></i></p>
+          </div>
+        </div>
+        <div class="login-right-wrapper">
+          <div class="feedback-form">
+            <button class="close" aria-label="Close" (click)="close()" type="button">×</button>
+            <h4 class="modal-title">Feedback</h4>
+            <form #JobForms [formGroup]="feedbackForm" class="feedback-wrapper">
+              <!-- <div class="form-group">
+                <label>Company Type <span style="color:red;"> *</span></label>
+                <div class="clearfix"></div>
+                <label class="fnt-normal"><input type="radio" name="usertype" formControlName="usertype" value="Employer" checked disabled> Company Recruiter, HR Professional </label>
+                <div class="clearfix"></div>
+                <label class="fnt-normal"><input type="radio" name="usertype" formControlName="usertype" value="Agency" disabled> Recruitment/Placement Consultant	</label>
+              </div> -->
+              <div class="form-group">
+                <label>Feedback For <span style="color:red;"> *</span></label>
+                <select class="form-control" required formControlName="ClientType">
+                  <option value="" class="" selected="selected">-- Select --</option>
+                  <option *ngFor="let clienttype of FeedbackType" value="{{clienttype.feedbackId}}">{{clienttype.feedbackType}}</option>
+                </select>
+              
+              </div>
+  
+              <div class="form-group">
+                <label class="m-t-0">Name <span class="mandatory">*</span></label>
+                <input type="text" class="form-control" formControlName="name" placeholder="Name" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');"  [attr.disabled]="!(!userStatus)? null : false"  [disabled]="userStatus"/>
+                <errors [control]="feedbackForm.controls.name"></errors>
+              </div>
+              <div class="form-group">
+                <label class="m-t-0">Company Name <span class="mandatory">*</span></label>
+                <input type="text" required class="form-control" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?]/g, '').replace(/(\..*)\./g, '$1');" formControlName="companyName" placeholder="Company Name"  [attr.disabled]="!(!companyStatus)? null : false"  [disabled]="companyStatus" />
+                <errors [control]="feedbackForm.controls.companyName"></errors>
+              </div>
+              <div class="form-group">
+                <label class="m-t-0">Mobile No. <span class="mandatory">*</span></label>
+                <input placeholder="Mobile No." maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="mobile" [attr.disabled]="!(!mobileStatus)? null : false"  [disabled]="mobileStatus" />
+                <errors [control]="feedbackForm.controls.mobile"></errors>
+              </div>
+              <div class="form-group">
+                <label class="m-t-0">Email ID <span class="mandatory">*</span></label>
+                <input type="text" class="form-control" formControlName="email" placeholder="Email ID " [attr.disabled]="!(!emailStatus)? null : false"  [disabled]="emailStatus" />
+                <errors [control]="feedbackForm.controls.email"></errors>
+              </div>
+              <div class="form-group">
+                <label class="m-t-0">Landline No.</label>
+                <input maxlength="12" placeholder="Landline No." type="text" class="form-control" formControlName="landlineNumber" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                <errors [control]="feedbackForm.controls.landlineNumber"></errors>
+
+              </div>
+              <div class="form-group">
+                <label class="m-t-0">Feedback <span class="mandatory">*</span></label>
+                <textarea class="form-control" maxlength="1000" placeholder="Feedback" rows="3" formControlName="feedback"
+                          [ngClass]="{highlight: feedbackForm.controls.feedback.errors}"> </textarea>
+                <errors [control]="feedbackForm.controls.feedback"></errors>
+              </div>
+           
+              <div class="form-group text-center m-t-10">
+                <button class="btn btn-w-shadow no-rd" (click)=submit() tabindex="0" type="submit" [disabled]="!(feedbackForm.valid && btnsts==true)">Submit</button>
+                <button type="button" class="btn btn-w-shadow no-rd m-l-10" aria-label="Close" (click)="close()">
+                  Close
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</ng-template>
+<ng-template #confirm>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to logout?</p>
+    <br />
+    <br />
+    <button type="button" class="btn yl-btn no-rd" (click)="logout()">Yes</button>
+    <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+  </div>
+</ng-template>

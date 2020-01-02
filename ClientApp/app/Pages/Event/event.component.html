@@ -1,0 +1,460 @@
+<div class="culmn rojgaar">
+  <app-PublicHeader></app-PublicHeader>
+
+</div>
+<!-- {{this.ImageData |json}} -->
+<div class="event-list" [ngClass]="!eventView?'show':'hide'">
+  <div class="eventlist-slider">
+    <div class="event-slider">
+      <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+      <!--<ngx-carousel [inputs]="carouselTileOne" (carouselLoad)="carouselTileOneLoad()">
+    <ngx-tile NgxCarouselItem *ngFor="let tile of ImageData; let i = index;">
+      <div class="wBg">
+        <div class="tile" (click)="goToEvent(tile.eventId,tile.posterImagePath);" [style.background]="'url(' + tile.posterImagePath + ')'">
+           <h1>{{i}}</h1>
+        </div>
+         <h4>Tile</h4>
+              <p>content</p>
+      </div>
+    </ngx-tile>
+    <button NgxCarouselPrev class="leftRs">&lt;</button>
+    <button NgxCarouselNext class="rightRs">&gt;</button>
+  </ngx-carousel>-->
+      <!-- <ngx-carousel [inputs]="carouselTile" (carouselLoad)="carouselTileLoad()">
+          <ngx-tile NgxCarouselItem *ngFor="let tile of ImageData; let i = index;">
+              <div class="tile" [style.background]="'url(' + tile.posterImagePath + ')'">
+                  <h1>{{i}}</h1>
+              </div>
+          </ngx-tile>
+          <button NgxCarouselPrev class="leftRs">&lt;</button>
+          <button NgxCarouselNext class="rightRs">&gt;</button>
+  </ngx-carousel> -->
+      <!-- <div class="carousel slide multi-item-carousel" id="theCarousel">
+    <div class="carousel-inner">
+      <div class="item active">
+        <div class="col-xs-12 e-multi-item-slider col-sm-4">
+          <img src="../../../assets/images/event2.jpg" />
+        </div>
+      </div>
+      <div class="item">
+        <div class="col-xs-12 e-multi-item-slider col-sm-4">
+          <img src="../../../assets/images/event2.jpg" />
+        </div>
+      </div>
+      <div class="item">
+        <div class="col-xs-12 e-multi-item-slider col-sm-4">
+          <img src="../../../assets/images/event2.jpg" />
+        </div>
+      </div>
+    </div>
+    <a class="e-left" href="#theCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    <a class="e-right" href="#theCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+  </div> -->
+    </div>
+
+    <div class="eventlist-content-wrapper">
+      <div class="container">
+        <div class="amazing-header">
+          <p>
+            Events<br>
+            <span></span>
+            <span></span>
+            <span></span>
+          </p>
+        </div>
+        <div class="all-events">
+          <form [formGroup]="FilterEventForm" (submit)="GetEventList(0,'','search')">
+            <div class="col-md-3">
+              <div class="events-calender">
+                <div class="events-calender-wrapper">
+                  <h6>Event Calendar</h6>
+
+                </div>
+                <div class="event-creation">
+                  <div class="form-group">
+                    <h6>Filter</h6>
+                  </div>
+                  <div class="form-group">
+                    <select class="form-control" (change)="GetAllDistrict($event.target.value)" formControlName="stateId">
+                      <option value="" selected="selected">--Select State--</option>
+                      <option *ngFor="let st of State" value="{{st.id}}">{{st.stateName}}</option>
+
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <select class="form-control" formControlName="districtId">
+                      <option value="" selected="selected">--Select District--</option>
+                      <option *ngFor="let dt of district" value="{{dt.id}}">{{dt.districtName}}</option>
+
+                    </select>
+                  </div>
+
+                  <div class="form-group text-center m-t-10">
+                    <!-- <button type="reset" class="btn btn-w-shadow no-rd" (click)="EventReset();">Reset</button> -->
+                    <button type="submit" class="btn btn-w-shadow no-rd filter-toggle">Search</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <!-----Start Div Event-->
+
+          <div class="col-md-9">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-4 col-sm-6 col-xs-12 all-events-list" *ngFor="let events of GetRegisteredEventList">
+                  <div class="eventslist-wrapper">
+                    <div class="events-img">
+                      <!-- <img src="../../../assets/images/1.jpg" alt="image" class="img-responsive" /> -->
+                      <!--<img src="../../../assets/images/event2.jpg" />-->
+                      <img onError="this.src='../../../../assets/images/NoImage.png'" src="{{events.imagepath!=''?events.imagepath:'assets/images/NoImage.png'}}"
+                        alt="image" class="img-responsive">
+                    </div>
+                    <div class="events-wrapper">
+                      <div class="event-w-70 v-align-m event-date-wrapper">
+                        <div class="event-date">
+                          <!-- {{events.startDate |date : "dd/MMM/yyyy" }} -->
+                          {{events.eventDay}}
+                        </div>
+                        <div class="event-month">
+                          {{events.eventMonth }}
+                        </div>
+                        <div class="event-year">
+                          {{events.eventYear }}
+                        </div>
+                      </div>
+                      <div class="event-detail-wrapper v-align-m">
+                        <div class="event-name text-ellip" title="Event Name">
+                          {{events.eventName}}
+                        </div>
+                        <div class="event-address text-ellip" title="Address">
+                          {{events.address}}
+                        </div>
+                        <div class="event-more-details">
+                          <a href="javascript:void(0)" (click)="goToEvent(events.eventId,events.imagepath);">Know
+                            More...</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-----End Div Event-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="event-wrapper" *ngIf="eventView">
+  <div class="">
+    <div class="event-slider">
+        <div *ngIf="galleryImagesEventWise.length!=0">
+        <ngx-gallery [options]="galleryOptions" [images]="galleryImagesEventWise"></ngx-gallery>
+      </div>
+      <div class="event-w-no-image" *ngIf="galleryImagesEventWise.length==0 && PosterImage">
+        <img src="{{PosterImage.posterImagePath}}" alt="image" />
+      </div>
+      <div class="event-w-no-image" *ngIf="galleryImagesEventWise.length==0 &&  PosterImage==''">
+          <img src="../../../../assets/images/NoImage.png"
+          alt="image" class="img-responsive">
+      </div>
+        <!-- <carousel [interval]="myInterval" [showIndicators]="false">
+        <slide>
+          <img onError="this.src='../../../../assets/images/NoImage.png'" src="{{BannerImage!=''?BannerImage:'assets/images/NoImage.png'}}"
+            alt="image" style="display: block; width: 100%;">
+        </slide>
+        <slide *ngIf="EventDetails.lstEventPoster?.length==0">
+          <img onError="this.src='../../../../assets/images/NoImage.png'" src="{{'assets/images/NoImage.png'}}" alt="image"
+            style="display: block; width: 100%;">
+        </slide>
+      </carousel> -->
+    </div>
+  </div>
+
+  <div class="event-text">
+    <div class="col-md-8 col-sm-8">
+      <h1>{{EventDetails.eventName}}</h1>
+      <!--<ul class="e-detail e-detail1">
+          <li class="p-l-0">
+            Rojgaar
+          </li>
+          <li>
+            Public
+          </li>
+          <li>
+            Job seekers, Employers
+          </li>
+          <li>
+            7 Days
+          </li>
+        </ul>-->
+    </div>
+    <div class="col-md-4 col-sm-4 text-right">
+      <a class="btn btn-w-shadow no-rd pull-right" tabindex="0" title="Go Back" (click)="EventsBack()"><i aria-hidden="true"
+          class="fa fa-arrow-left"></i></a>
+      <!-- <button class="btn btn-w-shadow no-rd" (click)="openModal(template)">I am Interested<span> <i aria-hidden="true" class="fa fa-chevron-right"></i></span></button> -->
+    </div>
+    <div class="col-md-12">
+      <hr>
+    </div>
+    <div class="clearfix"> </div>
+    <div class="form-group">
+      <div class="col-md-8 col-sm-8">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6 col-sm-6"><strong>Date</strong>: {{EventDetails.startDate}} - {{EventDetails.endDate}}</div>
+            <div class="col-md-6 col-sm-6"><strong>Time</strong>: {{EventDetails.startTime}} to
+              {{EventDetails.endTime}} </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6 col-sm-6"><strong>Venue Details</strong>: {{EventDetails.address}} Pvt. Ltd.</div>
+            <div class="col-md-6 col-sm-6"><strong>Organizer</strong>: Hard Shell Technologies Pvt. Ltd.</div>
+          </div>
+        </div>
+        <div class="margin-top-20">
+          <span class="filling-fast">Filling Fast</span>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-4">
+        <div class="event-geo-location">
+          <app-geo-location-common></app-geo-location-common>
+        </div>
+
+        <!-- <div class="view-location">
+            <div class="mapouter"><div class="gmap_canvas"><iframe width="223" height="120" id="gmap_canvas" src="https://maps.google.com/maps?q=Hard%20Shell%20Technologies%20Pvt.%20Ltd.%2C%20Noida&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.pureblack.de"></a></div>
+            <style>
+              .mapouter {
+                position: relative;
+                text-align: right;
+                height: 120px;
+                width: 300px;
+              }
+
+              .gmap_canvas {
+                overflow: hidden;
+                background: none !important;
+                height: 120px;
+                width: 300px;
+              }
+            </style></div>
+          </div> -->
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="col-md-12">
+      <div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <h6>Basic Event Details</h6>
+            <hr class="m-t-0 m-b-10">
+          </div>
+        </div>
+        <div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4">
+              <span class="text-strong">Event Name</span>:{{EventDetails.eventName}}
+            </div>
+            <div class="col-md-4 col-sm-4">
+              <span class="text-strong">Event Type</span>:{{EventDetails.eventType}}
+            </div>
+            <div class="col-md-4 col-sm-4">
+              <span class="text-strong">Start Date</span>: {{EventDetails.startDate}}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4">
+              <span class="text-strong">End Date</span>: {{EventDetails.endDate}}
+            </div>
+            <div class="col-md-4 col-sm-4">
+              <span class="text-strong">Start Time</span>:{{EventDetails.startTime}}
+            </div>
+            <div class="col-md-4 col-sm-4">
+              <span class="text-strong">End Time</span>: {{EventDetails.endTime}}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4">
+              <span class="text-strong">State</span>:{{EventDetails.stateName}}
+            </div>
+            <div class="col-md-4 col-sm-4">
+              <span class="text-strong">District</span>: {{EventDetails.districtName}}
+            </div>
+            <div class="col-md-4 col-sm-4">
+              <span class="text-strong">Address</span>: {{EventDetails.address}}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-12 col-sm-12">
+              <span class="text-strong">Description</span>: {{EventDetails.eventDescription}}
+            </div>
+          </div>
+          <div class="form-group margin-top-20">
+            <div class="col-md-12">
+              <h6>Facilitated By Details</h6>
+              <hr class="m-t-0 m-b-10">
+            </div>
+          </div>
+          <div class="clients-section">
+            <div class="col-md-12">
+              <ng-marquee>
+                <a *ngFor="let facility of EventDetails.lstEventFacilitated;" title="{{facility.facilatedBy}}" href="{{facility.imagePath!=''?facility.imagePath:'assets/images/NoImage.png'}}"
+                  class="marquee-images event-marquee" target="_blank">
+                  <!-- <img alt="No image" src="assets/images/NoImage.png" /> -->
+
+                  <img onError="this.src='../../../../assets/images/NoImage.png'" src="{{facility.imagePath!=''?facility.imagePath:'assets/images/NoImage.png'}}"
+                    alt="image">
+                  <span>{{facility.facilatedBy}}</span>
+                </a>
+
+              </ng-marquee>
+            </div>
+          </div>
+
+          <!-- <div class="form-group margin-top-20">
+            <div class="col-md-12">
+              <h6>Uploaded Event Document Details</h6>
+              <hr class="m-t-0 m-b-10">
+            </div>
+          </div>
+          <div class="clients-section">
+            <div class="col-md-12">
+              <ng-marquee>
+
+                <a  *ngFor="let poster of EventDetails.lstEventPoster;" title="" href="{{poster.posterImagePath!=''?poster.posterImagePath:'assets/images/NoImage.png'}}" class="marquee-images event-marquee" target="_blank">
+                  <img onError="this.src='../../../../assets/images/NoImage.png'" src="{{poster.posterImagePath!=''?poster.posterImagePath:'assets/images/NoImage.png'}}"
+                  alt="image"> 
+                  <span></span>
+                </a>
+              </ng-marquee>
+            </div>
+          </div> -->
+          <div class="form-group margin-top-20">
+            <div class="col-md-12">
+              <h6>Chief Guest Details</h6>
+              <hr class="m-t-0 m-b-10">
+            </div>
+          </div>
+
+          <div class="form-group" *ngFor="let guest of EventDetails.lstEventGuest;let i=index">
+            <div class="col-md-6 col-sm-6">
+              <span class="text-strong">Chief Guest Name</span>: {{guest.guestName}}
+              <hr class="m-t-10 m-b-10" *ngIf="i>0">
+
+            </div>
+          </div>
+
+          <div class="form-group margin-top-20">
+            <div class="col-md-12">
+              <h6>Event Co-Ordinator Detail</h6>
+              <hr class="m-t-0 m-b-10">
+            </div>
+          </div>
+          <div *ngFor="let codinater of EventDetails.lstEventCoordinateDetail;let i=index">
+            <div class="form-group">
+              <div class="col-md-4 col-sm-4">
+                <span class="text-strong">Name</span>: {{codinater.name}}
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <span class="text-strong">Designation</span>: {{codinater.designation}}
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <span class="text-strong">Department</span>: {{codinater.department}}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-4 col-sm-4">
+                <span class="text-strong">Email</span>: {{codinater.email}}
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <span class="text-strong">Mobile</span>: {{codinater.mobile}}
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <span class="text-strong">Remark</span>:{{codinater.remarks}}
+              </div>
+            </div>
+            <hr class="m-t-10 m-b-10" *ngIf="i>0">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-PublicFooter></app-PublicFooter>
+
+<ng-template #template>
+  <div class="modal-body">
+    <div class="legend-box m-b-5 p-l-0 margin-top-20 event-creation">
+      <div class="col-md-12">
+        <span class="legend-title"><label class="biz-label">Please fill below details</label></span>
+      </div>
+      <div class="form-group m-t-10">
+        <div class="col-md-3 col-md-offset-1">
+          Name<span class="mandatory">*</span>
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-3 col-md-offset-1">
+          Designation<span class="mandatory">*</span>
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-3 col-md-offset-1">
+          Mobile<span class="mandatory">*</span>
+        </div>
+        <div class="col-md-6">
+          <input type="number" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-3 col-md-offset-1">
+          Email<span class="mandatory">*</span>
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" />
+        </div>
+      </div>
+
+      <div class="form-group m-t-10">
+        <div class="col-md-9 col-md-offset-1">
+          <input type="checkbox" class="" /> I am an Employer?
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-9 col-md-offset-1">
+          <input type="checkbox" class="" /> I am an Agency?
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-9 col-md-offset-1">
+          <input type="checkbox" class="" /> Others
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer p-t-0">
+    <button type="button" class="btn btn-w-shadow no-rd">
+      Save
+    </button>
+    <button type="button" class="btn btn-w-shadow no-rd" aria-label="Close" (click)="modalRef.hide()">
+      Close
+    </button>
+  </div>
+</ng-template>

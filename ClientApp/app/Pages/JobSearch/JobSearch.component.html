@@ -1,0 +1,722 @@
+<div id="scrolldiv">
+  <div class="culmn rojgaar showIt" id="view3">
+    <header id="main_menu" class="header navbar-fixed-top">
+      <div class="head-strip">
+        <div class="container">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <ul>
+              <li>
+                <span>
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                </span> +91-120-4786300
+              </li>
+              <li>
+                <span><i class="fa fa-envelope" aria-hidden="true"></i></span> <a href="mailto:info@hstpl.com">info@hstpl.com</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-2 hidden-xs hide">
+            <ul class="pull-right icon-effect icon-effect-1a">
+              <li>
+                <span>
+                  <a href="javascript:void(0)" class="icon"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                </span>
+              </li>
+              <li>
+                <span>
+                  <a href="javascript:void(0)" class="icon"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="main_menu_bg">
+        <div class="container">
+          <div class="row">
+            <div class="nave_menu">
+              <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                    <a class="navbar-brand rojgaar-head-logo swapLogo2 wow bounce animated" routerLink="/" data-wow-duration="1s" href="javascript:void(0)">
+                      <span class="hidden-xs"><img src="/assets/images/rojgaar-logo.png" alt="Logo" /></span>
+                      <span class="visible-xs"><img src="/assets/images/rojgaar-xs-logo.png" alt="Logo" /></span>
+                    </a>
+                  </div>
+                  <span class="mobile-tgl-menu"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                  <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right homeNav">
+                      <li [routerLinkActive]="['active']"><a [routerLink]="'/regisration'" [queryParams]="{for: 'login'}">LOGIN</a></li>
+                      <li [routerLinkActive]="['active']"><a [routerLink]="'/regisration'" [queryParams]="{for: 'Registration'}">REGISTRATION</a></li>
+                      <li><a href="javascript:void(0)" (click)="scroll1(targetFooter)">CONTACT US</a></li>
+                      <li [routerLinkActive]="['active']"><a href="javascript:void(0)" class="" title="Event" [routerLink]="'/events'">Event</a></li>
+                      <li><a href="javascript:void(0)" class="" title="gallery" [routerLink]="'/gallery'">Gallery</a></li>
+                      <li [routerLinkActive]="['active']"><a href="javascript:void(0)" class="" title="Feedback" [routerLink]="'/feedback'">Feedback</a></li>
+                      <li [routerLinkActive]="['active']"><a href="javascript:void(0)" class="" title="subcription" [routerLink]="'/subscription'">subscription</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <section id="homeRojgaar" class="searchlist-wrapper">
+      <div class="searchlist">
+        <div class="rojgaar-search">
+          <div class="sliderContent">
+            <div class="container">
+              <div class="searchjobs margin-top-80">
+                <ul class="" data-wow-duration="1s" id="search">
+                  <li class="textbox">
+                    <input #clear (click)="IndustryAreaSelectedclears()" [(ngModel)]="IndustryAreaSelected"
+                           [typeahead]="IndustryArea"
+                           typeaheadOptionField="industryName"
+                           (typeaheadOnSelect)="IndustryAreaOnSelect($event)"
+                           class="change"
+                           placeholder="Industry Area ...">
+                  </li>
+                  <li class="textbox">
+                    <input (click)="FunctionAreaSelectedclears()" [(ngModel)]="FunctionAreaSelected"
+                           [typeahead]="FunctionArea"
+                           typeaheadOptionField="functionalAreaName"
+                           class="change"
+                           (typeaheadOnSelect)="FunctionAreaOnSelect($event)"
+                           placeholder="Functional Area ...">
+                  </li>
+                  <li class="textbox">
+                    <input #clear (click)="StatesSelectedclears()" [(ngModel)]="StatesSelected"
+                           [typeahead]="States"
+                           typeaheadOptionField="stateName"
+                           class="change"
+                           (typeaheadOnSelect)="StatesOnSelect($event)"
+                           placeholder="Location ...">
+                  </li>
+                  <li class="textbox">
+                    <input type="submit" id="go" name="" value="Search Now" (click)="SearchJobHome(0,'click',0);Exit();" />
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="clearfix"></div>
+    <section id="mainJobs" *ngIf="refineStatus">
+      <div class="container">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-3 col-xs-12 search-filter-wrapper" *ngIf="refineStatus">
+            <div class="search-result-filter">
+              <p class="clnt-jobs txt-case-unset">
+                <i class="fa fa-filter" aria-hidden="true"></i> Refine Search <a (click)="ResetFilter()" href="javascript:void(0)" class="pull-right">Reset all</a>
+              </p>
+              <accordion [closeOthers]="oneAtATime">
+                <accordion-group heading="By Job Type" class="filter-header">
+                  <div class="filter-item">
+                    <label for="">
+                      <input type="checkbox" [(ngModel)]="PartTime" id="PartTime" (change)="onChange('PartTime', $event.target.checked)"> Part Time <span></span>
+                    </label>
+                    <div class="clearfix"></div>
+                    <label for="">
+                      <input type="checkbox" [(ngModel)]="FullTime" id="FullTime" (change)="onChange('FullTime', $event.target.checked)"> Full Time  <span></span>
+                    </label>
+                    <div class="clearfix"></div>
+                    <label for="">
+                      <input type="checkbox" [(ngModel)]="Contractual" id="Contractual" (change)="onChange('Contractual', $event.target.checked)"> Contractual <span></span>
+                    </label>
+                    <div class="clearfix"></div>
+                    <label for="">
+                      <input type="checkbox" [(ngModel)]="Freelancer" id="Freelancer" (change)="onChange('Freelancer', $event.target.checked)"> Freelancer <span></span>
+                    </label>
+                  </div>
+                </accordion-group>
+
+                <accordion-group heading="By Experience" class="filter-header">
+                  <div class="exp-range">
+                    <div class="form-group">
+                      <div class="col-md-6 p-l-0 col-xs-6">
+                        <p>Min value: <input type="text" class="form-control" [(ngModel)]="minExp"></p>
+                      </div>
+                      <div class="col-md-6 p-r-0 col-xs-6">
+                        <p>Max value: <input type="text" class="form-control" [(ngModel)]="maxExp"></p>
+                      </div>
+                      <div class="custom-slider">
+                        <ng5-slider [(value)]="minExp" [(highValue)]="maxExp" [options]="ExpOptions"></ng5-slider>
+                      </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                  </div>
+                </accordion-group>
+
+                <accordion-group heading="By CTC" class="filter-header">
+                  <div class="ctc-range">
+                    <div class="form-group">
+                      <div class="col-md-6 p-l-0 col-xs-6">
+                        <p>Min Ctc: <input disabled type="text" class="form-control" [(ngModel)]="minCtc"></p>
+                      </div>
+                      <div class="col-md-6 p-r-0 col-xs-6">
+                        <p>Max ctc: <input disabled type="text" class="form-control" [(ngModel)]="maxCtc"></p>
+                      </div>
+                      <div class="custom-slider">
+                        <ng5-slider [(value)]="minCtc" [(highValue)]="maxCtc" [options]="CtcOptions"></ng5-slider>
+                      </div>
+                    </div>
+                  </div>
+                </accordion-group>
+
+                <accordion-group heading="By Industry" class="filter-header">
+                  <div class="ctc-range">
+                    <div class="form-group">
+                      <div class="col-md-12 p-l-0 col-xs-12">
+                        <select class="form-control" [(ngModel)]="industry">
+                          <option value="0" selected>Select Industry</option>
+                          <option *ngFor="let industry of IndustryArea" [value]="industry.id">{{ industry.industryName }}</option>
+                        </select>
+                      </div>
+
+                    </div>
+                  </div>
+                </accordion-group>
+
+                <accordion-group heading="By Functional Area" class="filter-header">
+                  <div class="ctc-range">
+                    <div class="form-group">
+                      <div class="col-md-12 p-l-0 col-xs-12">
+                        <select class="form-control" [(ngModel)]="functionalArea">
+                          <option value="0" selected>Select Functional Area</option>
+                          <option *ngFor="let functionalarea of FunctionArea" [value]="functionalarea.id">{{ functionalarea.functionalAreaName }}</option>
+                        </select>
+                      </div>
+
+                    </div>
+                  </div>
+                </accordion-group>
+
+
+              </accordion>
+              <div class="col-md-12 m-b-5 m-t-10 text-right">
+                <a class="bl-btn no-rd" (click)="SearchJobHome(0,'click',1);Exit();" href="javascript:void(0)">Apply</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-12 col-xs-12 search-result-wrapper">
+            <div class="col-md-8 p-l-0">
+              <p class="clnt-jobs txt-case-unset">{{jobList?.length }} Matching Jobs Found</p>
+            </div>
+            <div class="col-md-4 text-right p-r-0">
+              Order by <select>
+                <option value="volvo">Relevance</option>
+                <option value="saab">Date</option>
+              </select>
+            </div>
+            <div class="clearfix"></div>
+
+            <div id="searchResults" class="searchResults clearfix">
+              <ul class="joblist-wrapper">
+                <li>
+                  <div *ngIf="jobList?.length=='0'" class="alert alert-danger text-center" role="alert">
+                    <b class="text-center">  No  Matching Jobs Found</b>
+                  </div>
+                </li>
+                <li class="job-wrapper homepage-job-listing" *ngFor="let item of jobList">
+                  <div class="job-view">
+                    <div>
+                      <img src="{{item.imageName!=''?item.imagePath:'assets/images/NoImage.png'}}" />
+                      <h3 class="company-name">{{item?.companyName!=''?item.companyName:'Not applicable'}}</h3>
+                    </div>
+                    <div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <h2 class="job-title">{{item?.jobTitle!=''?item.jobTitle:'Not applicable'}}</h2>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-5 col-sm-6 col-xs-12">
+                            <p><strong>Experience:</strong> <span>{{item?.minExp!=''?item.minExp:'Not applicable'}} - {{item?.maxExp}} {{item?.minExp!=''?'yrs':''}}</span></p>
+                          </div>
+                          <div class="col-md-7 col-sm-6 col-xs-12">
+                            <p>
+                              <strong>
+                                CTC:
+                              </strong> <span>
+  {{item?.minCtc!=''?item.minCtc:'Not applicable'}} -  {{item?.maxCtc}} {{item?.maxCtc!=''?'':''}} Per Month
+  <!--{{item?.stateName!=''?item.stateName:'Not applicable'}} {{item?.districtName}}-->
+</span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-5 col-sm-6 col-xs-12">
+                            <p><strong>No of Openings:</strong> <span>{{item.noofvacancy}}</span></p>
+                          </div>
+                          <div class="col-md-7 col-sm-6 col-xs-12">
+                            <p><strong>Posted Date:</strong> {{ item. postingDate | date:'dd-MM-yyyy' }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <p><strong>State:</strong> {{item.state}} </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <p><strong>Industry:</strong> {{item?.industryArea!=''?item.industryArea:'Not applicable'}} </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <p><strong>Functional Area:</strong> {{item?.functionalArea!=''?item.functionalArea:'Not applicable'}} </p>
+                          </div>
+                        </div>
+                      </div> 
+
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <p class="search-list-ellipsis" title="{{item.jobDescription}}"><strong>Job Description:</strong> {{item.jobDescription!=''?item.jobDescription:'Not applicable'}} </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <p class="search-list-ellipsis" title="{{item.keyword}}"><strong>Keywords:</strong> {{item?.keyword!=''?item.keyword:'Not applicable'}} </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group m-b-0 ob-btn-apply">
+                        <div class="row">
+                          <div class="col-md-12 col-sm-12 col-xs-12 text-right">
+                            <a href="http://www.yuvasampark.com" target="_blank" class="btn yl-btn no-rd">Apply</a>
+                            <a href="javascript:void(0)" class="btn bl-btn no-rd m-l-10" (click)="GetHomeJobDetails(item)">
+                              View
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-12 col-xs-12 ext-content">
+            <div class="ext-content-wrapper">
+              <div class="jd-utility">
+                <p class="clnt-jobs txt-case-unset">Get jobs in your inbox</p>
+                <div class="clearfix margin-bottom-20"></div>
+                <div class="text-center">
+                  <a href="http://www.yuvasampark.com" target="_blank" class="btn yl-btn no-rd">Create a job alert</a>
+                </div>
+              </div>
+
+              <div class="jd-utility">
+                <p class="clnt-jobs txt-case-unset">Add skills to your profile</p>
+                <p>Search based skills</p>
+                <ul class="yr-skills">
+                  <li>Plumbing</li>
+                  <li>Fitting</li>
+                  <li>Maintenance</li>
+                  <li>Painting</li>
+                </ul>
+                <div class="clearfix margin-bottom-20"></div>
+                <div class="col-md-12 text-center">
+                  <a href="http://www.yuvasampark.com" target="_blank" class="yl-btn no-rd">Add more</a>
+                </div>
+              </div>
+
+              <div class="jd-utility">
+                <p class="clnt-jobs txt-case-unset">Featured companies</p>
+                <ng-marquee duration="500">
+                  <a href="javascript:void(0)" *ngFor="let item of CompaniesList; let first = first;" class="marquee-images br-0" style="width: 100px;">
+                    <img alt="No image" title="{{item.companyName}}" src="{{item.imageName!=''?item.imagePath:'assets/images/NoImage.png'}}" />
+                  </a>
+                </ng-marquee>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="jobdetails" *ngIf="!refineStatus">
+      <div class="container">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-9">
+            <div class="jobdetailswrapper">
+              <div class="jobdetailhead homepage-job-listing">
+                <div class="job-view">
+                  <div>
+                    <img  src="{{jobs.imageName!=''?jobs.imagePath:'assets/images/NoImage.png'}}"  />
+                  </div>
+                  <div class="ps-relative">
+                    <a href="javascript:void(0)" (click)="Exit()" class="btn bl-btn no-rd pull-right jobdetailhead-back-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
+
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <h2 class="job-title">{{jobs?.jobTitle!=''?jobs?.jobTitle:'Not applicable'}}</h2>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <h3 class="company-name">{{jobs?.companyName!=''?jobs?.companyName:'Not applicable'}}</h3>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                          <p>
+                            <strong>Experience :</strong>  <span>
+                              {{jobs?.minExp!=''?jobs?.minExp:'Not applicable'}} - {{jobs?.maxExp}} {{jobs?.minExp!=''?'yrs':''}}
+                            </span>
+                          </p>
+                        </div>
+                        <div class="col-md-8 col-sm-6 col-xs-12">
+                          <p>
+                            <strong>CTC :</strong> <span>
+  {{jobs?.minCtc!=''?jobs?.minCtc:'Not applicable'}} - {{jobs?.maxCtc}} {{jobs?.maxCtc!=''?'Per Month':''}}
+</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group margin-bottom-20">
+                      <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <p>
+                            <strong>State :</strong> <span>
+                              {{jobs?.state!=''?jobs?.state:'Not applicable'}} {{jobs?.districtName}}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group jobdetailhead-login-btn">
+                      <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <a href="http://www.yuvasampark.com/login?for=login" target="_blank" class="btn bl-btn no-rd">Login to Apply</a>
+                          <a href="http://www.yuvasampark.com/login?for=Registration" target="_blank" class="btn yl-btn no-rd m-l-10">Register and Apply</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+              <hr />
+              <div class="jobdetailbody">
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <h6>Basic Job Details</h6>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <span class="text-strong">Industry:</span> {{jobs?.industryArea!=null?jobs?.industryArea:'Not applicable'}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <span class="text-strong">Functional Area:</span> {{jobs?.functionalArea!=null?jobs?.functionalArea:'Not applicable'}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <span class="text-strong">Posted by: </span>  {{jobs?.posteDby ? jobs?.posteDby :"NA"}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <span class="text-strong">Job Description:</span>  {{jobs?.jobDescription!=''?jobs?.jobDescription:'Not applicable'}}
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <span class="text-strong">Roles and Responsibility:</span> {{jobs?.rolesresPonsiblty!=''?jobs?.rolesresPonsiblty:'Not applicable'}}
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <span class="text-strong">Keywords: </span> {{jobs?.keyword!=''?jobs?.keyword:'Not applicable'}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="clearfix margin-bottom-20"></div>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <h6>Eligibility Details</h6>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <span class="text-strong">Min. Education:</span>  12th
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12" *ngIf="jobs?.specialization!=null">
+                      <span class="text-strong">Specialization:</span>  {{jobs?.specialization!=''?jobs?.specialization:'Not applicable'}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <span class="text-strong">Experience (in Yrs):</span> {{jobs?.minExp}}-{{jobs?.maxExp}} Years
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12" *ngIf="job?.probationDuration!='0' || job?.probationDuration!='undefined'">
+                      <span class="text-strong">Probation Duration (days):</span> {{jobs?.probationDuration}} Days.
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <span class="text-strong">Gender: </span> Male, Female, Transgender
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12" *ngIf="jobs?.ageMin!=0">
+                      <span class="text-strong">Age (in yrs):</span> {{jobs?.ageMin}} - {{jobs?.ageMax}} Years
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <span class="text-strong">Joining Priority:</span> {{jobs?.joiningPriority}}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <span class="text-strong">Height:</span> {{jobs?.heightFeet}} FT. {{jobs?.heightInch}} INCH
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <span class="text-strong">Weight:</span> {{jobs?.weight}} kg
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12" *ngIf="jobs?.ojtDuration!=null">
+                      <span class="text-strong">OJT (in Hrs):</span> {{jobs?.ojtDuration}} Hours
+                    </div>
+                    <!--<div class="col-md-4 col-sm-6 col-xs-12">
+
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+
+                    </div>-->
+                  </div>
+                </div>
+
+                <div class="clearfix margin-bottom-20"></div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <h6>Other Details</h6>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <span class="text-strong">Other Detail : </span> {{jobs?.otherDetail}}
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <span class="text-strong">Job Type : </span> {{jobs?.shiftTime}}
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <span class="text-strong">Sector : </span> {{jobs?.trainingSectorList?jobs?.trainingSectorList:'NA'}}
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <span class="text-strong">Trade : </span> {{jobs?.tradeList?jobs?.tradeList:'NA'}}
+                    </div>
+                  </div>
+                </div> 
+                <div class="cleafix margin-bottom-20"></div>
+                <div class="dash-head dash-head-2">
+                  <p>Location wise Openings</p> 
+                </div>
+                <div class="cleafix m-b-10"></div>
+                <!----><div class="location-details-wrapper">
+                  <!----><div class="label-normal ps-relative location-details" *ngFor="let item of jobDetails">
+                    <!----> 
+                           <div class="form-group">
+                             <div class="row">
+                               <div class="col-md-4 col-sm-4 col-xs-12">
+                                 <span class="text-strong">State:</span>  {{item.stateName}}
+                               </div>
+                               <div class="col-md-4 col-sm-4 col-xs-12">
+                                 <span class="text-strong">District:</span>  {{item.districtName ? item.districtName :'NA'}}
+                               </div>
+                               <div class="col-md-4 col-sm-4 col-xs-12">
+                                 <span class="text-strong">Number Of Vacancy:</span>  {{item.noOfVacancy}}
+                               </div>
+                             </div>
+                           </div>
+                  
+                           <div class="form-group">
+                             <div class="row">
+                               <div class="col-md-4 col-sm-4 col-xs-12">
+                                 <span class="text-strong">CTC (INR):</span>  {{item.minCtc}} - {{item.maxCtc}}  <ng-container *ngIf="item.minCtc">Per Month</ng-container>
+                               </div>
+                               <div class="col-md-4 col-sm-4 col-xs-12">
+                                 <span class="text-strong">In Hand Salary (INR):</span>   {{item.netSalary ? item.netSalary : "NA"}} <ng-container *ngIf="item.netSalary">Per Month</ng-container>
+                               </div>
+                               <div class="col-md-4 col-sm-4 col-xs-12" *ngIf="item.languageId.length>0">
+                                 <span class="text-strong">Required Language:</span>
+                                 <span *ngFor="let lang of item.languageId"> {{lang.name}}</span>
+                               </div>
+                               <div class="col-md-4 col-sm-4 col-xs-12" *ngIf="item.languageId.length==0">
+                                 <span class="text-strong">Required Language:</span>
+                                 <span>NA</span>
+                               </div>
+                             </div>
+                           </div> 
+                    <div class="clearfix margin-bottom-20"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-12">
+            <div class="ext-content-wrapper">
+              <div class="jd-utility">
+                <p class="clnt-jobs txt-case-unset">Get jobs in your inbox</p>
+                <div class="clearfix margin-bottom-20"></div>
+                <div class="text-center">
+                  <a href="javascript:void(0)" class="btn yl-btn no-rd">Create a job alert</a>
+                </div>
+              </div>
+
+              <div class="jd-utility">
+                <p class="clnt-jobs txt-case-unset">Add skills to your profile</p>
+                <p>Search based skills</p>
+                <ul class="yr-skills">
+                  <li>Plumbing</li>
+                  <li>Fitting</li>
+                  <li>Maintenance</li>
+                  <li>Painting</li>
+                </ul>
+                <div class="clearfix margin-bottom-20"></div>
+                <div class="col-md-12 text-center">
+                  <a href="javascript:void(0)" class="yl-btn no-rd">Add more</a>
+                </div>
+              </div>
+              <div class="jd-utility">
+                <p class="clnt-jobs txt-case-unset">Featured companies</p>
+                <marquee onmouseover="this.stop();" onmouseout="this.start();">
+                  <a href="javascript:void(0)" *ngFor="let item of CompaniesList; let first = first;" class="marquee-images">
+                    <img alt="No image" title="{{item.companyName}}" src="{{item.imageName!=''|| item.imagePath!='' ? item.imagePath : 'assets/images/NoImage.png'}}" />
+                  </a>
+                </marquee>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="clearfix margin-bottom-40"></div>
+    <footer id="contactRojgaar" class="contact-rojgaar" #targetFooter>
+      <div class="ft-left-bg">
+        <div class="ft-content-wrapper ft-cont-us">
+          <p class="ft-header">Contact Us</p>
+          <p class="ft-address">
+            <i class="fa fa-map-marker" aria-hidden="true"></i> Logix Infotech Park, Ground Floor,<br />
+            D 5, Sector 59,<br />
+            Noida, UP 201307 - India
+          </p>
+        </div>
+        <ul class="ft-liks">
+          <li>
+            <a href="javascript:void(0)">Help</a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">Terms &amp; Conditions</a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">Privacy</a>
+          </li>
+        </ul>
+      </div>
+      <div class="ft-right-bg">
+        <div class="ft-content-wrapper left-70 get-in-touch">
+          <p class="ft-header">Get in Touch</p>
+          <p class="ft-address">
+            <i class="fa fa-phone" aria-hidden="true"></i> +91-120-4786300
+          </p>
+
+          <p class="ft-address"><i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:info@hstpl.com">info@hstpl.com</a></p>
+        </div>
+        <ul class="ft-copy-info">
+          <li>
+            Copyright &copy; 2018 - Hard Shell Technologies Pvt. Ltd.
+          </li>
+        </ul>
+      </div>
+      <div class="abs-ft-w-logo">
+        <span> <a href="javascrpt:void(0)" title="Hard Shell Technology Private Limited"><img src="/assets/images/hs.png"></a></span>
+      </div>
+      <!--<div class="footer-logos">
+        <ul class="footer-logos-wrapper">
+          <li>
+            <h3>
+              <span>Supported By:</span>
+            </h3>
+          </li>
+          <li>
+            <a href="javascript:void(0)"><img src="../../../assets/images/skill-india.png" alt="Image" /></a>
+          </li>
+          <li>
+            <a href="javascript:void(0)"><img src="../../../assets/images/pm-kvy.png" alt="Image" /></a>
+          </li>
+          <li>
+            <a href="javascript:void(0)"><img src="../../../assets/images/nsdc-india.png" alt="Image" /></a>
+          </li>
+        </ul>
+      </div>-->
+    </footer>   
+  </div>
+</div>

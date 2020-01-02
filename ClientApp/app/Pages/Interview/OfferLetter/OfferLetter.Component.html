@@ -1,0 +1,1381 @@
+<div class="dash-head">
+  <p>Offer Letter</p>
+
+  <a class="btn btn-w-shadow no-rd pull-right" *ngIf="(InterviewCard)" (click)="BackToJobList()" href="javascript:void(0)"
+    title="Go Back Job List"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
+  <a class="btn btn-w-shadow no-rd pull-right" *ngIf="(JobDetailShow  && JobType=='Job')" (click)="BackToInterviewList()"
+    href="javascript:void(0)" title="Go Back Interview List">
+    <i aria-hidden="true" class="fa fa-arrow-left"></i>
+  </a>
+  <a class="btn btn-w-shadow no-rd pull-right" *ngIf="(JobType == 'WalkIn' || JobType == 'EVENT')" (click)="BackToJobList()"
+    href="javascript:void(0)" title="Go Back Job List">
+    <i aria-hidden="true" class="fa fa-arrow-left"></i>
+  </a>
+</div>
+<div class="page-filters" [ngClass]="(JobCardShow)?'show':'hide'">
+  <h2>
+    <a href="javascript:void(0);">
+      <i class="fa fa-filter" aria-hidden="true"></i> Apply Filters
+      <span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+    </a>
+  </h2>
+  <form action="" [formGroup]="JobSearch">
+    <div class="filter-wrapper">
+      <div class="form-group">
+        <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+          <label>State<span class="mandatory"></span></label>
+          <select class="form-control" formControlName="Stateid" (change)="onChangeState(JobSearch.value.Stateid)">
+            <option value="" class="" selected="selected">-- Select --</option>
+            <option *ngFor="let state of lstState" [value]="state.id">{{state.stateName}}</option>
+          </select>
+          <errors [control]="JobSearch.controls.Stateid"></errors>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <label>District<span class="mandatory"></span></label>
+          <select class="form-control" formControlName="Districtid">
+            <option value="" selected="selected">-- Select --</option>
+            <option *ngFor="let district of district" [value]="district.id">{{district.districtName}}</option>
+          </select>
+          <errors [control]="JobSearch.controls.Districtid"></errors>
+        </div> -->
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <label>Search Keyword<span class="mandatory"></span></label>
+          <input class="form-control" placeholder="Keyword" formControlName="SearchKeyJob">
+          <errors [control]="JobSearch.controls.SearchKeyJob"></errors>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <label>Type<span class="mandatory"></span></label>
+          <select class="form-control" formControlName="JobType">
+            <option value="" selected="selected">All</option>
+            <option value="JOB">Job</option>
+            <option value="WALKIN">Walk-in</option>
+            <option value="EVENT">Event</option>
+          </select>
+        </div>
+      </div>
+      <div class="row text-center m-t-5 r-btn-group">
+        <button type="button" (click)="ResetFilterResultforjob()" class="btn btn-w-shadow no-rd">Reset</button>
+        <button (click)="GetAllAppliedJobList(0,'')" [disabled]="!(JobSearch.valid)" type="submit" class="btn btn-w-shadow no-rd filter-toggle">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="col-md-12" *ngIf="JobCardShow">
+  <div class="col-md-12 jd-detail job-wrapper searchResults" *ngIf="(pushdatajob.state || pushdatajob.district || pushdatajob.Keyword)">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-12">
+          <h4 class="m-b-0">Search Result</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <span class="text-strong">State</span>: {{ShowPushDatajob.state}}
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <span class="text-strong">District</span>: {{ShowPushDatajob.district}}
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <span class="text-strong">Keyword</span> : {{ShowPushDatajob.Keyword}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="all-jobs-list" *ngIf="JobCardShow">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper edit-delete-h" *ngFor="let item of joblist">
+          <div class="edit-delete">
+          </div>
+          <div class="form-group m-b-0">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="job-title">{{item.comapnyName}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group m-b-0">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name">{{item.jobTitle}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group ">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-12">
+                <h3 class="company-name">Job Code : {{item.jobcode ? item.jobcode : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6"><strong>Valid upto : </strong> {{item.validUpTo | date:'dd/MM/y'}}</div>
+              <div class="col-md-6"><strong>Total applied : </strong> {{item.totalAppliedCandidate}}</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6"><strong>Contact Person : </strong> {{item.contactPersonName }}</div>
+              <div class="col-md-6"><strong>Designation : </strong> {{item.contactPersonDesg}}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6"><strong>Contact No. : </strong> {{item.contactPersonMobile}}</div>
+              <div class="col-md-6"><strong>Email : </strong> {{item.contactPersonEmail }}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <strong>Posted Date : </strong> <span>{{item.jobpusheddate | date:'dd/MM/y'}} </span>
+              </div>
+              <div class="col-md-6">
+                <strong>Job Type : </strong> <span>{{item.jobtype}} </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="job-list-action card-view-btns">
+              <a href="javascript:void(0)" *ngIf="!(item.totalAppliedCandidate==0 && item.totinterviewschld==0)" (click)="GetInterviewListByJobType(item.jobId,0,'',item.jobtype,item.eventid)"
+                class="postit">
+                Offer Letter List
+              </a>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="cleafix"></div>
+<div *ngIf="showErrorMessage" class="alert alert-danger col-md-12">
+  <strong>{{errormsg}} !</strong>
+</div>
+
+<div class="page-filters" [ngClass]="(JobCardShow==false  && InterviewCard==true)?'show':'hide'">
+  <h2>
+    <a href="javascript:void(0);">
+      <i class="fa fa-filter" aria-hidden="true"></i> Apply Filters
+      <span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+    </a>
+  </h2>
+  <form action="" [formGroup]="InterviewSearch">
+    <div class="filter-wrapper">
+      <div class="form-group">
+        <div class="col-md-3 col-sm-6">
+          <label>State<span class="mandatory"></span></label>
+          <select class="form-control" formControlName="Stateid" (change)="onChangeState(InterviewSearch.value.Stateid)">
+            <option value="" class="" selected="selected">-- Select --</option>
+            <option *ngFor="let state of lstState" [value]="state.id">{{state.stateName}}</option>
+          </select>
+          <errors [control]="InterviewSearch.controls.Stateid"></errors>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label>District<span class="mandatory"></span></label>
+          <select class="form-control" formControlName="Districtid">
+            <option value="" selected="selected">-- Select --</option>
+            <option *ngFor="let district of district" [value]="district.id">{{district.districtName}}</option>
+          </select>
+          <errors [control]="InterviewSearch.controls.Districtid"></errors>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+          <label>Date From<span class="mandatory"></span></label>
+          <div class="input-group">
+            <input type="text" #validfrom="bsDatepicker" [minDate]="minDate" placeholder="Select Date" bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false  }" disabled class="form-control"
+              formControlName="DateFrom" />
+            <span class="input-group-addon" (click)="validfrom.toggle()" [attr.aria-expanded]="validfrom.isOpen"><i
+                class="fa fa-calendar"></i></span>
+
+            <errors [control]="InterviewSearch.controls.DateFrom"></errors>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label>Date To<span class="mandatory"></span></label>
+          <div class="input-group">
+            <input type="text" #validto="bsDatepicker" [minDate]="minDate" placeholder="Select Date" bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false  }" disabled class="form-control"
+              formControlName="DateTo" />
+            <span class="input-group-addon" (click)="validto.toggle()" [attr.aria-expanded]="validto.isOpen"><i class="fa fa-calendar"></i></span>
+            <errors [control]="InterviewSearch.controls.DateTo"></errors>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-3 col-sm-6">
+          <label>Location<span class="mandatory"></span></label>
+          <select class="form-control" formControlName="LocationFilter">
+            <option value="" class="" selected="selected">--Select--</option>
+            <option *ngFor="let item of workLocation" value="{{item.id}}">{{item.address}}</option>
+          </select>
+          <errors [control]="InterviewSearch.controls.LocationFilter"></errors>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+          <label>Search Keyword<span class="mandatory"></span></label>
+          <input class="form-control" placeholder="Keyword" formControlName="SearchKeyInterview">
+          <errors [control]="InterviewSearch.controls.SearchKeyInterview"></errors>
+        </div>
+      </div>
+      <div class="row text-center m-t-5 r-btn-group">
+        <button type="button" (click)="ResetFilterResult()" class="btn btn-w-shadow no-rd">Reset</button>
+        <button type="submit" (click)="GetInterviewListByJobId(JobId,0,'')" class="btn btn-w-shadow no-rd filter-toggle">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+<div class="col-md-12 jd-detail job-wrapper searchResults" *ngIf="((pushdata.stateid || pushdata.districtid || pushdata.InterviewDateTo || pushdata.InterviewDateFrom || pushdata.Workloc || pushdata.Searchkey ) && InterviewCard==true && JobCardShow==false)">
+  <h4>Search Result</h4>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <strong>State</strong>: {{ShowPushData.state}}
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <strong>District</strong>: {{ShowPushData.district}}
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12" *ngIf="ShowPushData.DateFrom">
+        <span class="text-strong">Date To</span>: {{
+        ShowPushData.DateFrom | date:
+        'dd/MM/y'
+        }}
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12" *ngIf="(ShowPushData.DateFrom==''|| ShowPushData.DateFrom==null)">
+        <span class="text-strong">Date To</span>:NA
+      </div>
+
+      <div class="col-md-4 col-sm-6 col-xs-12" *ngIf="ShowPushData.DateTo">
+        <span class="text-strong">Date From</span>: {{
+        ShowPushData.DateTo | date:
+        'dd/MM/y'
+        }}
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12" *ngIf="(ShowPushData.DateTo==''|| ShowPushData.DateTo==null)">
+        <span class="text-strong">Date To</span>:NA
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <span class="text-strong">Location</span>: {{ShowPushData.Location}}
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <strong>Search Keyword</strong>: {{ShowPushData.Keyword}}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- {{InterviewRes|json}} -->
+<div class="col-md-12">
+  <div class="all-jobs-list" *ngIf="InterviewCard">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper edit-delete-h" *ngFor="let item of InterviewRes">
+          <div class="edit-delete">
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="job-title">{{item.comapnyName ? item.comapnyName : 'NA'}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name">Job Title : {{item.jobTitle ? item.jobTitle : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name">Job Code : {{item.jobcode}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <strong>Interview Date : </strong>
+                {{item.interviewDateFrom | date:'dd/MM/y'}} - {{item.interviewDateTo | date:'dd/MM/y'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 lang-ellip" title="{{item.workloc!=0 ? item.worklocName : item.address}}">
+                <strong>Location : </strong>
+                <span *ngIf="item.workloc!=0">
+                  {{item.worklocName}}
+                </span>
+                <span *ngIf="item.address!=null">
+                  {{item.address}}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <strong>State : </strong>
+                <span>
+                  {{item.stateName}}
+                </span>
+              </div>
+              <div class="col-md-6">
+                <strong>District : </strong>
+                <span>
+                  {{item.districtName}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <!-- <div class="col-md-6">
+            <strong>State : </strong> {{item.stateName }}
+          </div>
+          <div class="col-md-6">
+            <strong>District : </strong> {{item.districtName }}
+          </div> -->
+              <div class="col-md-6">
+                <strong>Interview Time : </strong>{{converttime(item.interviewFrom)}} - {{converttime(item.interviewTo)}}
+              </div>
+
+              <div class="col-md-6">
+                <strong>Job Posted Date :</strong> <span>
+                  {{item.jobPushedDate | date:'dd/MM/y'}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <strong>No. Of Vacancy : </strong>
+                <span>
+                  {{item.totalvancancy}}
+                </span>
+              </div>
+              <div class="col-md-6">
+                <strong>Selected Candidate : </strong> {{item.totalSelectedCandidate}}
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="job-list-action card-view-btns">
+              <a href="javascript:void(0)" (click)="GetJobInterviewDetail(item.jobId,item.interviewId)" class="postit">
+                Offer Letter List
+              </a>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div *ngIf="(InterviewCard && (InterviewRes == '' || InterviewRes.length==0))">No Records Found...</div>
+
+</div>
+<div class="cleafix"></div>
+<div class="col-md-12" *ngIf="JobDetailShow">
+  <div class="job-description">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper edit-delete-h">
+          <div class="edit-delete"></div>
+          <div class="margin-bottom-20"></div>
+          <div class="job-header-1">Posted Job Details</div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="job-title">Job Posted By : {{jobdetail.companyName ? jobdetail.companyName : 'NA'}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name m-b-10">Job Title : {{jobdetail.jobTitle ? jobdetail.jobTitle : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name m-b-10">Job Code : {{jobdetail.jobcode ? jobdetail.jobcode : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6 class="m-b-0 m-t-10">Contact Person</h6>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Name : </span> {{jobdetail?.name}}
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Designation : </span> {{jobdetail?.designation}}
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Mobile No. : </span> {{jobdetail?.mobile}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Phone No. : </span> {{
+                jobdetail.landlineNumber ? jobdetail.landlineNumber
+                :'NA'
+                }}
+              </div>
+              <div class="col-md-8 col-sm-8 col-xs-12">
+                <span class="text-strong">Email : </span> {{jobdetail.email ? jobdetail.email : 'NA'}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6 class="m-b-0 m-t-10">Job Details</h6>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span *ngIf="jobdetail.ageMax != '0'">
+                  <span class="text-strong">Age :</span> {{jobdetail.ageMin ?jobdetail.ageMin:'NA'}} -
+                  {{
+                  jobdetail.ageMax ?
+                  jobdetail.ageMax : 'NA'
+                  }}
+                </span>
+                <span *ngIf="jobdetail.ageMax=='0'">
+                  <span class="text-strong">Age :</span> NA
+                </span>
+              </div>
+
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span *ngIf="jobdetail.male!=0||jobdetail.female!=0||jobdetail.transgender!=0">
+                  <span class="text-strong">Gender : </span> {{jobdetail.male==1?' Male ':''}} {{
+                  jobdetail.female==2 ?'
+                  ,
+                  ':''
+                  }} {{
+                  jobdetail.female==2 ?'
+                  Female
+                  ':''
+                  }}{{jobdetail.transgender==3?' , ':''}}
+                  {{jobdetail.transgender==3?' Transgender ':''}}
+                </span>
+                <span *ngIf="jobdetail.male == '0' &&jobdetail.female == '0' && jobdetail.transgender == '0'">
+                  <span class="text-strong">Gender : </span> NA
+                </span>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span *ngIf="jobdetail.maxExp != '0'">
+                  <span class="text-strong">Experience (in Yrs) :</span> {{jobdetail.minExp ?jobdetail.minExp:'NA'}}
+                  -
+                  {{
+                  jobdetail.maxExp ?
+                  jobdetail.maxExp : 'NA'
+                  }}
+                </span>
+                <span *ngIf="jobdetail.maxExp=='0'">
+                  <span class="text-strong">Experience :</span> NA
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Posted by : </span> {{jobdetail.posteDby ? jobdetail.posteDby : 'NA'}}
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Probation Duration (in days) : </span> {{
+                jobdetail.probationDuration !=0 ?
+                jobdetail.probationDuration :'NA'
+                }}
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">OJT Duration (in Hrs) : </span> {{
+                jobdetail.ojtDuration !=0 ? jobdetail.ojtDuration :
+                'NA'
+                }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Other Detail : </span>
+                <span [innerHtml]="jobdetail.otherDetail ? jobdetail.otherDetail :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Job Description : </span>
+                <span [innerHtml]="jobdetail.jobDescription ? jobdetail.jobDescription :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Keyword : </span>
+                <span [innerHtml]="jobdetail.keyword ? jobdetail.keyword : 'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Functional Area : </span> {{
+                jobdetail.functionalArea ?
+                jobdetail.functionalArea :
+                'NA'
+                }}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Industry Area : </span> {{
+                jobdetail.industryArea ? jobdetail.industryArea :
+                'NA'
+                }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Training Sector : </span> {{jobdetail.trainingSectorList ?
+                jobdetail.trainingSectorList : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Training Trade : </span> {{jobdetail.tradeList ?
+                jobdetail.tradeList : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Role and Responsibility : </span>
+                <span [innerHtml]="jobdetail.rolesresPonsiblty ? jobdetail.rolesresPonsiblty :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix margin-bottom-20"></div>
+
+          <!-- <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="job-title fnt-10"> Interview Details</h2>
+              </div>
+            </div>
+          </div>
+          <div class="location-details-wrapper">
+            <div class="label-normal ps-relative location-details">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <span class="text-strong">Date : </span>{{
+                    InterviewById.interviewDateFrom | date:
+                    'dd/MM/y'
+                    }}-{{
+                    InterviewById.interviewDateTo | date:
+                    'dd/MM/y'
+                    }}
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <span class="text-strong">Time : </span>{{converttime(InterviewById.interviewFrom)}}-{{converttime(InterviewById.interviewTo)}}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-4 col-sm-4 col-xs-12" *ngIf="InterviewById.workloc!=0">
+                    <span class="text-strong">Location : </span>{{InterviewById.worklocName}}
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12" *ngIf="InterviewById.workloc==0">
+                    <span class="text-strong">Address : </span>{{InterviewById.address}}
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <span class="text-strong">State : </span> {{InterviewById.stateName}}
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <span class="text-strong">District :</span> {{InterviewById.districtName}}
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix margin-bottom-20"></div>
+            </div>
+          </div> -->
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="col-md-12" *ngIf="WalkInDetail">
+  <div class="job-description">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper edit-delete-h">
+          <div class="edit-delete"></div>
+          <div class="margin-bottom-20"></div>
+          <div class="job-header-1">Posted Job Details</div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="job-title">Job Posted By : {{jobdetail.companyName ? jobdetail.companyName : 'NA'}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name m-b-10">Job Title : {{jobdetail.jobTitle ? jobdetail.jobTitle : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name m-b-10">Job Code : {{jobdetail.jobcode ? jobdetail.jobcode : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6 class="m-b-0 m-t-10">Contact Person</h6>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Name : </span> {{jobdetail?.name}}
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Designation : </span> {{jobdetail?.designation}}
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Mobile No. : </span> {{jobdetail?.mobile}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Phone No. : </span> {{
+                jobdetail.landlineNumber ? jobdetail.landlineNumber
+                :'NA'
+                }}
+              </div>
+              <div class="col-md-8 col-sm-8 col-xs-12">
+                <span class="text-strong">Email : </span> {{jobdetail.email ? jobdetail.email : 'NA'}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6 class="m-b-0 m-t-10">Job Details</h6>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span *ngIf="jobdetail.ageMax != '0'">
+                  <span class="text-strong">Age :</span> {{jobdetail.ageMin ?jobdetail.ageMin:'NA'}} -
+                  {{
+                  jobdetail.ageMax ?
+                  jobdetail.ageMax : 'NA'
+                  }}
+                </span>
+                <span *ngIf="jobdetail.ageMax=='0'">
+                  <span class="text-strong">Age :</span> NA
+                </span>
+              </div>
+
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span *ngIf="jobdetail.male!=0||jobdetail.female!=0||jobdetail.transgender!=0">
+                  <span class="text-strong">Gender : </span> {{jobdetail.male==1?' Male ':''}} {{
+                  jobdetail.female==2 ?'
+                  ,
+                  ':''
+                  }} {{
+                  jobdetail.female==2 ?'
+                  Female
+                  ':''
+                  }}{{jobdetail.transgender==3?' , ':''}}
+                  {{jobdetail.transgender==3?' Transgender ':''}}
+                </span>
+                <span *ngIf="jobdetail.male == '0' &&jobdetail.female == '0' && jobdetail.transgender == '0'">
+                  <span class="text-strong">Gender : </span> NA
+                </span>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span *ngIf="jobdetail.maxExp != '0'">
+                  <span class="text-strong">Experience (in Yrs) :</span> {{jobdetail.minExp ?jobdetail.minExp:'NA'}}
+                  -
+                  {{
+                  jobdetail.maxExp ?
+                  jobdetail.maxExp : 'NA'
+                  }}
+                </span>
+                <span *ngIf="jobdetail.maxExp=='0'">
+                  <span class="text-strong">Experience :</span> NA
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Posted by : </span> {{jobdetail.posteDby ? jobdetail.posteDby : 'NA'}}
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">Probation Duration (in days) : </span> {{
+                jobdetail.probationDuration !=0 ?
+                jobdetail.probationDuration :'NA'
+                }}
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <span class="text-strong">OJT Duration (in Hrs) : </span> {{
+                jobdetail.ojtDuration !=0 ? jobdetail.ojtDuration :
+                'NA'
+                }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Other Detail : </span>
+                <span [innerHtml]="jobdetail.otherDetail ? jobdetail.otherDetail :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Job Description : </span>
+                <span [innerHtml]="jobdetail.jobDescription ? jobdetail.jobDescription :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Keyword : </span>
+                <span [innerHtml]="jobdetail.keyword ? jobdetail.keyword : 'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Functional Area : </span> {{
+                jobdetail.functionalArea ?
+                jobdetail.functionalArea :
+                'NA'
+                }}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Industry Area : </span> {{
+                jobdetail.industryArea ? jobdetail.industryArea :
+                'NA'
+                }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Training Sector : </span> {{jobdetail.trainingSectorList ?
+                jobdetail.trainingSectorList : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Training Trade : </span> {{jobdetail.tradeList ?
+                jobdetail.tradeList : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Role and Responsibility : </span>
+                <span [innerHtml]="jobdetail.rolesresPonsiblty ? jobdetail.rolesresPonsiblty :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix margin-bottom-20"></div>        
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="col-md-12" *ngIf="EventDetail">
+  <div class="job-description">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper edit-delete-h" *ngFor="let jobs of DbResponce.lstInterviewEventList">
+          <div class="edit-delete"></div>
+
+          <div class="margin-bottom-20"></div>
+          <div class="job-header-1">Posted Job Details</div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="job-title">Job Posted By : {{jobs.companyName ? jobs.companyName : 'NA'}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name m-b-10">Job Title : {{jobs.jobTitle ? jobs.jobTitle : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name m-b-10">Job Code : {{jobs.jobcode ? jobs.jobcode : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6 class="m-b-0">Contact Person</h6>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Name :</span> {{jobs?.name}}
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Designation :</span> {{jobs?.designation}}
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Mobile No. :</span> {{jobs?.mobile}}
+              </div>
+              <!-- <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Landline No. :</span> {{jobs.landlineNumber ? jobs.landlineNumber :'NA'}}
+              </div> -->
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Email : </span> {{jobs.email ? jobs.email : 'NA'}}
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- {{JobType}} -->
+<div class="cleafix"></div>
+
+
+
+<div class="review-application-c-list m-t-10"*ngIf="(JobDetailShow || WalkInDetail || EventDetail)">
+  <h6>Candidate List :</h6>
+  <div class="table-responsive">
+      <div class="ui-widget-header ui-widget-header-r">
+          <input #gb type="text" pInputText size="50" placeholder="Global Filter">
+      </div>
+      <p-dataTable [value]="FilteredResult" [loading]="loading" [rows]="10" [paginator]="true" [pageLinks]="3"
+          [rowsPerPageOptions]="[5,10,20]" [sortField]="sortF" [sortOrder]="sortO" (onSort)="changeSort($event)"
+          [globalFilter]="gb" scrollable="true" scrollWidth="100%">
+          <p-column header="S.No." [style]="{'width':'50px'}">
+              <ng-template pTemplate="body" let-i="rowIndex" let-suite>
+                  {{i+1}}
+              </ng-template>
+          </p-column>
+
+          <p-column field="candname" header="Name" [sortable]="true" [style]="{'width':'150px'}">
+              <ng-template let-action="rowData" let-i="rowIndex" pTemplate type="body">
+                {{ (action.candname.length>20)?
+                  (action.candname | slice:0:20)+'...':(action.candname) }}
+              </ng-template>
+          </p-column>
+
+          <!-- <p-column header="View Screening" [style]="{'width':'100px'}">
+              <ng-template let-ViewScreening="rowData" let-i="rowIndex" pTemplate type="body">
+                  <a href="javascript:void(0)" *ngIf="ViewScreening.isScreeningAnswer" class="text-link"
+                      title="View Screening" (click)="openscreeningModal(screeningAnswerTemplate,ViewScreening,i)">
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                  </a>
+                  <span *ngIf="!ViewScreening.isScreeningAnswer">-</span>
+              </ng-template>
+          </p-column> -->
+         
+        
+          <p-column field="jobopeningcode" header="Opening Code" [style]="{'width':'200px'}"></p-column>
+        
+          <p-column field="jobopeninglocation" header="Location" [sortable]="true" [style]="{'width':'250px'}">
+
+              <ng-template let-Location="rowData" pTemplate type="body">
+                  {{Location.jobopeninglocation!=null?Location.jobopeninglocation:'NA'}}
+              </ng-template>
+
+          </p-column>
+          <p-column header="Domicile Address" [sortable]="true" [style]="{'width':'250px'}">
+              <ng-template let-DomicileAddress="rowData" pTemplate type="body">
+                  {{DomicileAddress.candidatedomicile!=null?DomicileAddress.candidatedomicile:'NA'}}
+              </ng-template>
+          </p-column>
+          <p-column field="traningtrade" header="Partner Name" [sortable]="true" [style]="{'width':'250px'}">
+            <ng-template let-PartnerName="rowData" pTemplate type="body">
+                {{PartnerName.traningtrade!=null?PartnerName.partnername:'NA'}}
+            </ng-template>
+        </p-column>
+         
+          <p-column field="traningtrade" header="Training Trade" [sortable]="true" [style]="{'width':'150px'}">
+              <ng-template let-traningtrade="rowData" pTemplate type="body">
+                  {{traningtrade.traningtrade!=null?traningtrade.traningtrade:'NA'}}
+              </ng-template>
+          </p-column>
+          <p-column field="trainingscheme" header="Training Scheme" [sortable]="true" [style]="{'width':'150px'}">
+              <ng-template let-trainingscheme="rowData" pTemplate type="body">
+                  {{trainingscheme.trainingscheme!=null?trainingscheme.trainingscheme:'NA'}}
+              </ng-template>
+          </p-column>
+          <p-column header="View Profile" class="text-center" [style]="{'width':'50px'}">
+              <ng-template let-item="rowData" let-i="rowIndex" pTemplate type="body">
+                  <a href="javascript:void(0)" class="" title="View Details" (click)="setClickedRow(i);viewcandidateProfile(item.candidatesourceid==0?item.candId:item.candidatesourceid,item.apitype)">
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                  </a>
+              </ng-template>
+          </p-column>
+          <p-column header="PIA Detail" class="text-center" [style]="{'width':'150px'}">
+              <ng-template let-item="rowData" pTemplate type="body">
+                  <a *ngIf="item.apitype=='MRIGS'" href="javascript:void(0)" class="" title="View Details" (click)="openpiaData(temppia,item.interviewSchldJOBID,item.jobopeningcode,item.candidatesourceid==0?item.candId:item.candidatesourceid,item.apitype)">
+                      <i class="fas fa-address-card" aria-hidden="true"></i>
+                  </a>
+                  <p *ngIf="item.apitype!='MRIGS'">NA </p>
+              </ng-template>
+          </p-column>
+          <p-column header="Action" class="text-center" [style]="{'width':'150px'}">
+            <ng-template let-item="rowData" pTemplate type="body">
+              <button type="button" [disabled]="(item.offerletterstatus)" (click)="GenerateOfferLetter(item.companyname,item.interviewSchldJOBID,item.interviewSchldId,item.candId,item.candjobopeningid,item.candname,item.interviewdatefrom,template5)"
+              class="btn btn-w-shadow no-rd m-b-5">Generate Offer Letter</button>
+            <button type="button" [disabled]="(!item.offerletterstatus)" (click)="GetOfferLetterDetail(item.interviewSchldJOBID,item.interviewSchldId,item.candId,template6)"
+              class="btn btn-w-shadow no-rd"> View Offer
+              Letter</button>
+            </ng-template>
+        </p-column>
+
+
+      </p-dataTable>
+  </div>
+</div>
+
+
+
+<!-- <div class="col-md-12">
+  <div class="usersWrapper" *ngIf="(JobDetailShow || WalkInDetail || EventDetail)">
+    <div class="table-responsive">
+      <table datatable id="DataTables_Table_0" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-bordered">
+        <thead class="bg-info">
+          <tr>
+            <th>S.No.</th>
+            <th>Applicant Name</th>
+            <th>Opening Code</th>
+            <th>Gender</th>
+            <th>Location</th>
+            <th>Domicile Address</th>
+            <th>Partner Name</th>
+            <th>Training Scheme</th>
+            <th>Training Trade</th>
+            <th>View</th>
+            <th>PIA Contact Details</th>
+            <th>Action</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of FilteredResult let i=index" [class.row-active]="i == selectedRow">
+            <td>{{i + 1}}</td>
+            <td>{{item.candname}}</td>
+            <td>{{item.jobopeningcode}}</td>
+            <td>{{item.candidategender}}</td>
+            <td>{{item.jobopeninglocation ? item.jobopeninglocation:'NA'}}</td>
+            <td>{{item.candidatedomicile ? item.candidatedomicile:'NA'}}</td>
+            <td>{{item.partnername ? item.partnername:'NA'}}</td>
+            <td>{{item.trainingscheme ? item.trainingscheme:'NA'}}</td>
+            <td>{{item.traningtrade ? item.traningtrade:'NA'}}</td>
+            <td>
+              <a href="javascript:void(0)" class="" title="View Details" (click)="setClickedRow(i);viewcandidateProfile(item.candidatesourceid==0?item.candId:item.candidatesourceid,item.apitype)">
+                View
+              </a>
+            </td>
+            <td style="text-align:center"><a *ngIf="item.apitype=='MRIGS'" href="javascript:void(0)" class="" title="View Details"
+                (click)="openpiaData(temppia,item.interviewSchldJOBID,item.jobopeningcode,item.candidatesourceid==0?item.candId:item.candidatesourceid,item.apitype)"><i
+                  class="fas fa-address-card" aria-hidden="true"></i></a>
+              <p *ngIf="item.apitype!='MRIGS'">N/A </p>
+            </td>
+
+            <td class="text-center">
+              <button type="button" [disabled]="(item.offerletterstatus)" (click)="GenerateOfferLetter(item.companyname,item.interviewSchldJOBID,item.interviewSchldId,item.candId,item.candjobopeningid,item.candname,item.interviewdatefrom,template5)"
+                class="btn btn-w-shadow no-rd m-b-5">Generate Offer Letter</button>
+              <button type="button" [disabled]="(!item.offerletterstatus)" (click)="GetOfferLetterDetail(item.interviewSchldJOBID,item.interviewSchldId,item.candId,template6)"
+                class="btn btn-w-shadow no-rd m-b-5"> View Offer
+                Letter</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> -->
+<ng-template #temppia>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">PIA Contact Detail</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modaldpia.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <span [innerHtml]="PiaContacDetials.contactHtml | KeepHtml: 'html' "></span>
+  </div>
+</ng-template>
+
+<ng-template #template5>
+  <div class="modal-header">
+    <h6 class="modal-title pull-left">Release Offer Letter</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="ResetSelectCandidateForm()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-t-0">
+    <form [formGroup]="SelectedCandidateForm">
+      <div class="edit-profile-wrapper">
+        <div class="box-title">
+          <p class="box-title-content">
+            Offer Letter Details
+          </p>
+        </div>
+        <div class="box-content">
+          <div class="form-group">
+            <div class="col-md-4 text-right">
+              <label>Company Name<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <div>
+                <input type="hidden" class="form-control" formControlName="jobId" />
+                <input type="hidden" class="form-control" formControlName="interviewId" />
+                <input type="hidden" class="form-control" formControlName="candId" />
+                <input type="text" class="form-control" formControlName="companyName" readonly />
+              </div>
+              <errors [control]="SelectedCandidateForm.controls.companyName"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 text-right">
+              <label>Candidate Name<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <div>
+                <input type="text" class="form-control" formControlName="CandidateName" readonly />
+              </div>
+              <errors [control]="SelectedCandidateForm.controls.CandidateName"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 text-right">
+              <label>Designation<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <div>
+                <input type="text" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" maxlength="200" class="form-control" placeholder="Enter Designation" formControlName="Designation" />
+              </div>
+              <errors [control]="SelectedCandidateForm.controls.Designation"></errors>
+            </div>
+          </div>
+          <!-- <div class="form-group m-b-10">
+              <div class="col-md-3 text-right">
+                <label>Location<span class="mandatory">*</span></label>
+              </div>
+              <div class="col-md-2">
+                <div class="input-group">
+                  <input type="text" formControlName="Location" />
+                </div>
+                <errors [control]="SelectedCandidateForm.controls.Location"></errors>
+              </div>
+            </div> -->
+          <!-- {{DbResponce|json}} -->
+          <div class="form-group">
+            <div class="col-md-4 text-right">
+              <label>Location<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <select required (change)="OnLocationChange(SelectedCandidateForm.value.Location)" class="form-control"
+                formControlName="Location" id="testselectset">
+                <option value="0" class="" selected="selected">--Select--</option>
+                <option *ngFor="let item of workLocation" value="{{item.id}}" title="{{item.address}}">
+                  <!--{{item.address}}-->
+                  {{ (item.address.length>80)? (item.address | slice:0:80)+'...':(item.address) }}
+                </option>
+              </select>
+              <errors [control]="SelectedCandidateForm.controls.Location"></errors>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-4 text-right">
+              <label>State<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <select (change)="onChangeState(SelectedCandidateForm.value.StateID)" required class="form-control"
+                formControlName="StateID">
+                <option value="" class="" selected="selected">--Select--</option>
+                <option *ngFor="let item of lstState" value="{{item.id}}">{{item.stateName}}</option>
+              </select>
+              <errors [control]="SelectedCandidateForm.controls.StateID"></errors>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-4 text-right">
+              <label>District<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <select class="form-control" required formControlName="DistrictID">
+                <option value="" class="" selected="selected">--Select--</option>
+                <option *ngFor="let item of district" value="{{item.id}}">{{item.districtName}}</option>
+              </select>
+              <errors [control]="SelectedCandidateForm.controls.DistrictID"></errors>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-4 text-right">
+              <label>Offer Letter Date<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group">
+                <input type="text" #valid1="bsDatepicker" [minDate]="minOfferDate" disabled placeholder="Select Date"
+                  bsDatepicker [bsConfig]="{  dateInputFormat: 'DD/MM/YYYY' ,showWeekNumbers:false }" class="form-control"
+                  formControlName="offerDate" placement="top" />
+
+                <span class="input-group-addon" (click)="valid1.toggle()" [attr.aria-expanded]="valid.isOpen"><i class="fa fa-calendar"></i></span>
+              </div>
+              <!-- <p style="color:red ! important" *ngIf="!TimeMsg">Offer Letter Date Can Not Be Greater Than Joining
+                  Date</p> -->
+              <errors [control]="SelectedCandidateForm.controls.offerDate"></errors>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-4 text-right">
+              <label>Date Of Joining<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group">
+                <input type="text" #valid="bsDatepicker" [minDate]="minOfferDate" disabled placeholder="Select Date"
+                  bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' ,showWeekNumbers:false }" class="form-control"
+                  formControlName="joiningDate" placement="top" />
+                <!-- <p style="color:red ! important" *ngIf="!TimeMsg">Offer Letter Date Can Not Be Greater Than Joining
+                    Date</p> -->
+                <span class="input-group-addon" (click)="valid.toggle()" [attr.aria-expanded]="valid.isOpen"><i class="fa fa-calendar"></i></span>
+              </div>
+              <errors [control]="SelectedCandidateForm.controls.joiningDate"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 text-right">
+              <label>CTC(Per Month)<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <div>
+                <input class="form-control" type="text" formControlName="ctc" placeholder="Enter CTC" maxlength="8"
+                  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="" />
+              </div>
+              <errors [control]="SelectedCandidateForm.controls.ctc"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 text-right">
+              <label>Upload Offer Letter<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-7 file-upload">
+              <input type="file" (change)="onUploadChange($event)" class="" formControlName="ImgName">
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <errors [control]="SelectedCandidateForm.controls.ImgName"></errors>
+            </div>
+            <div class="col-md-1" *ngIf="DownLoadImage">
+              <a [href]="offerImage" download="{{imgDownloadName}}"><span class="glyphicon glyphicon-zoom-in m-t-5 text-link"></span></a>
+            </div>
+          </div>
+          <div class="form-group text-center m-t-10">
+            <button type="button" (click)="GetSelectedcandidateformvalue();" [disabled]="!(interviewformValid && SelectedCandidateForm.valid)"
+              class="btn btn-w-shadow no-rd pull-middle">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #template6>
+  <div class="modal-header">
+    <h6 class="modal-title pull-left">Offer Letter Detail</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="CloseOfferLetter()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="edit-profile-wrapper margin-top-20">
+      <div class="box-title">
+        <p class="box-title-content">
+        </p>
+      </div>
+      <div class="box-content">
+        <div class="usersWrapper">
+          <div>
+            <!-- {{OfferletterDetail|json}} -->
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">Company Name:</span></div>
+              <div class="col-md-8"> {{OfferletterDetail.companyName!=''?OfferletterDetail.companyName:'Not
+                available'}}</div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">Name:</span></div>
+              <div class="col-md-8">{{OfferletterDetail.candidateName!=''?OfferletterDetail.candidateName:'Not
+                available'}}</div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">Designation: </span></div>
+              <div class="col-md-8">{{OfferletterDetail.designation!=''?OfferletterDetail.designation:'Not
+                available'}}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">Email:</span></div>
+              <div class="col-md-8">{{OfferletterDetail.email!=null ? OfferletterDetail.email:'Not available'}}</div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">Mobile No.:</span></div>
+              <div class="col-md-8">{{OfferletterDetail.mobileNo!=''?OfferletterDetail.mobileNo:'Not available'}}</div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">Gender:</span></div>
+              <div class="col-md-8">{{OfferletterDetail.gender}}</div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">Offer Letter Date :</span></div>
+              <div class="col-md-8">{{OfferletterDetail.offerLetterDate | date:'dd/MM/y'}}</div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">Joining Date :</span></div>
+              <div class="col-md-8">{{OfferletterDetail.joiningDate | date:'dd/MM/y'}}</div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">Ctc: </span></div>
+              <div class="col-md-8">{{OfferletterDetail?.ctc}} (Per Month)</div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">Address: </span></div>
+              <div class="col-md-8">{{OfferletterDetail?.address}}</div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">State: </span></div>
+              <div class="col-md-8">{{OfferletterDetail?.stateName}}</div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">District: </span></div>
+              <div class="col-md-8">{{OfferletterDetail?.districtName}}</div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4"><span class="text-strong">View Offer Letter: </span></div>
+              <div class="col-md-8">
+                <!-- <a [href]="OfferletterDetail.image" target="_blank"><span class="glyphicon glyphicon-zoom-in"></span></a> -->
+                <a [href]="OfferDoc" target="_blank"><span class="glyphicon glyphicon-zoom-in"></span></a>
+              </div>
+            </div>
+          </div>
+          <div class="cleafix margin-bottom-20"></div>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn bl-btn" (click)="CloseOfferLetter()">Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<div class="cleafix"></div>
+<app-CommonView-Layout></app-CommonView-Layout>

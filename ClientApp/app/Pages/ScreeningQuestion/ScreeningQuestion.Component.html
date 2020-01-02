@@ -1,0 +1,458 @@
+<!-- display group list and data table  section -->
+<div class="dash-head" *ngIf="!showCreateQuestion">
+  <p>Screening Question</p>
+  <a class="btn btn-w-shadow no-rd pull-right" tabindex="0" (click)="openCreateQuestionSection()">Create Question</a>
+</div>
+<div class="dash-head" *ngIf="showCreateQuestion">
+  <p>Create Question</p>
+  <a (click)="Back()" title="Go Back" class="btn btn-w-shadow no-rd pull-right" tabindex="0"><i aria-hidden="true"
+      class="fa fa-arrow-left"></i></a>
+</div>
+<div class="cleafix"></div>
+<div *ngIf="!showCreateQuestion">
+  <div class="col-md-12">
+    <h4>
+        Question Type/Group 
+    </h4>
+  </div>
+  <!-- Question group list -->
+  <div class="form-group">
+    <div class="col-md-4 col-sm-4 col-xs-12">
+      <label>Screening Question Group<span style="color:red;"> </span></label>
+      <select class="form-control" (change)="getQuestionListByGroup($event)">
+        <option value="" required class="" selected="selected">--Select--</option>
+        <option *ngFor="let item of groupList" value="{{item.groupid}}">{{item.groupname}}</option>
+      </select>
+
+    </div>
+  </div>
+
+<!-- Display data table section  -->
+
+  <div class="" id="cantable" *ngIf="showQuestionTable">
+    <div class="col-md-12">
+      <div class="dash-head dash-head-2">
+        <p>Question List</p>
+      </div>
+      <div class="cleafix"></div>
+
+      <div class="all-jobs-list">
+            <div id="" class="searchResults">
+               <div class="ui-widget-header ui-widget-header-r">                
+                <input #gb type="text" pInputText size="100" placeholder="Search">
+            </div>
+            <p-dataTable [(value)]="questionGroupList"  [(selection)]="questionList" [paginator]="true" [rows]="10" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15]" [responsive]="true" [globalFilter]="gb" [loading]="loading">
+                <p-column header="S.No."  [style]="{'width':'21px'}" >
+                    <ng-template pTemplate="body" let-i="rowIndex" let-suite >
+                        {{i+1}}
+                    </ng-template>
+                </p-column>
+
+              <p-column field="questions" header="Question" [sortable]="true" [style]="{'width':'269px'}"></p-column>
+              
+              <p-column  field="answer" [sortable]="true" header="Answer" [style]="{'width':'30px'}">
+                  <ng-template let-answer="rowData" pTemplate type="body">
+                    <p *ngIf="answer.answer=='Yes'">Yes</p>
+                    <p *ngIf="answer.answer=='No'">No</p>  
+                      </ng-template>
+              </p-column>
+              
+              <p-column field="mandotary" [sortable]="true" header="Non Negotiable"  [style]="{'width':'52px'}">
+                      <ng-template let-item="rowData" pTemplate type="body">
+                        {{item.mandotary ? 'Yes' : 'No'}}                 
+                      </ng-template>
+              </p-column>
+
+              <p-column  field="preference" header="Preference" [sortable]="true" [style]="{'width':'50px'}">
+                  <!-- <ng-template let-preferenceItem="rowData" pTemplate type="body">
+                     {{preferenceItem.preference ? preferenceItem.preference : 0}} 
+                  </ng-template> -->
+              </p-column>
+
+              <p-column  header="Action" [style]="{'width':'30px'}">
+                  <ng-template let-questions="rowData" pTemplate type="body">
+                      <a href="javascript:void(0)"
+                         (click)="editQuestion(addInCreatedGroup,questions,'edit',EnablesInCreatedGroup)">
+                         <span class="text-link">Edit</span>
+                      </a>                      
+                  </ng-template>
+              </p-column>
+
+              <p-column  header="Is Active" [style]="{'width':'35px'}">
+                  <ng-template let-item="rowData" pTemplate type="body">
+                      <a href="javascript:void(0)" *ngIf="item.isactive==false"
+                      (click)="activeDeactivQuestion(item,true)">
+                     <span class="text-link">Enable</span>
+                   </a>
+                   <a href="javascript:void(0)" *ngIf="item.isactive==true"
+                      (click)="activeDeactivQuestion(item,false)">
+                     <span class="text-link">Disable</span>
+                   </a>                 
+                  </ng-template>
+              </p-column> 
+            </p-dataTable>
+
+          <div class="table-responsive">
+            <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-striped"
+                   id="candtable">
+              <thead>
+                <tr>
+                  <th>S. No</th>
+                  <th>Question</th>
+                  <th>Answer</th>
+                  <th>Non Negotiable</th>
+                  <th>Preference</th>
+                  <th>Action</th>
+                  <th>Is Active</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of questionGroupList  let i=index ">
+                  <td>{{1+ i}} </td>
+                  <td>{{item.questions}}</td>
+                  <td>{{item.answer}}</td>
+                  <td>{{item.mandotary? 'Yes' : 'No'}}</td>
+                  <td>{{item.preference}}</td>
+                  <td class="text-center">
+                    <a href="javascript:void(0)"
+                       (click)="editQuestion(addInCreatedGroup,item,'edit',EnablesInCreatedGroup)">
+                      <span class="text-link">Edit</span>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="javascript:void(0)" *ngIf="item.isactive==false"
+                       (click)="activeDeactivQuestion(item,true)">
+                      <span class="text-link">Enable</span>
+                    </a>
+                    <a href="javascript:void(0)" *ngIf="item.isactive==true"
+                       (click)="activeDeactivQuestion(item,false)">
+                      <span class="text-link">Disable</span>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table> -->
+            <!-- Prime Ng Data table start -->
+       
+              <!-- Prime Ng Data table end -->
+          </div>
+          <div class="form-group text-center">
+            <button type="button" class="btn btn-w-shadow no-rd"
+                    (click)="openQuestionCreateMOdal(addInCreatedGroup,'Add')">
+              Add
+            </button>
+          </div>
+        </div>
+
+        <!-- open edit question modal section -->
+
+        <ng-template #addInCreatedGroup>
+          <div class="modal-header">
+          </div>
+          <div class="modal-body">
+            <div class="legend-box m-b-5">
+              <div class="col-md-12 row">
+                <span class="legend-title"><label class="biz-label">{{capitalize(mode)}} 
+                  {{mode=='edit'?'':'New'}} Question</label></span>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12"><strong>GroupName</strong> : {{groupName}}</div>
+              </div>
+              <form [formGroup]="questionForm">
+                <div class="form-group">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Screening Question </label>
+                    <input type="text" class="form-control" formControlName="question" placeholder="Question" />
+                    <errors [control]="questionForm.controls.question"></errors>
+                  </div>
+                </div>
+                <div class="form-group" >
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Expectable Answer</label>
+                    <select class="form-control"  formControlName="answer">
+                        <option value="" required class="" selected>--Select Answer--</option>
+                        <option value="Yes"  class="" >Yes</option>
+                        <option value="No"  class="" >No</option>
+                       
+                      </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <label>Non Negotiable<span style="color:red;"> </span></label>
+                      <label>
+                         <input type="checkbox" name="isMandatory" [checked]="isMandatory" formControlName="isMandatory"
+                                   id="preference" value="1" (change)="isNonNegotiable($event)">
+                      </label>
+                    </div>
+                </div>
+
+              
+                <div class="form-group" *ngIf="showPrefrence">
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <label>Question Preference<span style="color:red;"> </span></label>
+                   
+                  </div>
+                  <div class="col-md-5 col-sm-9 col-xs-12">                        
+                      <select class="form-control"  formControlName="preference">
+                        <option value="" required class="" selected="selected">--Select Preference--</option>
+                        <option value="1"  class="" >1</option>
+                        <option value="2"  class="" >2</option>
+                        <option value="3"  class="" >3</option>
+                        <option value="4"  class="" >4</option>
+                        <option value="5"  class="" >5</option>
+                      </select>
+                    </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-body p-t-0 text-right">
+            <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"
+                    (click)="submitCreateUpdateQuestion()">
+              {{mode=='edit'?'Update':'Add'}}
+            </button>&nbsp;&nbsp;&nbsp;
+            <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="close()">Close</button>
+          </div>
+        </ng-template>
+
+        <!-- close edit question section -->
+
+            <!-- open edit enables question modal section -->
+
+            <ng-template #EnablesInCreatedGroup>
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                  <div class="legend-box m-b-5">
+                    <div class="col-md-12 row">
+                      <span class="legend-title"><label class="biz-label"> Group Question</label></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 required-field"> Kindly  enable the question</div>
+                      </div>
+                    <!-- <div class="form-group">
+                      <div class="col-md-12"><strong>GroupName</strong> : {{groupName}}</div>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="modal-body p-t-0 text-right">
+                  <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="closeenables()">Close</button>
+                </div>
+              </ng-template>
+      
+              <!-- close edit enables question section -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- close  data table section -->
+
+<!-- open create Question Section -->
+<div class="col-md-12 margin-top-20">
+  <div *ngIf="showCreateQuestion">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-2 col-sm-3 col-xs-6">
+          <button type="button" class="btn btn-w-shadow no-rd" (click)="openGroupform()">Add group</button>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-6">
+          <button type="button" class="btn btn-w-shadow no-rd" (click)="showGroupList()">Add Question</button>
+        </div>
+      </div>
+    </div>
+
+    <!--  open create group form -->
+    <div class="form-group margin-top-40" *ngIf="groupInputShow">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="legend-box m-b-5">
+            <div class="col-md-12 row">
+              <span class="legend-title"><label class="biz-label">Add Group</label></span>
+            </div>
+            <br />
+            <form [formGroup]="createGroupForm">
+              <div class="form-group">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                  <label>Group Name </label>                  
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input type="text" class="form-control" formControlName="groupName" placeholder="groupname" />
+                  <errors [control]="createGroupForm.controls.groupName"></errors>
+                </div>
+              </div>
+              <div class="form-group m-t-10">
+                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3 col-sm-offset-3">
+                  <button class="btn btn-w-shadow no-rd" [disabled]="!(createGroupForm.valid)" tabindex="0"
+                          type="submit" (click)="submitNewGroup()">
+                    Submit
+                  </button>&nbsp;&nbsp;&nbsp;
+                  <button class="btn btn-w-shadow no-rd" tabindex="0" type="submit"
+                          (click)="canclecreateGroupForm()">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- close create group form -->
+
+
+
+    <div class="form-group margin-top-40" *ngIf="ShownewGroupList">
+      <!-- show group list section -->
+      <!-- open create new question section -->
+      <div class="form-group" >
+        <div class="row">
+          <div class="col-md-12">
+            <div class="legend-box m-b-5">
+              <div class="col-md-12 row">
+                <span class="legend-title"><label class="biz-label">Add Question</label></span>
+              </div><br/>
+              <form [formGroup]="questionForm">
+                <div class="form-group">
+                  <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label>Screening Question Group<span> </span></label>                    
+                  </div>
+                  <div class="col-md-5 col-sm-9 col-xs-12">
+                    <select class="form-control" (change)="showQuestionForm($event)">
+                      <option value="" required class="" selected="selected">--Select--</option>
+                      <option *ngFor="let item of groupList" value="{{item.groupid}}">{{item.groupname}}</option>
+                    </select>
+                  </div>
+                  </div>
+                  <div *ngIf="showQuestionAddForm">
+                    <div class="form-group">
+                      <div class="col-md-3 col-sm-3 col-xs-12">
+                        <label>Screening Question </label>                        
+                      </div>
+                      <div class="col-md-5 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" formControlName="question" placeholder="Question" />
+                        <errors [control]="questionForm.controls.question"></errors>
+                      </div>
+                      </div> 
+                      <div class="form-group" >
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                          <label>Expectable Answer </label>                        
+                        </div>
+                        <div class="col-md-5 col-sm-9 col-xs-12">
+                          <select class="form-control"  formControlName="answer">
+                            <option value="" required class="" selected>--Select Answer--</option>
+                            <option value="Yes"  class="" >Yes</option>
+                            <option value="No"  class="" >No</option>
+                           
+                          </select>
+                          <errors [control]="questionForm.controls.answer"></errors>
+                         </div>
+                        </div>   
+                      <div class="form-group m-t-10">
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <label>Non Negotiable<span style="color:red;"> </span></label>
+                            <label>
+                              <input type="checkbox" name="isMandatory" [checked]="isMandatory" formControlName="isMandatory"
+                                     id="preference" value="1" (change)="isNonNegotiable($event)">
+                            </label>
+                          </div>
+                      </div>
+                      
+                    <div class="form-group m-t-10" *ngIf="showPrefrence">
+                      <div class="col-md-3 col-sm-3 col-xs-12">
+                        <label>Question Preference<span style="color:red;"> </span></label>
+                        
+                      </div>
+                      <div class="col-md-5 col-sm-9 col-xs-12" >                        
+                        <select class="form-control"  formControlName="preference">
+                          <option value="" required class="" selected="selected">--Select Preference--</option>
+                          <option value="1"  class="" >1</option>
+                          <option value="2"  class="" >2</option>
+                          <option value="3"  class="" >3</option>
+                          <option value="4"  class="" >4</option>
+                          <option value="5"  class="" >5</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group m-t-10">
+                      
+                      <div class="col-md-5 col-sm-9 col-xs-12">                        
+                        <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="addNewQuestion()">Add</button>
+                      </div>
+                    </div>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="all-jobs-list">
+                            <div id="" class="searchResults">
+                              <ul class="joblist-wrapper">
+                                <li class="job-wrapper ps-relative" *ngFor="let item of questionList; let i=index">
+                                  <!-- open modal for confirm delete question -->
+                                  <ng-template #templateDelete>
+                                    <div class="modal-body text-center">
+                                      <p>Do you want to delete this question?</p>
+                                      <br />
+                                      <br />
+                                      <button type="button" class="btn yl-btn no-rd" (click)="deleteQuestion(i)">Yes</button>
+                                      <button type="button" (click)="declineBoxSecor()" class="btn bl-btn no-rd">No</button>
+                                    </div>
+                                  </ng-template>
+                                  <!-- close modal for confirm delete question -->
+
+                                  <div class="clearfix"></div>
+                                  <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12"><strong>Groupname : </strong> <span>{{groupName}}</span></div>
+                                       <div class="col-md-12"><strong>Question : </strong> <span>{{item.questionlist}}?</span></div>
+                                       <div class="col-md-12"><strong>Answer : </strong> <span *ngIf="item.answer=='Yes'">Yes</span>
+                                        <span *ngIf="item.answer=='No'">No</span>
+                                       </div> 
+                                       <div class="col-md-12"><strong>Non Negotiable : </strong> <span>{{item.Mandatory?'Yes':'No'}}</span></div>
+                                        <div class="col-md-12"><strong>Preference : </strong> <span>{{item.preference?item.preference:'NA'}}</span></div>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="job-list-action card-view-btns">
+                                      <a class="viewit" href="javascript:void(0)" (click)="delete(templateDelete)"
+                                         title="Delete">Delete</a>
+                                    </div>
+                                  </div>
+                                  <div class="clearfix"></div>
+                                  <div class="clearfix"></div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group" *ngIf="questionList.length>0">
+                        <div class="col-md-12 text-center p-r-0">
+                          <button class="btn btn-w-shadow no-rd" [disabled]="questionList==0" tabindex="0" type="submit"
+                                  (click)="submitGroupQuestion()">
+                            Submit
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+              </form>
+            </div>
+
+            </div>
+            
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- 
+<div class="ui-widget-header" style="padding:4px 5px;border-bottom: 0 none">
+  <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+  <input #gb type="text" style="padding:4px 5px;" pInputText size="50" placeholder="Search">
+</div>
+<p-dataTable [(value)]="questionGroupList" [(selection)]="questionList" [paginator]="true" [rows]="5" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15]" [responsive]="true" [globalFilter]="gb" [loading]="loading">
+  <p-column field="questions" header="questionlist" [sortable]="true" [style]="{'width':'100px'}"></p-column>
+  <p-column field="answer" header="answer" [sortable]="true" [style]="{'width':'100px'}"></p-column>
+  <p-column field="Mandatory" header="Mandatory" [sortable]="true" [style]="{'width':'112px'}"></p-column>
+  <p-column field="preference" header="preference" [sortable]="true" [style]="{'width':'82px'}"></p-column>
+</p-dataTable> -->

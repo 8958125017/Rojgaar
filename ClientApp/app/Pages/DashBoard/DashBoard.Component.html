@@ -1,0 +1,161 @@
+<div class="dash-head">
+  <p>dashboard</p>
+</div>
+<div class="cleafix margin-bottom-20"></div>
+<div class="col-md-12">
+  <div class="new-dash-wrapper">
+    <ul>
+      <li (click)="JobPost('JobPost')" style="cursor: pointer">
+        <p class="title-bar">Job Posted</p>
+        <div class="divider-bar divider-bar-1"></div>
+        <p class="count-bar count-bar-1">{{totalNumber?.jobPosted}}</p>
+      </li>
+      <!-- <li (click)="JobPost('Vacancies')"></li> -->
+      <li >
+        <p class="title-bar" >No. of Vacancies</p>
+        <div class="divider-bar divider-bar-2"></div>
+        <p class="count-bar count-bar-2" >{{totalNumber?.noOfVacancy}}</p>
+      </li>
+      <li (click)="JobPost('applicantReciept')" style="cursor: pointer">
+        <p class="title-bar" >Applications Recieved</p>
+        <div class="divider-bar divider-bar-3"></div>
+        <p class="count-bar count-bar-3">{{totalNumber?.applicantReciept}}</p>
+      </li>
+      <li (click)="JobPost('registeredcandidate')" style="cursor: pointer">
+        <p class="title-bar">Registration Received</p>
+        <div class="divider-bar divider-bar-4"></div>
+        <p class="count-bar count-bar-4">{{totalNumber?.registeredcandidate}}</p>
+      </li>
+      <li (click)="JobPost('totalscheduldinterview')" style="cursor: pointer">
+        <p class="title-bar">Scheduled Interview</p>
+        <div class="divider-bar divider-bar-4"></div>
+        <p class="count-bar count-bar-4">{{totalNumber?.totalscheduldinterview}}</p>
+      </li>
+
+       
+      <li (click)="JobPost('PlacedCand')" style="cursor: pointer">
+        <p class="title-bar">Placed Candidate</p>
+        <div class="divider-bar divider-bar-4"></div>
+        <p class="count-bar count-bar-4" >{{totalNumber?.totaljoinedcandidate}}</p>
+      
+      </li>  
+    </ul>
+  </div>
+</div>
+
+<div class="col-md-12" *ngIf="showplacedtablestatus" >
+
+  <div class="usersWrapper">
+    <div class="table-responsive"><button class="btn btn-primary pull-right" (click)="exportAsXLSX()" >Excel</button>
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-striped aplication-th"
+      id="candtable">
+      <thead class="bg-info">
+          <tr>
+              <th>S.No.</th>
+              <th>Job Code</th>
+              <th>Job Title</th>
+              <th>Placed Candidate</th>
+              <th>Offer Candidate</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of PlacedResponse;let i = index" >
+           <td>{{ i+1 }}</td>
+            <td>{{ item.jobcode }}</td>
+            <td>{{ item.jobtitle }}</td>
+            <td><a href="javascript:void(0)" (click)="getdetails(item.jobid )">{{ item.totofferedcand }}</a></td>
+            <td><a href="javascript:void(0)" (click)="getdetails(item.jobid )">{{ item.totplacedcand }}</a></td>
+
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12" *ngIf="detailstable" >
+    <div class="usersWrapper">
+      <div class="table-responsive">
+          <button class="btn btn-primary pull-right" (click)="exportAsXLSX1()" >Excel</button>
+        <table  class="table table-striped table-bordered">
+          <thead class="bg-info">
+            <tr>
+              <th>S.No.</th>
+              <th>Job Code</th>
+              <th>Job Title</th>
+              <th>Total placed candidate</th>
+              <th>Total offered candidate</th>
+              <!-- <th>Candidate Name</th>
+              <th>Job Opening Id</th>
+              <th>Candidate Name</th>
+              <th>User Id</th> -->
+
+
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of jobResponse;let i = index" >
+             <td>{{ i+1 }}</td>
+              <td>{{ item.jobcode }}</td>
+              <td>{{ item.jobtitle }}</td>
+              <td>{{ item.totplacedcand }}</td>
+              <td>{{ item.totofferedcand }}</td>
+
+
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+<!-- <div class="dash-stats-wrapper">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="dash-cards">
+          <div class="dash-cards-header">
+            <span class="dash-cards-icon bg1"><i class="fa fa-briefcase" aria-hidden="true"></i></span>
+            <p class="card-count-header">Job Posted</p>
+            <p class="card-count">{{totalNumber?.jobPosted}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="dash-cards">
+          <div class="dash-cards-header">
+            <span class="dash-cards-icon bg2"><i class="fa fa-user" aria-hidden="true"></i></span>
+            <p class="card-count-header">No. of Vacancies</p>
+            <p class="card-count">{{totalNumber?.noOfVacancy}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="dash-cards">
+          <div class="dash-cards-header">
+            <span class="dash-cards-icon bg3"><i class="fa fa-list-ol" aria-hidden="true"></i></span>
+            <p class="card-count-header">Applications Recieved</p>
+            <p class="card-count">{{totalNumber?.applicantReciept}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="dash-cards">
+          <div class="dash-cards-header">
+            <span class="dash-cards-icon bg4"><i class="fa fa-users" aria-hidden="true"></i></span>
+            <p class="card-count-header">Registration Received</p>
+            <p class="card-count">{{totalNumber?.registeredcandidate}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

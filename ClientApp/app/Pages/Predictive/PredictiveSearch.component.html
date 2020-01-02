@@ -1,0 +1,240 @@
+<div class="dash-head">
+  <p>Predictive Search</p>
+</div>
+<div class="page-filters">
+  <h2>
+    <a href="javascript:void(0);">
+      <i class="fa fa-filter" aria-hidden="true"></i> Apply Filters
+      <span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+    </a>
+  </h2>
+  <form action="" [formGroup]="PredictiveSearch">
+    <div class="filter-wrapper">
+      <div class="form-group">
+          <div class="col-md-3 col-sm-6">
+              <label>State<span class="mandatory">*</span></label>
+              <select class="form-control" required formControlName="Stateid" (change)="GetDistrict($event)">
+                Add Work Location
+                <option value="" class="" selected="selected">-- Select --</option>
+                <option *ngFor="let state of states" [value]="state.id">{{state.stateName}}</option>
+              </select>
+              <errors [control]="PredictiveSearch.controls.Stateid"></errors>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <label>District<span class="mandatory"></span></label>
+              <select class="form-control" formControlName="Districtid">
+                <option value="" selected="selected">-- Select --</option>
+                <option *ngFor="let district of district1" [value]="district.id">{{district.districtName}}</option>
+              </select>
+              <errors [control]="PredictiveSearch.controls.Districtid"></errors>
+            </div>
+        <div class="col-md-3 col-sm-6">
+          <label>Sector</label>
+          <select class="form-control" formControlName="Sector" (change)="onChangeSector($event.target.value)">
+            <option value="" selected>--Select Sector--</option>
+            <option *ngFor="let st of sectors" [value]="st.id">{{st.name}}</option>
+          </select>
+          <errors [control]="PredictiveSearch.controls.Sector"></errors>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label>Trade</label>
+          <select class="form-control" formControlName="Trade">
+            <option value="" selected="selected">--Select Trade--</option>
+            <option *ngFor="let list of TraidLists" [value]="list.id">{{list.name}}</option>
+          </select>
+        </div>
+        
+      </div>
+      <div class="form-group">        
+        <div class="col-md-3 col-sm-6">
+          <label>Availability<span class="mandatory">*</span></label>
+          <select class="form-control" required formControlName="Availability">
+            <option value="" selected>--Select Availability--</option>
+            <option *ngFor="let month of months" [value]="month">within {{ month }} Month</option>
+          </select>
+          <errors [control]="PredictiveSearch.controls.Availability"></errors>
+        </div>
+      </div>
+      <div class="row text-center m-t-5">
+        <button type="reset" (click)="ResetFilterResult()" class="btn btn-w-shadow no-rd">Reset</button>
+        <button (click)="predictiveSearch('','')" [disabled]="!(PredictiveSearch.valid)" type="submit" class="btn btn-w-shadow no-rd filter-toggle">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="col-md-12">
+  <div class="col-md-12 jd-detail job-wrapper searchResults" *ngIf="pushdata.TC_state">   
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-12">
+          <h4 class="m-b-0">Search Result</h4>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <strong>State</strong>: {{ShowPushData.TC_state}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <strong>District</strong>: {{ShowPushData.TC_district}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <strong>Sector</strong>: {{ShowPushData.Sector}}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <strong>Trade</strong>: {{ShowPushData.Trade}}
+        </div>
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <span *ngIf="ShowPushData.avalibility">
+            <strong>Avalibility</strong>: within {{ShowPushData.avalibility}} month
+          </span>
+        </div>
+        <!--<div class="col-md-4 col-sm-6 col-xs-12">
+
+        </div>-->
+      </div>
+    </div> 
+  </div>
+</div>
+<!-- show List After Searching  -->
+<div class="col-md-12" *ngIf="ShwoCardsStatus == true">
+  <div class="all-jobs-list">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper agency-job-listing">
+        <li class="job-wrapper ps-relative" *ngFor="let predictive of GetData">
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-12">
+                <h3 class="job-title">Training Partner :  {{predictive.trainig_parter_name}}</h3>
+              </div>
+            </div>
+          </div> 
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12"><strong>Address : </strong> {{predictive.training_center_address}}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12"><strong>Sector : </strong> {{predictive.sector_Name}}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12"><strong>Trade : </strong> {{predictive.trade_Name}}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12"><strong>Batch Number : </strong> {{predictive.batch_no}}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6"><strong>Start Date : </strong> {{predictive.start_date}}</div>
+              <div class="col-md-6"><strong>End Date : </strong> {{predictive.expected_date}}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="job-list-action card-view-btns">
+              <a class="postit" href="javascript:void(0)" title="View" (click)="batchCode(predictive.batchid)">View</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="col-md-12" *ngIf="batchStatus == true">
+  <div class="predictive-listing">
+    <!--<h4 *ngIf="candidatelist?.length>0">Candidate Listing</h4>-->
+    <h4>
+      Candidate Listing
+      <button class="btn btn-w-shadow no-rd pull-right" tabindex="0" (click)="batchCodeReturn()" title="Go Back">Back</button>
+    </h4>
+    <div class="all-jobs-list">
+      <div id="" class="searchResults">
+        <ul class="joblist-wrapper">
+          <li class="job-wrapper ps-relative candidate-searc-card" *ngFor="let batch of batchcodeId">            
+            <div class="job-view">
+              <div class="p-l-0">
+                <img onError="this.src='../../../../assets/images/NoImage.png'" src="{{batch.imagepath!=''?batch.imagepath:'assets/images/NoImage.png'}}"
+                     class="img-thumbnail" alt="{{batch.imagepath!=''?batch.name:'No image'}}" width="60" height="40">
+              </div>
+              <div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <strong>Name : </strong> <span>{{batch.name}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <a href="javascript:void(0)" title="show" (click)="mobshow(batch.id)">
+                        <strong>
+                          Mobile No. :
+                        </strong>
+                        <span *ngIf="mobilests=='0'||mobilests=='1' && batch.id!=phone">XXX-XXX-XXXX</span>
+                        <span *ngIf="batch.id==phone && mobilests=='1'">{{batch.mobileno!=''?batch.mobileno:'Not Available'}}</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="batch.statename">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <strong>State : </strong> <span>{{batch.statename}}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="batch.districtname">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <strong>District : </strong> <span>{{batch.districtname}}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="batch.sectorname">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <strong>Sector : </strong> <span>{{batch.sectorname}}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="batch.tradename">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <strong>Trade : </strong> <span>{{batch.tradename}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="job-list-action card-view-btns">
+                    <a class="postit" href="javascript:void(0)" title="View" (click)="viewCandidateDetails(template,batch.id)">View</a>
+                  </div>
+                </div>
+              </div>
+            </div>         
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div> 
+<app-CommonView-Layout></app-CommonView-Layout>
+
+
+

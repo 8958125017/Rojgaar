@@ -1,0 +1,617 @@
+<div class="dash-head">
+  <p>Walk-In</p>
+  <a (click)="Back()" title="Go Back" class="btn btn-w-shadow no-rd pull-right" tabindex="0"><i aria-hidden="true"
+      class="fa fa-arrow-left"></i></a>
+
+</div>
+<form [formGroup]="WalkinForm" (ngSubmit)="createwalkin()">
+  <div class="job-posting">
+    <!-- Job detail section -->
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Walk-In Details</label></span>
+          </div>
+          <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <label>Job Title <span class="mandatory"> *</span></label>
+              <input placeholder="Job Title" #JobTitle oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');"
+                type="text" class="form-control" formControlName="JobTitle" maxlength="100" required />
+              <errors [control]="WalkinForm.controls.JobTitle"></errors>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <label>Company Name<span class="mandatory"> *</span></label>
+              <input placeholder="Company Name" #CompanyName [readonly]="isreadonly" oninput="this.value = this.value.replace(/[!#$%\^*+=\-\[\]\\';,/{}|\\':<>\?]/g, '').replace(/(\..*)\./g, '$1');"
+                type="text" class="form-control" formControlName="CompanyName" maxlength="100" required />
+              <errors [control]="WalkinForm.controls.CompanyName"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <label>Industry Area<span class="mandatory"> *</span></label>
+              <select formControlName="industry" #industry class="form-control" value="">
+                <option value="" class="" selected>Select Industry</option>
+                <option *ngFor="let industry of industries" value="{{ industry.id }}">{{ industry.industryName }}
+                </option>
+              </select>
+              <errors [control]="WalkinForm.controls.industry"></errors>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <label>Functional Area <span class="mandatory"> *</span></label>
+              <select formControlName="functionalarea" #functionalarea class="form-control" value="">
+                <option value="">Select Functional Area</option>
+                <option *ngFor="let functionalarea of functionalareas" value="{{ functionalarea.id  }}">{{
+                  functionalarea.functionalAreaName }} </option>
+              </select>
+              <errors [control]="WalkinForm.controls.functionalarea"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <label>Job Description <span class="mandatory"> *</span></label>
+              <textarea class="form-control" placeholder="Job Description" rows="2" #JobDescription formControlName="JobDescription"
+                maxlength="1000"> </textarea>
+              <errors [control]="WalkinForm.controls.JobDescription"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <label>Roles and Responsibilities <span class="mandatory"> *</span></label>
+              <textarea class="form-control" placeholder="Roles and Responsibilities" rows="2" #RolesresPonsiblty
+                formControlName="RolesresPonsiblty" maxlength="1000"> </textarea>
+              <errors [control]="WalkinForm.controls.RolesresPonsiblty"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <label>Walk-In From Date <span class="mandatory"> *</span></label>
+              <div class="input-group">
+                <input type="text" #valid1="bsDatepicker" #ValidDate [minDate]="minDate" placeholder="Select Date"
+                  disabled bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false  }" class="form-control"
+                  formControlName="ValidDate" />
+
+                <!-- 
+                  <input type="text" #valid="bsDatepicker" placeholder="Select Date" disabled bsDatepicker
+                  [bsConfig]="{dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false }"
+                  value=""
+                  [minDate]="mintoDate"
+                  class="form-control" formControlName="ValidDate" /> -->
+
+
+
+
+                <span class="input-group-addon" (click)="valid1.toggle()" [attr.aria-expanded]="valid.isOpen"><i class="fa fa-calendar"></i></span>
+                <errors [control]="WalkinForm.controls.ValidDate"></errors>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <label>Walk-In To Date <span class="mandatory"> *</span></label>
+              <div class="input-group">
+                <input type="text" #valid="bsDatepicker" #walkintodate [minDate]="mintoDate" placeholder="Select Date"
+                  disabled bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false  }" class="form-control"
+                  formControlName="walkintodate" />
+                <span class="input-group-addon" (click)="valid.toggle()" [attr.aria-expanded]="valid.isOpen"><i class="fa fa-calendar"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <label>Keywords </label>
+              <input type="text" placeholder="Keywords" class="form-control" formControlName="Keyword" maxlength="1000" />
+              <errors [control]="WalkinForm.controls.Keyword"></errors>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+              <label>Walk-In From Time<span class="mandatory"> *</span></label>
+              <div>
+                <input placeholder="walkin from time" type="time" #walkinfromtime formControlName="walkinfromtime"
+                  class="form-control" atp-time-picker />
+                <errors [control]="WalkinForm.controls.walkinfromtime"></errors>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+              <label>Walk-In To Time<span class="mandatory"> *</span></label>
+              <div>
+                <input placeholder="walkin to time" type="time" #walkintotime formControlName="walkintotime" class="form-control"
+                  atp-time-picker />
+                <errors [control]="WalkinForm.controls.walkintotime"></errors>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <label>State <span class="mandatory"> *</span></label>
+              <select (change)="onChangeStateVenu(WalkinForm.value.walkinStateVenuID)" #walkinStateVenuID class="form-control"
+                formControlName="walkinStateVenuID">
+                <option value="">Select State</option>
+                <option *ngFor="let item of lstState" value="{{item.id}}">{{item.stateName}}</option>
+              </select>
+              <errors [control]="WalkinForm.controls.walkinStateVenuID"></errors>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <label>District<span class="mandatory"> *</span></label>
+              <select class="form-control" #walkinDistrictID formControlName="walkinDistrictID">
+                <option value="">Select District</option>
+                <option *ngFor="let item of statevenu" value="{{item.id}}">{{item.districtName}}</option>
+              </select>
+              <errors [control]="WalkinForm.controls.walkinDistrictID"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <label>Venue Address <span class="mandatory"> *</span></label>
+              <textarea placeholder="Venue Address" class="form-control" #VenuDetail rows="2" formControlName="VenuDetail"
+                maxlength="1000"> </textarea>
+              <errors [control]="WalkinForm.controls.VenuDetail"></errors>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Sector And Trade Section -->
+    <div class="form-group">
+      <form [formGroup]="SectorForm">
+        <div class="col-md-12">
+          <div class="legend-box">
+            <div class="col-md-12 row">
+              <span class="legend-title"><label class="biz-label">Training Sector And Trade</label></span>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>Training Sector <span class="mandatory"> </span></label>
+                <select class="form-control" formControlName="SectorID" (change)="Getalltrade($event.target.value)">
+                  <option value="">Select Sector</option>
+                  <option *ngFor="let sector of Sector" value="{{sector.id}}">{{sector.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label> Training Trade <span class="mandatory"> </span></label>
+                <select class="form-control" formControlName="TradeID">
+                  <option value="">Select Trade</option>
+                  <option *ngFor="let trade of Trade" value="{{trade.id}}">{{trade.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+                <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="AddSectorValue()">Add</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-12">
+                <div class="all-jobs-list">
+                  <div id="" class="searchResults">
+                    <ul class="joblist-wrapper">
+                      <li class="job-wrapper ps-relative" *ngFor="let sect of NewSectorShow; let i=index">
+                        <ng-template #templateSector>
+                          <div class="modal-body text-center">
+                            <p>Do you want to delete this sector & trade?</p>
+                            <br />
+                            <br />
+                            <button type="button" class="btn yl-btn no-rd" (click)="deleteSector(i)">Yes</button>
+                            <button type="button" (click)="declineBoxSecor()" class="btn bl-btn no-rd">No</button>
+                          </div>
+                        </ng-template>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                          <div class="row">
+                            <div class="col-md-12"><strong>Training Sector : </strong> <span>{{sect.SectorID}}</span></div>
+                            <div class="col-md-12"><strong>Training Trade : </strong> <span>{{sect.TradeID}}</span></div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="job-list-action card-view-btns">
+                            <a class="viewit" href="javascript:void(0)" (click)="PusTemplateSector(templateSector)"
+                              title="Delete">Delete</a>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="clearfix"></div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+    <!-- Sector And Trade section ends here-->
+    <!-- Job detail section ends here-->
+    <!-- contact person section -->
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Contact Person</label></span>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Name <span class="mandatory"> *</span></label>
+              <input placeholder="Name" #PersonName oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');"
+                type="text" class="form-control" formControlName="PersonName" maxlength="100" />
+              <errors [control]="WalkinForm.controls.PersonName"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Designation <span class="mandatory"> *</span></label>
+              <input placeholder="Designation" #Designation oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');"
+                type="text" class="form-control" formControlName="Designation" maxlength="100" />
+              <errors [control]="WalkinForm.controls.Designation"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Mobile No. <span class="mandatory"> </span></label>
+              <input placeholder="Mobile No." #Mobile maxlength="10" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');" (keydown)="decimals($event)"
+                type="text" class="form-control" formControlName="Mobile" />
+              <errors [control]="WalkinForm.controls.Mobile"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Landline No. <span class="mandatory"> </span></label>
+              <!-- <input placeholder="Landline No." #LandlineNumber oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                maxlength="12" type="text" class="form-control" formControlName="LandlineNumber" /> -->
+
+
+                <input placeholder="Landline No." #LandlineNumber id="myTextId" type="text" class="form-control" formControlName="LandlineNumber"  minlength="10" maxlength="12" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" (focusout)="Validationforlandline($event.target.value)" />
+              <errors [control]="WalkinForm.controls.LandlineNumber"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Email ID <span class="mandatory"> *</span></label>
+              <input placeholder="Email ID" #Email type="text" class="form-control" formControlName="Email" maxlength="100" />
+              <errors [control]="WalkinForm.controls.Email"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>&#160;</label>
+              <div class="cleafix"></div>
+              <label>
+                <input type="checkbox" id="publicemail" formControlName="EmailPublic"> Shared with job
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- contact person section ends here-->
+    <!-- eligibility criteria section -->
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Eligibility Criteria</label></span>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Min. Education <span class="mandatory"> *</span></label>
+              <select class="form-control" #minducation formControlName="MinEducation">
+                <option value="">Select</option>
+                <option *ngFor="let item of mineducation" value="{{item.id}}">{{item.name}}</option>
+              </select>
+              <errors [control]="WalkinForm.controls.mineducation"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Specialization </label>
+              <input name="name" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');"
+                type="text" class="form-control" maxlength="100" formControlName="Specialization" placeholder="Specialization" />
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Experience(In Yrs)</label>
+              <div class="cleafix"></div>
+              <div class="col-md-12 p-d-0">
+                <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+                  <input placeholder="Min." disabled value="{{minExp}}" maxlength="2" type="text" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                    (focusout)="ValidateExperience(WalkinForm.value.MinExp,WalkinForm.value.MaxExp)" class="form-control"
+                    formControlName="MinExp">
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+                  <input placeholder="Max." disabled value="{{maxExp}}" maxlength="2" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                    (focusout)="ValidateExperience(WalkinForm.value.MinExp,WalkinForm.value.MaxExp)" type="text" class="form-control"
+                    formControlName="MaxExp">
+                </div>
+                <p class="mandatory" *ngIf="!ExpMsg">Minimum experience must be less than maximum experience</p>
+                <div class="custom-slider">
+                  <ng5-slider [(value)]="minExp" [(highValue)]="maxExp" [options]="ExpOptions"></ng5-slider>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Height <span class="mandatory"> </span></label>
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+                  <input maxlength="2" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                    type="text" formControlName="feet" class="form-control" placeholder="Feet" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+                  <input maxlength="2" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                    type="text" formControlName="inch" class="form-control" placeholder="Inch" />
+                </div>
+                <errors></errors>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Weight(In kg)<span class="mandatory"> </span></label>
+              <input placeholder="Weight" type="text" maxlength="3" formControlName="weight" (focusout)="validateWeight(WalkinForm.value.weight)"
+                oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                class="form-control" />
+              <p class="mandatory" *ngIf="!weightvalidsts">Invalid age</p>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+              <label>Age Limit: </label>
+              <div class="cleafix"></div>
+              <div class="col-md-12 p-d-0">
+                <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+                  <input placeholder="Min." disabled value="{{minAge}}" maxlength="3" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                    (focusout)="ValidateAge(WalkinForm.value.AgeMin,WalkinForm.value.AgeMax)" type="text" class="form-control"
+                    formControlName="AgeMin">
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+                  <input placeholder="Max." disabled value="{{maxAge}}" maxlength="3" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                    type="text" class="form-control" formControlName="AgeMax">
+                  <errors (focusout)="ValidateAge(WalkinForm.value.AgeMin,WalkinForm.value.AgeMax)" [control]="WalkinForm.controls.AgeMax"></errors>
+                </div>
+                <p style="color:red ! important" *ngIf="!AgeMsg">Please enter valid Age</p>
+                <div class="custom-slider">
+                  <ng5-slider (click)="checkAge()" [(value)]="minAge" [(highValue)]="maxAge" [options]="ageOptions"></ng5-slider>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-2 col-sm-4 col-xs-12">
+              <label>Probation Period</label>
+              <div class="cleafix"></div>
+              <label>
+                <input type="radio" formControlName="ISprobationtime" name="ISprobationtime" value="true" (click)="SetProbation(1)" />
+                Yes
+              </label>
+              <label>
+                <input type="radio" formControlName="ISprobationtime" name="ISprobationtime" value="false" (click)="SetProbation(0)" />
+                No
+              </label>
+              <errors [control]="WalkinForm.controls.ISprobationtime"></errors>
+            </div>
+
+            <!-- {{probation}} -->
+            <div class="col-md-2 col-sm-4 col-xs-12">
+              <label>Duration (in days)</label>
+              <input maxlength="3" [attr.disabled]="!(!probation)? null : false" type="text" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                [disabled]="probation" formControlName="ProbationDuration" [(ngModel)]="ProbationDuration" class="form-control"
+                placeholder="Probation Days" />
+              <errors [control]="WalkinForm.controls.ProbationDuration"></errors>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-12">
+              <label>Is OJT<span class="mandatory"> </span></label>
+              <div class="cleafix"></div>
+              <label>
+                <input type="radio" formControlName="IsOjt" name="IsOjt" value="true" (click)="SetOjt(1)" />
+                Yes
+              </label>
+              <label>
+                <input type="radio" formControlName="IsOjt" name="IsOjt" value="false" (click)="SetOjt(0)" />
+                No
+              </label>
+              <p class="mandatory" *ngIf="!ojtvalidsts" focus>Invalid OJT Duration</p>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-12">
+              <label>OJT(In Hrs)</label>
+              <input maxlength="5" [attr.disabled]="!(!ojt)? null : false" type="text" (focusout)="validateOjt(WalkinForm.value.ojtDuration)"
+                placeholder="OJT Hours" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                [disabled]="ojt" formControlName="ojtDuration" [(ngModel)]="ojtDuration" class="form-control" />
+              <errors [control]="WalkinForm.controls.ojtDuration"></errors>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+              <label>Gender <span style="color:red;"> *</span></label>
+              <div class="clearfix"></div>
+              <label>
+                <input type="checkbox" name="Male" formControlName="Male" id="Gender-1" value="1" /> Male
+              </label>
+              <label>
+                <input type="checkbox" name="Female" formControlName="Female" id="Gender-2" value="2" /> Female
+              </label>
+              <label>
+                <input type="checkbox" name="Transgender" formControlName="Transgender" id="Gender-3" value="3" />Transgender
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Job Type <span class="mandatory"> </span></label>
+              <div class="cleafix"></div>
+              <select class="form-control" (change)="onChangeJobType(WalkinForm.value.ShiftTime)" formControlName="ShiftTime">
+                <option value="" selected>--Select--</option>
+                <option value="FullTime" selected>FullTime</option>
+                <option value="PartTime" selected>PartTime</option>
+                <option value="contractual" selected>Contractual</option>
+                <option value="Freelancer" selected>Freelancer</option>
+              </select>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- eligibility criteria section end-->
+    <!-- other detail section -->
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Other Details</label></span>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <label>Other Detail</label>
+              <textarea placeholder="Other Detail" class="form-control" rows="2" formControlName="OtherDetail"
+                maxlength="1000"> </textarea>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- other detail section end here-->
+    <!-- Opening detail section end here-->
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Opening</label></span>
+          </div>
+          <div class="">
+            <div class="form-group">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>State <span class="mandatory"> *</span></label>
+                <select (change)="onChangeState(WalkinForm.value.StateID)" class="form-control" formControlName="StateID">
+                  <option value="" selected="selected">Select State</option>
+                  <option *ngFor="let item of lstState" value="{{item.id}}">{{item.stateName}}</option>
+                </select>
+                <p style="color:red" *ngIf="!stateValid"> Please Select Opening State</p>
+                <!--<errors [control]="WalkinForm.controls.StateID"></errors>-->
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>District </label>
+                <select class="form-control" formControlName="DistrictID">
+                  <option value="" class="" selected="selected">Select District</option>
+                  <option *ngFor="let item of district" value="{{item.id}}">{{item.districtName}}</option>
+                </select>
+                <errors [control]="WalkinForm.controls.DistrictID"></errors>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>City <span style="color:red;"> </span></label>
+                <select class="form-control" formControlName="CityID">
+                  <option value="" class="" selected="selected">Select City</option>
+                  <option *ngFor="let item of city" value="{{item.id}}">{{item.cityname}}</option>
+                </select>
+
+                <errors [control]="WalkinForm.controls.CityID"></errors>
+              </div>
+
+            </div>
+            <div class="form-group">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>Language Preference</label>
+                <ng-multiselect-dropdown [data]="lstAllLanguage" formControlName="LanguageId" [settings]="dropdownSettings"
+                  (onDeSelect)="onItemDeSelect($event)" (onDeSelectAll)="onDeSelectAll($event)" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                </ng-multiselect-dropdown>
+                <errors [control]="WalkinForm.controls.LanguageId"></errors>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>No. of Vacancy<span class="mandatory"> *</span></label>
+                <input maxlength="5" placeholder="No. of Vacancy" (keyup)="clear()" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                  type="text" class="form-control" formControlName="NoOfVacancy" (keypress)="onlyNumber($event)" />
+                <p style="color:red" *ngIf="!noofvacancystssts">Invalid Number Of Vacancy</p>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>CTC<i class="fas fa-rupee-sign"></i> <span style="color:red;" *ngIf="mandatorySign">*</span></label>
+                <div class="cleafix"></div>
+                <div class="col-md-12 p-d-0">
+                  <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+                    <input placeholder="Min." disabled value="{{minCtc}}" maxlength="10" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                      (focusout)="ValidateCtc(WalkinForm.value.MinCtc,WalkinForm.value.MaxCtc)" type="text"
+                      formControlName="MinCtc" class="form-control" required>
+                    <errors [control]="WalkinForm.controls.MinCtc"></errors>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+                    <input placeholder="Max." disabled value="{{maxCtc}}" maxlength="10" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');"
+                      (focusout)="ValidateCtc(WalkinForm.value.MinCtc,WalkinForm.value.MaxCtc)" type="text"
+                      formControlName="MaxCtc" class="form-control" required>
+                    <errors [control]="WalkinForm.controls.MaxCtc"></errors>
+                  </div>
+                  <p class="mandatory" *ngIf="!this.ctcerrmsg">Enter valid CTC</p>
+                  <div class="custom-slider">
+                    <ng5-slider [(value)]="minCtc" [(highValue)]="maxCtc" [options]="CtcOptions" (click)="checkCtc()"></ng5-slider>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-md-12 text-center">
+            <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="addFieldValue()">Add Opening</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- other detail section end here-->
+    <div class="col-md-12">
+      <h4 *ngIf="newAttributeShow?.length>0">Walkin Listing</h4>
+
+
+      <div class="all-jobs-list">
+        <div id="" class="searchResults">
+          <ul class="joblist-wrapper">
+            <li class="job-wrapper ps-relative" *ngFor="let field of newAttributeShow; let i=index">
+              <ng-template #template>
+                <div class="modal-body text-center">
+                  <p>Do you want to delete this opening?</p>
+                  <br />
+                  <br />
+                  <button type="button" class="btn yl-btn no-rd" (click)="deleteWalkin(i)">Yes</button>
+                  <button type="button" (click)="declineBox()" class="btn bl-btn no-rd">No</button>
+                </div>
+              </ng-template>
+
+              <div class="clearfix"></div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6"><strong>Number of Vacanciess : </strong> <span>{{field.vacancycount}}</span></div>
+                  <div class="col-md-6"><strong>State : </strong> <span>{{field.statename}}</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6" *ngIf="field.districtname!=''"><strong>District : </strong> <span>{{field.districtname}}</span></div>
+                  <div class="col-md-6"><strong>City:</strong> <span>{{field.cityname!=''?field.cityname:'Not
+                      applicable'}}</span></div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6" *ngIf="field.languageanme!=''"><strong>Language : </strong> <span>{{field.languageanme}}</span></div>
+                  <div class="col-md-6">
+                    <strong>CTC:</strong> <span *ngIf="field.MinCtc != '0' && field.MaxCtc != '0' ">{{field.MinCtc}}-{{field.MaxCtc}}</span>
+                    <span *ngIf="field.MinCtc == '0' && field.MaxCtc=='0' ">NA</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="job-list-action card-view-btns">
+                  <a class="viewit" href="javascript:void(0)" (click)="PushedTemplate(template)" title="Delete">Delete</a>
+                </div>
+              </div>
+
+              <!--<ul class="jd-detail">
+                <li></li>
+                <li></li>
+                <li *ngIf="field.districtname!=''"></li>
+                <li></li>
+
+                <li class="lang-ellip" title="{{field.languageanme}}" *ngIf="field.languageanme!=''"></li>
+                <li>
+
+                </li>
+              </ul>-->
+              <div class="clearfix"></div>
+
+              <div class="clearfix"></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12 text-center">
+        <button class="btn btn-w-shadow no-rd" tabindex="0" type="submit" [disabled]="!(submitbtnsts && JobFormDesable)"
+          *ngIf="newAttributeShow?.length>0" (click)="postwalkin(WalkinForm.value)">Submit</button>
+        <!--<button type="submit" [disabled]="!(submitbtnsts && JobFormDesable)" *ngIf="newAttributeShow?.length>0" (click)="postwalkin(WalkinForm.value)" class="btn yl-btn">Submit</button>-->
+      </div>
+    </div>
+  </div>
+</form>

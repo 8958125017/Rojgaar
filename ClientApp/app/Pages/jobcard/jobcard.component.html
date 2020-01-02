@@ -1,0 +1,191 @@
+<div class="col-md-12" *ngIf="JobCard">
+  <div class="job-description">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper edit-delete-h">
+          <div class="margin-bottom-20"></div>
+          <div class="job-header-1">Posted Job Details</div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="job-title">Job Posted By : {{jobDetail.companyName ? jobDetail.companyName : 'NA'}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name m-b-10">Job Title : {{jobDetail.jobTitle ? jobDetail.jobTitle : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name m-b-10">Job Code : {{jobDetail.jobcode ? jobDetail.jobcode : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6 class="m-b-0 m-t-10">Contact Person</h6>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Name : </span> {{jobDetail.name ? jobDetail.name : 'NA'}}
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Designation : </span> {{jobDetail.designation ? jobDetail.designation :
+                'NA'}}
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Mobile No. : </span> {{jobDetail.mobile ? jobDetail.mobile :'NA'}}
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Phone No. : </span> {{jobDetail.landlineNumber ? jobDetail.landlineNumber :
+                'NA'}}
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Email : </span> {{jobDetail.email ? jobDetail.email : 'NA'}}
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6 class="m-b-0 m-t-10">Job Details</h6>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span *ngIf="jobDetail.ageMin != '0' ||jobDetail.ageMax != '0'">
+                  <span class="text-strong">Age :</span> {{jobDetail.ageMin ?jobDetail.ageMin:'NA'}} -
+                  {{jobDetail.ageMax ? jobDetail.ageMax : 'NA'}}
+                </span>
+                <span *ngIf="jobDetail.ageMin=='0'|| jobDetail.ageMin=='0'">
+                  <span class="text-strong">Age :</span> NA
+                </span>
+              </div>
+
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span *ngIf="jobDetail.male!=0||jobDetail.female!=0||jobDetail.transgender!=0">
+                  <span class="text-strong">Gender : </span> {{jobDetail.male==1?' Male ':''}} {{jobDetail.female==2 ?'
+                  Female ':''}} {{jobDetail.transgender==3?' Transgender ':''}}
+                  <!-- {{jobDetail.gender ? jobDetail.gender :'NA'}} -->
+                </span>
+                <span *ngIf="jobDetail.male == '0' &&jobDetail.female == '0' && jobDetail.transgender == '0'">
+                  <span class="text-strong">Gender :</span>NA
+                </span>
+              </div>
+              <div class="col-md-2 col-sm-6 col-xs-12">
+                <span class="text-strong">Experience (in Yrs):</span>
+                <span *ngIf="jobDetail.maxExp!='0'">
+                  {{jobDetail.minExp!=''?jobDetail.minExp:'NA'}}{{jobDetail.maxExp?'-' + jobDetail.maxExp:''}}</span></div>
+              <span *ngIf="jobDetail.maxExp==0">NA</span>
+              <!-- <span class="text-strong">Experience (in Yrs): </span> {{jobDetail.minExp ? jobDetail.minExp : 'NA'}} - {{jobDetail.maxExp ? jobDetail.maxExp : 'NA'}}-->
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Posted by: </span> {{jobDetail.posteDby ? jobDetail.posteDby : 'NA'}}
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">Probation Duration (days): </span> {{jobDetail.probationDuration ?
+                jobDetail.probationDuration : 'NA'}}
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="text-strong">OJT Duration (in Hrs): </span> {{jobDetail.ojtDuration ?
+                jobDetail.ojtDuration : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <span class="text-strong">
+                  Other Detail:
+                </span>
+                <!-- {{jobDetail.otherDetail ? jobDetail.otherDetail : 'NA'}} -->
+                <span [innerHtml]="jobDetail.otherDetail ? jobDetail.otherDetail :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Job Description :</span>
+                <span [innerHtml]="jobDetail.jobDescription ? jobDetail.jobDescription :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-12">
+                <span class="text-strong">Industry Area: </span> {{jobDetail.industryArea ? jobDetail.industryArea :
+                'NA'}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Functional Area : </span> {{jobDetail.functionalArea ?
+                jobDetail.functionalArea : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="jobDetail.trainingSectorList">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Training Sector : </span> {{jobDetail.trainingSectorList ?
+                jobDetail.trainingSectorList : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="jobDetail.tradeList">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Training Trade : </span> {{jobDetail.tradeList ? jobDetail.tradeList : 'NA'}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Keyword : </span> {{jobDetail.keyword ? jobDetail.keyword : 'NA'}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">
+                  Role and Responsibility:
+                </span>
+
+                <!-- {{jobDetail.rolesresPonsiblty ? jobDetail.rolesresPonsiblty : 'NA'}} -->
+                <span [innerHtml]="jobDetail.rolesresPonsiblty ? jobDetail.rolesresPonsiblty :'NA'" style="white-space: pre-wrap;"></span>
+
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

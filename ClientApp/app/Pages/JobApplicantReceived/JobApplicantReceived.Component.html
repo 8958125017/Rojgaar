@@ -1,0 +1,457 @@
+<div class="cleafix"></div>
+<div class="dash-head">
+  <p>Review Application</p>
+  <a (click)="backButton()" *ngIf="stateBackButton" class="btn btn-w-shadow no-rd pull-right back-xs-btn" tabindex="0">
+    <i aria-hidden="true" class="fa fa-arrow-left"></i>
+  </a>
+  <a (click)="previousList()" *ngIf="(previous=='1')" class="btn btn-w-shadow no-rd pull-right back-xs-btn" href="javascript:void(0)"
+     title="Go Back"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
+
+</div>
+<div class="page-filters">
+  <h2>
+    <a href="javascript:void(0);">
+      <i class="fa fa-filter" aria-hidden="true"></i> Apply Filters
+      <span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+    </a>
+  </h2>
+  <!-- <form (submit)="GetAllAppliedJobs(0,'')" [formGroup]="JobApplicationReceived"> -->
+  <form (submit)="GetAllAppliedJobsSearch()" [formGroup]="JobApplicationReceived">
+    <div class="filter-wrapper">
+      <div class="form-group">
+        <div class="col-md-3 col-sm-6">
+          <label>Industry</label>
+          <select class="form-control" formControlName="industry">
+            <option value="" selected>Select</option>
+            <option *ngFor="let item of IndustryArea" value="{{item.id}}">{{item.industryName}}</option>
+          </select>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label>Functional Area</label>
+          <select class="form-control" formControlName="functionalarea">
+            <option value="" class="" selected="selected">Select</option>
+            <option *ngFor="let item of FunctionArea" value="{{item.id}}">{{item.functionalAreaName}}</option>
+          </select>
+        </div>
+
+        <div class="col-md-3 col-md-6 p-d-0">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <label>MIN CTC</label>
+            <input disabled value="{{minCtc}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                   type="text" formControlName="MinCtc" class="form-control" placeholder="MinCtc">
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <label>Max CTC</label>
+            <input disabled value="{{maxCtc}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                   type="text" formControlName="MaxCtc" class="form-control" placeholder="MaxCtc">
+          </div>
+          <div class="col-md-12 col-sm-12 custom-slider mrg-min">
+            <label></label>
+            <ng5-slider [(value)]="minCtc" [(highValue)]="maxCtc" [options]="CtcOptions"></ng5-slider>
+          </div>
+        </div>
+        <div class="col-md-3 col-md-6 p-d-0">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <label>MIN Exp</label>
+            <input disabled value="{{minExp}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                   type="text" formControlName="MinExp" class="form-control" placeholder="MinExp">
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <label>Max Exp</label>
+            <input disabled value="{{maxExp}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                   type="text" formControlName="MaxExp" class="form-control" placeholder="MaxExp">
+          </div>
+          <div class="col-md-12 col-sm-12 custom-slider mrg-min">
+            <label></label>
+            <ng5-slider [(value)]="minExp" [(highValue)]="maxExp" [options]="ExpOptions"></ng5-slider>
+          </div>
+        </div>
+      </div>
+      <div class="row text-center m-t-5">
+        <button type="button" (click)="ResetFilterResult()" class="btn btn-w-shadow no-rd">Reset</button>
+        <button type="submit" class="btn btn-w-shadow no-rd filter-toggle">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="col-md-12" *ngIf="searchsts==1">
+  <div class="jd-detail job-wrapper searchResults">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-12">
+          <h4 class="m-b-0">Search Results</h4>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Industry</span>: {{ industryname!=''?industryname:'NA'}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Functional Area</span>: {{functionalareaname!=''?functionalareaname:'NA'}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">MIN CTC</span>: {{minctc!=0?minctc:'NA'}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Max CTC</span>: {{maxctc!=0?maxctc:'NA'}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">MIN Exp</span>: {{minexp!=0?(minexp+' Yrs'):'NA'}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Max Exp</span>: {{maxexp!=0?(maxexp+' Yrs'):'NA'}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Common job -->
+<div>
+  <!--<div class="dash-head" *ngIf="(CandidateListing=='1')">
+        <p>Posted Job Details</p>
+      </div>-->
+  <app-jobcardComponent></app-jobcardComponent>
+</div>
+
+<div class="col-md-12" *ngIf="ViewJob">
+  <div class="all-jobs-list">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper agency-job-listing">
+
+        <li class="job-wrapper ps-relative" *ngFor="let appliedJob of GetAppliedJobList">
+
+          <div class="job-list-action">
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="job-title">{{appliedJob.comapnyName}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <h3 class="company-name">
+                  {{appliedJob.jobTitle}}
+                </h3>
+              </div>
+              <div class="col-md-6">
+                <h3 class="company-name" style="text-transform:capitalize">
+                  Job Code : {{
+appliedJob.jobcode ?
+                  appliedJob.jobcode : 'NA'
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6"><strong>Valid upto : </strong> <span>{{appliedJob.validDate | date: 'dd/MM/yyyy'}}</span></div>
+              <div class="col-md-6"><strong>Total Applications : </strong> <span>{{appliedJob.totalAppliedCandidate}}</span></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6"><strong>Contact Person : </strong> <span>{{appliedJob.contactPersonName}}</span></div>
+              <div class="col-md-6"><strong>Contact No. : </strong> <span>{{appliedJob.contactPersonMobile}}</span></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6 lang-ellip">
+                <strong>Email : </strong><span>
+                  {{
+                  appliedJob.email ? appliedJob.email :
+                  'NA'
+                  }}
+                </span>
+              </div>
+              <div class="col-md-6 lang-ellip" *ngIf="appliedJob.noofopening !=0">
+                <strong>No Of Location : </strong><span>
+                  {{
+                  appliedJob.noofopening ? appliedJob.noofopening :
+                  'NA'
+                  }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6 lang-ellip">
+                <strong>Industry : </strong><span>
+                  {{
+                  appliedJob.industryName ? appliedJob.industryName :
+                  'NA'
+                  }}
+                </span>
+              </div>
+              <div class="col-md-6 lang-ellip">
+                <strong>Functional Area : </strong><span>
+                  {{
+                  appliedJob.functionalAreaName ? appliedJob.functionalAreaName :
+                  'NA'
+                  }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6 lang-ellip">
+                <strong>Number of vacancy : </strong><span>
+                  {{
+                    appliedJob.totalvancancy ? appliedJob.totalvancancy :
+                    'NA'
+                    }}
+                </span>
+              </div>
+
+            </div>
+          </div>
+
+           <div class="form-group">
+            <div class="job-list-action card-view-btns">
+              <a class="postit" href="javascript:void(0)" (click)="getJobByOpenings(appliedJob.jobId,0,'')" title="Apply">View Application</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="content-area" *ngIf="(CandidateListing=='1')" id="cantable">
+    <div class="dash-head dash-head-2">
+      <p>Candidate List</p>
+    </div>
+    <div class="cleafix"></div>
+    <div class="col-md-12">
+      <div class="all-jobs-list">
+        <div id="" class="searchResults">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-striped aplication-th"
+                   id="candtable">
+              <thead>
+                <tr>
+                  <th>S. No</th>
+                  <th style="min-width:110px;">Candidate Name</th>
+                  <th>Mobile Number</th>
+                  <th>Age</th>
+                  <th>Gender</th>
+                  <th>State</th>
+                  <th>District</th>
+                  <th>Partner Name</th>
+                  <th>Training Scheme</th>
+                  <th>Training Trade</th>
+                  <th>View Screening</th>
+                  <th>View Profile</th>
+                  <th>Contact Details</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr [style.background-color]="appliedjob.candId==candidateid?'rgb(204, 204, 204)':''" *ngFor="let appliedjob of GetAppliedcandidate  let i=index ">
+                  <td>{{SerialNumber + i}} </td>
+                  <td>{{appliedjob.candName}}</td>
+                  <td>{{appliedjob.mobile}}</td>
+                  <!-- <td>{{appliedjob.email}}</td> -->
+                  <td>{{appliedjob.age!=0?appliedjob.age:'NA'}}</td>
+                  <td>{{appliedjob.gender!=0?appliedjob.gender:'NA'}}</td>
+                  <td>{{appliedjob.stateName}}</td>
+                  <td>{{appliedjob.districtName}}</td>
+                  <td>{{appliedjob.partnername}}</td>
+                  <td>{{appliedjob.trainingscheme}}</td>
+                  <td>{{appliedjob.traningtrade}}</td>
+
+                  <td class="text-center">
+                    <a href="javascript:void(0)" *ngIf="appliedjob.isScreeningAnswer" class="text-link" title="View Details" (click)="openscreeningModal(screeningAnswerTemplate,appliedjob,i)">
+                      <i
+                      class="fa fa-eye" aria-hidden="true"></i>
+                    </a>
+                    <span *ngIf="!appliedjob.isScreeningAnswer">-</span>
+                  </td>
+                  <td class="text-center">
+                    <a href="javascript:void(0)" class="" title="View Details" (click)="openModal(appliedjob.sourceId==0?appliedjob.candId:appliedjob.sourceId,appliedjob.apitype)">
+                      <span style="color:blue;">View</span>
+                    </a>
+                  </td>
+                  <td class="text-center">
+                    <a *ngIf="appliedjob.apitype=='MRIGS'" href="javascript:void(0)" class="" title="View Details"
+                       (click)="openpiaData(JobList.jobId,appliedjob.jobopeningid,appliedjob.sourceId==0?appliedjob.candId:appliedjob.sourceId,appliedjob.apitype)">
+                      <i class="fa fa-phone" aria-hidden="true"></i>
+                    </a>
+                    <p *ngIf="appliedjob.apitype!='MRIGS'">N/A </p>
+                  </td>
+                  <td class="text-center">
+                    <select id="myDropDown{{i}}" *ngIf="appliedjob.isSuitable == null" class="form-control action" (change)="Selectcandidate($event,appliedjob,i)">
+                      <option value="">--Select--</option>
+                      <option value="true,{{appliedjob.candId}}">Suitable</option>
+                      <option value="false,{{appliedjob.candId}}" [selected]="appliedjob.isSuitable == false ? true:false">
+                        Not
+                        Suitable
+                      </option>
+                    </select>
+                    <input *ngIf="appliedjob.isSuitable == null" type="text" class="form-control remark" name="remarks[]"
+                           [id]="appliedjob.candId" (blur)="setRemark($event,appliedjob.candId)" style="display:none;">
+
+                    <p *ngIf="appliedjob.isSuitable == true">Suitable</p>
+                    <p *ngIf="appliedjob.isSuitable == false">Not Suitable</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!----------------------Screening modal start ---------------------------->
+            <ng-template #screeningAnswerTemplate>
+              <div class="modal-header padding-bottom-0">
+                <button type="button" class="close" (click)="closeScreeningModal()">&times;</button>
+                <!--<h4 class="modal-title" style="text-transform: capitalize">Screening Answer</h4>-->
+              </div>
+              <div class="modal-body">
+                <div class="legend-box m-b-5">
+                  <div class="col-md-12 row">
+                    <span class="legend-title">
+                      <label class="biz-label">Screening Answer</label>
+                    </span>
+                  </div>
+                  <div class="form-group m-t-10">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                      <b>Candidate :</b> {{screeningAnswer.candidateName}}
+                    </div>
+
+                  </div>
+                  <div class="form-group">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                      <b>JobTitle  :</b> {{screeningAnswer.jobtitle}}
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                      <b>JobCode :</b>  {{screeningAnswer.jobcode}}
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <hr class="m-t-5 m-b-10">
+                  </div>
+                  <div class="form-group" *ngFor="let data of screeningAnswer.groupList">
+                    <div class="screening-group-wrapper">
+                      <div class="col-md-12 screening-group-name">
+                     Group Name :    {{data.groupname}}
+                      </div>
+                      <div class="col-md-12" *ngFor="let item of data.quesList; let i = index">
+                        <ul class="group-queston">
+                          <li>
+                            <span>Q {{i + 1}}.</span> {{item.questions}}
+                          </li>
+                          <li>
+                            <span>Ans.</span> {{item.answers=='true' ?' yes':'no'}}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer p-t-0">
+                <button type="button" class="btn btn-w-shadow no-rd" (click)="selectSuitable('true',appliedCandidate,index)">Suitable</button>
+                <button type="button" class="btn btn-w-shadow no-rd" (click)="selectSuitable('false',appliedCandidate,index)">Not Suitable</button>
+                <button type="button" class="btn btn-w-shadow no-rd" (click)="closeScreeningModal()">Close</button>
+              </div>
+
+
+            </ng-template>
+          </div>
+          <button type="button" class="btn btn-w-shadow no-rd" (click)="SaveSelectedCandidate()">Submit</button>
+
+          <button type="button" class="btn btn-w-shadow no-rd pull-right" tabindex="0" (click)="InterviewSchedule()">
+            Interview
+            schedule
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-CommonView-Layout></app-CommonView-Layout>
+<div class="col-md-12" *ngIf="ViewState">
+  <div class="all-jobs-list">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper agency-job-listing">
+        <li class="job-wrapper ps-relative" *ngFor="let statejob of getstateJobDetails">
+          <div class="job-list-action">
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="job-title">{{statejob.companyName ? statejob.companyName : 'NA'}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name">
+                  {{statejob.jobTitle ? statejob.jobTitle : 'NA'}}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6"><strong>State : </strong> {{statejob.stateName ? statejob.stateName : 'NA'}}</div>
+              <div class="col-md-6">
+                <strong>District : </strong> {{
+                statejob.districtName ? statejob.districtName :
+                'NA'
+                }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6"><strong>City : </strong> {{statejob.cityname ? statejob.cityname : 'NA'}}</div>
+              <div class="col-md-6">
+                <strong>No. Of Vancency : </strong> {{
+                statejob.noOfVancency ? statejob.noOfVancency
+                : 'NA'
+                }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <strong>Candidate Applied : </strong> {{
+                statejob.noOfCandidate ?
+                statejob.noOfCandidate : 'NA'
+                }}
+              </div>
+              <div class="col-md-6">
+                <strong>CTC : </strong> <span *ngIf="statejob.minCtc == '0' && statejob.maxCtc == '0'">NA</span>
+                <span *ngIf="statejob.minCtc != '0' || statejob.maxCtc !='0'">{{statejob.minCtc}}-{{statejob.maxCtc}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="job-list-action card-view-btns" *ngIf="!statejob.noOfCandidate <= '0'">
+              <a class="postit" href="javascript:void(0)" (click)="getCandidateListing(statejob,0,'')" title="View Candidates">
+                View
+                Candidates
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

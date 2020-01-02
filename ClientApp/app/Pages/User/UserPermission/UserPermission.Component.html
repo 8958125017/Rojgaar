@@ -1,0 +1,61 @@
+
+      <div class="dash-head">
+        <p>Users Permission</p>
+      </div>
+      <div class="cleafix"></div>
+      <div class="usersWrapper">
+      <div class="view-card">
+              <ul>
+                  <li *ngFor="let Res of Response" >
+                  <a href="javascript:void(0)"  (click) = "getId(Res.id)" class="setting-icon" data-toggle="modal" data-target="#assignPermission"><i class="fa fa-cog" aria-hidden="true"></i></a>
+                  <div class="col-md-12">
+                  <p><span class="text-strong">Name:</span> {{ Res.firstName | uppercase }} </p>
+                  </div>
+                  <div class="col-md-12">
+                  <p><span class="text-strong">Email:</span> {{ Res.email }}  </p>
+                  </div>
+                  <div class="col-md-12">
+                  <p><span class="text-strong">Mobile No.:</span> {{ Res.phoneNo }} {{ Res.id}} </p>
+                  </div>
+                  </li>
+              </ul>
+      </div>
+      </div>
+  <div class="cleafix"></div>
+<!-- Modal -->
+<div id="assignPermission" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+   <!-- Modal content-->
+   <div class="modal-content">
+    <div class="modal-header">
+   <button type="button" class="close" data-dismiss="modal">×</button>
+   <h4 class="modal-title">Permission</h4>
+    </div>
+    <div   class="modal-body">
+            <table *ngIf="userpermission.length>0" class="table table-bordered">
+                <thead class="bg-info">
+                    <tr>
+                        <th rowspan="2" style="vertical-align: middle">Type</th>
+                        <th colspan="3" class="text-center">Permissions</th>
+                   </tr>
+                    <tr>
+                        <th>Read</th>
+                        <th>Write</th>
+                    </tr>
+                </thead>
+              <tbody>
+                  <tr *ngFor="let permission of userpermission" >
+                  <td>{{ permission.displayName }}</td>
+                  <td><input type="checkbox"    /></td>
+                  <td><input type="checkbox"   /></td>
+                  </tr>
+              </tbody>
+          </table>
+    </div>
+    <div class="modal-footer">
+   <button type="button" class="btn btn-primary">Save</button>
+    </div>
+   </div>
+    </div>
+   </div>
+

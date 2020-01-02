@@ -1,0 +1,1084 @@
+<div class="dash-head">
+  <p>Job Description</p>
+  <a (click)="jobListRedirection()" *ngIf="(Redirection=='0')" title="Go Back" class="btn btn-w-shadow no-rd pull-right" tabindex="0"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
+
+  <a *ngIf="(Redirection=='1')" (click)="ListRedirection()" title="Go Back" class="btn btn-w-shadow no-rd pull-right" tabindex="0"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
+</div>
+<div class="clearfix"></div>
+<div class="col-md-12" *ngIf="(!EditFormShow && !EditOpeningFormShow)">
+  <div class="job-description">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper ps-relative">
+
+            <ng-template #template3>
+                <div class="modal-body text-center">
+                  <p>Do you want to post this job?</p>
+                  <br />
+                  <br />
+                  <button type="button" class="btn yl-btn no-rd" (click)="performJobAction(jobs,'postjob')">Yes</button>
+                  <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+                </div>
+              </ng-template>
+
+
+          <ng-template #template9>
+            <div class="modal-body text-center">
+              <p>Do you want to Scrap this Job?</p>
+              <br />
+              <br />
+              <button type="button" class="btn yl-btn no-rd" (click)="performJobAction(jobs,'scrapjob')">Yes</button>
+              <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+            </div>
+          </ng-template>
+
+          <ng-template #template4>
+            <div class="modal-body text-center">
+              <p>Do you want to close this Job?</p>
+              <br/>
+              <br/>
+              <button type="button" class="btn yl-btn no-rd" (click)="performJobAction(jobs,'closeJob')">Yes</button>
+              <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+            </div>
+          </ng-template>
+          <div class="job-list-action" *ngIf="IsAgencyJob">
+            <a class="postit" href="javascript:void(0)" *ngIf="isJobPushed  && isScrap && isClosed && jobs.isjobowner && jobs.isValidJob" title="Post This Job" (click)="AlertBox(template3)">Post</a>
+            <a class="viewit" href="javascript:void(0)" *ngIf="isJobPushed  && isScrap && isClosed && jobs.isjobowner" (click)="GetEditJob(jobs)" title="Edit">Edit</a>
+            <a href="javascript:void(0)" class="revokeit" title="Scrap this job" *ngIf="!isJobPushed && isScrap && isClosed && jobs.isjobowner && jobs.isValidJob" (click)="scrapTemplate(template9)">Scrap</a>
+            <a href="javascript:void(0)" class="viewit" title="Revoke this job" *ngIf="!isJobPushed && isScrap && isClosed && jobs.isjobowner && jobs.isValidJob" (click)="RevokeJob(jobs,'revoke')">Revoke</a>
+            <a href="javascript:void(0)" class="revokeit" title="close this job" *ngIf="!isJobPushed && isScrap && isClosed && jobs.isjobowner && jobs.isValidJob" (click)="closeTemplate(template4)">Close</a>
+            
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h2 class="job-title fnt-20 p-r-200" style="text-transform:capitalize"> {{jobs.jobTitle}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h3 class="company-name fnt-18">{{jobs.companyName}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix m-b-10"></div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6>Basic Job Details</h6>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Industry:</span> {{jobs.industryArea}}
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Functional Area:</span> {{jobs.functionalArea}}
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Valid Upto:</span> {{jobs.validDate!=''?(jobs.validDate|date:'dd/MM/yyyy'):'Not Applicable'}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Job Description:</span>
+                <span [innerHtml]="jobs.jobDescription!=''?jobs.jobDescription:'Not Applicable' | KeepHtml: 'html' " style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Roles and Responsibility:</span>
+                <span [innerHtml]="jobs.rolesresPonsiblty!=''?jobs.rolesresPonsiblty:'Not Applicable' | KeepHtml: 'html'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Keywords: </span>
+                <span [innerHtml]="jobs.keyword!=''?jobs.keyword:'Not Applicable'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+             
+          <!-- {{jobs|json}} -->
+          <div class="form-group">
+              <div class="row">
+                <div class="col-md-12">
+                  <span class="text-strong">isScreening: </span>
+                  <span *ngIf="jobs.isscreening" style="white-space: pre-wrap;"></span>
+                  <span *ngIf="!jobs.isscreening" style="white-space: pre-wrap;">Not Applicable</span>
+                  <a href="javascript:void(0)" *ngIf="jobs.isscreening" class="screening-view-btn"  (click)="displayQuestionList(displayQuestion)">View</a>
+                </div>
+              </div>
+              <ng-template #displayQuestion>
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                  <div class="legend-box m-b-5">
+                    <div class="col-md-12 row">
+                      <span class="legend-title"><label class="biz-label">Screening Question</label></span>
+                    </div>
+
+                    <!-- Display Question List  section-->
+                    <div>
+                      <div *ngFor="let item of screenList ; let i = index" class="col-md-12">
+                        <b>{{1+i}} - {{item.questions}}?</b>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="modal-footer p-t-0 text-right">
+                  <button class="btn btn-w-shadow no-rd" type="button" (click)="closeQuestionList()">Close</button>
+                </div>
+              </ng-template>
+            </div>
+
+          <div class="clearfix margin-bottom-20"></div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6>Contact Person Details</h6>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Contact Person:</span>  {{jobs.name!=''?jobs.name:'Not Applicable'}}
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Designation:</span> {{jobs.designation!=''?jobs.designation:'Not Applicable'}}
+              </div>
+              <div class="col-md-4 col-sm-6" *ngIf="jobs.mobile!=''">
+                <span class="text-strong">Mobile No.:</span> {{jobs.mobile!=''?jobs.mobile:'Not Applicable'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Landline Number.:</span> {{jobs.landlineNumber!=''?jobs.landlineNumber:'Not Applicable'}}
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Email ID:</span> {{jobs.email!=''?jobs.email:'Not Applicable'}}
+              </div>
+            </div>
+          </div>
+          <div class="clearfix margin-bottom-20"></div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6>Eligibility Details</h6>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Min. Education:</span> {{jobs.education}}
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Specialization:</span> {{jobs.specialization!=null?jobs.specialization:'Not Applicable'}}
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Experience (in Yrs):</span><span *ngIf="jobs.maxExp!='0'"> {{jobs.minExp!=''?jobs.minExp:'Not Applicable'}}{{jobs.maxExp?'-' + jobs.maxExp:''}}</span><span *ngIf="jobs.maxExp==0">Not Applicable</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Probation Duration (days): </span>{{jobs.probationDuration!=null && jobs.probationDuration!='0' ?  jobs.probationDuration:'Not Applicable'}}.
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Gender: </span> {{jobs.male==1?' Male ':''}}  {{jobs.female==2?', Female ':''}} {{jobs.transgender==3?', Transgender ':''}}
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Age (in yrs):</span> {{jobs.ageMin!=0?jobs.ageMin:'Not Applicable'}}{{jobs.ageMax !=0 ?'-'+jobs.ageMax:''}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Joining Priority: </span> {{jobs.joiningPriority!=''?jobs.joiningPriority:'Not Applicable'}}
+              </div>
+
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Height (ft.inch): </span> {{jobs.heightFeet!=''?jobs.heightFeet:'Not Applicable'}}{{jobs.heightFeet!=''?'FT.':''}}    {{jobs.heightInch!=''?jobs.heightInch:''}} {{jobs.heightInch!=''?'INCH.':''}}
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Weight (in kg): </span>{{jobs.weight!=0?jobs.weight:'Not Applicable'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">OJT (in Hrs): </span>{{jobs.ojtDuration!=null && jobs.ojtDuration!='0' ? jobs.ojtDuration:'Not Applicable'}}
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <span class="text-strong">Job Type: </span>{{jobs.shiftTime!=null? jobs.shiftTime:'Not Applicable'}}
+              </div>
+            </div>
+          </div>
+          <div class="clearfix margin-bottom-20"></div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <h6>Other Details</h6>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Other Detail: </span>
+                <span [innerHtml]="jobs.otherDetail!=''?jobs.otherDetail:'Not Applicable'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <!--- start sector Details-->
+          <div class="cleafix margin-bottom-30"></div>
+          <div class="dash-head dash-head-2">
+            <p>Training Sector and Trade </p>
+          </div>
+          <div class="col-md-12" *ngIf="sectorstatus">
+            <div class="location-details-wrapper traning-trade">
+              <div class="row location-details" *ngFor="let sec of sectorTrade">
+                <div class="label-normal ps-relative">
+                  <div class="job-list-action">
+                    <a class="postit" href="javascript:void(0)" (click)="PusTemplatedelSector(tempdelsector)" *ngIf="!jobs.isJobPushed && !jobs.isScrap && (jobs.isjobowner==true)" title="Delete">Delete</a>
+                     
+                    <ng-template #tempdelsector>
+                      <div class="modal-body text-center">
+                        <p>Do you want to delete this Training Sector?</p>
+                        <br />
+                        <br />
+                        <button type="button" class="btn yl-btn no-rd" (click)="DeletSector(jobs.jobId,sec.id,sec.sectorId,sec.tradeId)">Yes</button>
+                        <button type="button" (click)="BoxDelsectordecline()" class="btn bl-btn no-rd">No</button>
+                      </div>
+                    </ng-template>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-4 col-sm-6 col-xs-12">
+                        <span class="text-strong">Training Sector:</span> <span>{{sec.sectorName}}</span>
+                      </div>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <span class="text-strong">Training Trade:</span> <span>{{sec.tradeName}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clearfix margin-bottom-20"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="location-details-wrapper"  *ngIf="!sectorstatus">
+            <div class="row location-details" >
+              <div class="label-normal ps-relative">
+                <p class="text-strong">
+                  <label class="col-md-4">
+                    <span class="text-strong">Training Sector:</span> <span>NA</span>
+                  </label>
+                  <label class="col-md-8">
+                    <span class="text-strong">Training Trade:</span> <span>NA</span>
+                  </label>
+                </p>
+                <div class="clearfix margin-bottom-20"></div>
+              </div>
+            </div>
+          </div>
+            <!--  End sector Details-->
+
+            <div class="cleafix margin-bottom-20"></div>
+            <div class="dash-head dash-head-2">
+              <p>Location wise Openings</p>
+              <a *ngIf="isJobPushed  && isScrap && jobs.isjobowner" (click)="Showform()" href="javascript:void(0)" class="btn btn-w-shadow no-rd pull-right" tabindex="0">Add Openings</a>
+            </div>
+            <div class="cleafix m-b-10"></div>
+            <div class="col-md-12">
+              <div class="row location-details-wrapper" *ngIf="!EditOpeningFormShow && !EditFormShow">
+                <div *ngFor="let item of  jobopeningdetail" class="label-normal ps-relative location-details">
+                  <div class="job-list-action" *ngIf="isJobPushed  && isScrap && jobs.isjobowner">
+                      
+                    <a class="viewit" href="javascript:void(0)" (click)="getJobOpeningId(item)" title="Edit this job">Edit</a>
+                    <a class="postit" href="javascript:void(0)" (click)="OpeningModel(template)" title="Delete this job">Delete</a>
+                    <ng-template #template>
+                      <div class="modal-body text-center">
+                        <p>Do you want to Delete this opening?</p>
+                        <br />
+                        <br />
+                        <button type="button" class="btn yl-btn no-rd" (click)="DeletOpeningJob(item)">Yes</button>
+                        <button type="button" class="btn bl-btn no-rd" (click)="declineModel()">No</button>
+                      </div>
+                    </ng-template>
+                  </div>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-4 col-sm-6 col-xs-12">
+                        <span class="text-strong">State:</span> <span class="text-strong">{{item.stateName}}</span>
+                      </div>
+                      <div class="col-md-4 col-sm-6 col-xs-12">
+                          <span class="text-strong">District:</span> <span class="text-strong">{{item.districtName ? item.districtName : 'NA'}}</span>
+                  
+                      </div>
+                      <div class="col-md-4 col-sm-6 col-xs-12">
+                          <span class="text-strong">City:</span> <span class="text-strong">{{item.cityname ? item.cityname : 'NA'}}</span>
+                  
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-4 col-sm-6 col-xs-12">
+                          <span class="text-strong">Number Of Vacancy:</span> <span class="text-strong">{{item.noOfVacancy}}</span>
+                     
+                      </div>
+                      <div class="col-md-4 col-sm-6 col-xs-12">
+                          <span class="text-strong">CTC (per Month) INR:</span> {{item.minCtc!=0 ? (item.minCtc | toFloat):'Not Applicable'}}- {{item.maxCtc!=0?(item.maxCtc|toFloat):''}}
+                       
+                      </div>
+                      <div class="col-md-4 col-sm-6 col-xs-12">
+                        <span class="text-strong">In Hand Salary (per Month) INR:</span> {{item.netSalary ?(item.netSalary | toFloat) :'Not Applicable'}}
+                        <!-- {{item.netSalary!=0.00  || item.netSalary == null?(item.netSalary | toFloat):'Not Applicable'}} {{item.netSalary!=0.00?'':''}} -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-4 col-sm-6 col-xs-12">
+                          <span *ngIf="item.languageId.length>0">
+                              <span class="text-strong">Required Language:</span>
+                              <span *ngFor="let lang of item.languageId"> {{lang.name}}</span>
+                            </span>
+                            <span class="lang-ellip" *ngIf="item.languageId.length==0">
+                              <span class="text-strong">Required Language:</span>
+                              <span>NA</span>
+                            </span>
+                        <!-- <span class="text-strong">City:</span> {{item.cityname ? item.cityname : 'NA'}} -->
+                      </div>
+                      <div class="col-md-4 col-sm-6 col-xs-12">
+
+                      </div>
+                      <div class="col-md-4 col-sm-6 col-xs-12">
+
+                      </div>
+                    </div>
+                  </div>
+             
+  
+
+                  <div class="clearfix margin-bottom-20"></div>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-12 col-sm-12">
+                        <h6>Contact Person Details</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-4 col-sm-6">
+                        <span class="text-strong">Contact Person:</span>  {{item.contactName!=''?item.contactName:'Not Applicable'}}
+                      </div>
+                      <div class="col-md-4 col-sm-6">
+                        <span class="text-strong">Designation:</span> {{item.contactDesignation!=''?item.contactDesignation:'Not Applicable'}}
+                      </div>
+                      <div class="col-md-4 col-sm-6">
+                        <span class="text-strong">Mobile No.:</span> {{item.contactMobile!=''?item.contactMobile:'Not Applicable'}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-4 col-sm-6">
+                        <span class="text-strong">Landline Number.:</span> {{item.contactLandlineNumber!=''?item.contactLandlineNumber:'Not Applicable'}}
+                      </div>
+                      <div class="col-md-4 col-sm-6">
+                        <span class="text-strong">Email ID:</span> {{item.contactEmail!=''?item.contactEmail:'Not Applicable'}}
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="clearfix margin-bottom-20"></div>
+                </div>
+              </div>
+            </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12" *ngIf="EditFormShow ">
+  <div class="edit-profile">
+    <form (ngSubmit)="Updatejob()" [formGroup]="EditJobForm">
+      <div class="job-posting">
+        <div class="form-group">
+          <div class="col-md-12">
+            <div class="legend-box">
+              <div class="job-list-action">
+                <a class="viewit" href="javascript:void(0)" (click)="ExitJobDetails()" title="Close">Close</a>
+              </div>
+              <div class="col-md-12 row">
+                <span class="legend-title"><label class="biz-label">Job Details</label></span>
+              </div>
+              <div class="form-group margin-top-20">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Job Title <span style="color:red;"> *</span></label>
+                  <input placeholder="Job Title" type="text" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');"
+                         class="form-control" formControlName="JobTitle" maxlength="100" />
+                  <input type="hidden" formControlName="jobId">
+                  <errors [control]="EditJobForm.controls.JobTitle"></errors>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Company Name <span style="color:red;"> *</span></label>
+                  <input placeholder="Company Name" [attr.disabled]="Logintype=='Employer' ?  '':null " type="text" class="form-control" formControlName="CompanyName" maxlength="100" />
+                  <errors [control]="EditJobForm.controls.CompanyName"></errors>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Valid upto <span style="color:red;"> *</span></label>
+                  <div class="input-group">
+                    <input type="text" #valid="bsDatepicker" [attr.disabled]="!(isvalidDate=='' || isname=='false')? false : null" bsDatepicker [bsConfig]="{dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false}"
+                           class="form-control" formControlName="ValidDate"
+                           [minDate]="mintoDate" />
+                    <span class="input-group-addon" (click)="valid.toggle()" [attr.aria-expanded]="valid.isOpen">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Joining Priority <span style="color:red;"> *</span></label>
+                  <select class="form-control" formControlName="JoiningPriorityId">
+                    <option value="" required class="" selected="selected">--Select--</option>
+                    <option *ngFor="let item of joiningprioritys" value="{{item.id}}">{{item.name}}</option>
+                  </select>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Industry Area <span style="color:red;"> *</span></label>
+                  <select class="form-control" formControlName="IndustryArea">
+                    <option value="" required class="" selected="selected">--Select--</option>
+                    <option *ngFor="let item of lstIndustryArea" value="{{item.id}}">{{item.industryName}}</option>
+                  </select>
+                  <errors [control]="EditJobForm.controls.IndustryArea"></errors>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Functional Area <span style="color:red;"> *</span></label>
+                  <select class="form-control" formControlName="FunctionalArea">
+                    <option value="" required class="" selected="selected">--Select--</option>
+                    <option *ngFor="let item of lstFunctionalArea" value="{{item.id}}">{{item.functionalAreaName}}</option>
+                  </select>
+                  <errors [control]="EditJobForm.controls.FunctionalArea"></errors>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label>Job Description <span style="color:red;"> *</span></label>
+                  <textarea placeholder="Job Description" class="form-control" rows="2" formControlName="JobDescription" maxlength="1000"> </textarea>
+                  <errors [control]="EditJobForm.controls.JobDescription"></errors>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label>Roles and Responsibilities <span style="color:red;"> *</span></label>
+                  <textarea placeholder="Roles and Responsibilities" class="form-control" rows="2" formControlName="RolesresPonsiblty" maxlength="1000"> </textarea>
+                  <errors [control]="EditJobForm.controls.RolesresPonsiblty"></errors>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label>Keywords </label>
+                  <input placeholder="Enter Keywords" type="text" class="form-control" formControlName="Keyword" maxlength="1000"/>
+                  <errors [control]="EditJobForm.controls.Keyword"></errors>
+                </div>
+              </div>
+            
+              <div class="form-group">
+                  <!-- <div class="col-md-4 col-sm-6 col-xs-12" >
+                      <label>Is screening required<span style="color:red;"> </span></label>
+                        <label>
+                            <input type="checkbox" name="screening" [checked]="isChecked"  id="screening-1" value="1" (click)="createQuestion(questionTemplate,'create')"/>&nbsp;&nbsp;&nbsp;   
+                                      
+                            <button  class="revokeit" type="button" *ngIf="isViewButtonshow" (click)="createQuestion(questionTemplate,'view')">View</button> 
+                                             
+                        </label>
+                     </div> -->
+
+                     <div class="col-md-4 col-sm-6 col-xs-12">
+                      <label>Is screening required  <span style="color:red;"> </span></label>
+                      <a href="javascript:void(0)"  class="screening-view-btn"  *ngIf="isViewButtonshow" (click)="createQuestion(questionTemplate,'view')">View</a> 
+                      <div class="cleafix"></div>
+                      <label>
+                        <input type="radio" [checked]="isChecked" formControlName="isScreeming"  (click)="createQuestion(questionTemplate)" value="true"/> Yes
+                      </label>
+                      <label>
+                        <input type="radio" [checked]="!isChecked" formControlName="isScreeming"  (click)="isNotScreeming()" value="false"  />
+                        No
+                      </label>
+                    </div>
+                     <ng-template #questionTemplate>
+                        <div class="modal-header">
+                        </div>
+                        <div class="modal-body">
+                          <div class="legend-box m-b-5">
+                              <div class="col-md-12 row">
+                                  <span class="legend-title"><label class="biz-label">Screening Question</label></span>
+                                </div>
+        
+                          <div class="form-group">                    
+                                  <div class="col-md-5 col-sm-6 col-xs-12">
+                                    <label class="text-strong">Select Group :</label>
+                                  </div>
+                                <div class="col-md-6 col-sm-5 col-xs-12">
+                                  <select class="form-control" (change)="getJobDetails($event)">
+                                    <option value="" required class="" selected="selected">--Select--</option>
+                                    <option *ngFor="let item of jobTitleCode" value="{{item.groupid}}">{{item.groupname}}</option>
+                                  </select>                         
+                                </div>                       
+                            </div>
+                           
+                                 <!-- Display Job Detail  section-->
+                                 <!-- <div *ngIf="showJobDetail" class="margin-top-20">
+                                   <div class="form-group">
+                                     <div class="col-md-6 col-sm-12 col-xs-12">
+                                        <b>JobTitle  :</b> {{jobDetails.jobtitle ? jobDetails.jobtitle :'NA'}}
+                                     </div>
+                                     <div class="col-md-6 col-sm-12 col-xs-12">
+                                        <b>JobCode :</b> {{jobDetails.jobcode ?jobDetails.jobcode :'NA'}}
+                                     </div>
+                                   </div>
+                                   <div class="form-group">
+                                      <div class="col-md-6 col-sm-12 col-xs-12">
+                                          <b>CreatedDate :</b> {{jobDetails.createddate ? jobDetails.createddate : 'NA'}}
+                                      </div>
+                                      <div class="col-md-6 col-sm-12 col-xs-12">
+                                          <b> PostedDate : </b> {{jobDetails.posteddate ? jobDetails.posteddate : 'NA'}}
+                                      </div>
+                                    </div>
+                                  <div class="col-md-12 col-sm-12 col-xs-12 m-t-10 margin-bottom-20">                            
+                                        <button class="btn btn-w-shadow no-rd"  type="button" (click)="getPreviousQuestion(jobDetails.jobid)">Go</button>
+                                  </div>
+                                </div> -->
+                                  
+                               <!-- Display Question List  section-->
+                               <br>
+                               <div class="form-group" *ngIf="showquestion || showEditQuestion">                    
+                                <div class="col-md-5 col-sm-6 col-xs-12">
+                                  <label class="text-strong">Question List :</label>
+                                </div>                                
+                              </div>
+                               <div *ngIf="showquestion">
+                                <div *ngFor="let item of questionList ; let i = index" class="col-md-12">
+                                 <label><input type="checkbox" id="screening{{i}}" name="screening2" [checked]="quesionListCheck" value="2" (change)="selectQuestion($event,item,'old',i)" /> {{item.questions}}?</label> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" (click)="editQuestion(i,item.questions,'old')" class=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                               </div>
+                              </div>
+ 
+                                 <br>
+                                  <div *ngIf="showEditQuestion">                                                                       
+                                   <div *ngFor="let item of editQuestionList ; let i = index" class="col-md-12">
+                                    <label>
+                                      <input type="checkbox" name="screening2"  [checked]="checkedQ"  id="screening" value="2" (change)="selectQuestion($event,item,'edit',i)" /> {{item.questions}}?</label> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" (click)="editQuestion(i,item,'editOld')" class=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                  </div>
+                                 </div>
+        
+                                <!-- added question list -->
+        
+                                 <div *ngIf="addedquestStatus">                                                               
+                                  <div *ngFor="let item of addedQuestion ; let i = index" class="col-md-12">
+                                   <label><input type="checkbox" name="screening2" [checked]="checkedQ"  id="screening" value="2" (change)="selectQuestion($event,item,'new',i)" /> {{item}}?</label> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" (click)="editQuestion(i,item,'new')" class=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                 </div>
+                                </div>
+        
+                                
+                                <div class="form-group margin-top-20" *ngIf="showEditForm">
+                                <div class="col-md-9 col-sm-8 col-xs-12 p-r-0" >
+                                  <input type="text" class="form-control" formControlName="question"  placeholder="Create your question" />
+                               </div>
+                              <div class="col-md-3 col-sm-4 col-xs-12">
+                                   <button class="btn btn-w-shadow no-rd"  type="button" (click)="addQuestion()">Update</button>
+                              </div>
+        
+        
+                            </div>
+                           
+                        </div>
+                      </div>
+                        <div class="modal-footer p-t-0 text-right">
+                            <button class="btn btn-w-shadow no-rd" type="button" (click)="submitQuestion()">Submit</button>
+                            <button class="btn btn-w-shadow no-rd" type="button" (click)="declinequestion()">Close</button>
+                        </div>
+                       </ng-template>
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
+        <!-- Sector And Trade Section -->
+        <div class="form-group">
+          <form [formGroup]="SectorForm">
+            <div class="col-md-12">
+              <div class="legend-box">
+                <div class="col-md-12 row">
+                  <span class="legend-title"><label class="biz-label">Training Sector And Trade</label></span>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label>Training Sector <span class="mandatory"> </span></label>
+                    <select class="form-control" formControlName="SectorID" (change)="Getalltrade($event.target.value)">
+                      <option value="">Select Sector</option>
+                      <option *ngFor="let sector of Sector" value="{{sector.id}}">{{sector.name}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label> Training Trade <span class="mandatory"> </span></label>
+                    <select class="form-control" formControlName="TradeID">
+                      <option value="">Select Trade</option>
+                      <option *ngFor="let trade of Trade" value="{{trade.id}}">{{trade.name}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="col-md-12 col-sm-12 col-xs-12"><label>&nbsp;</label></div>
+                    <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="AddSectorValue()">Add</button>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-12">
+                    <div class="all-jobs-list">
+                      <div id="" class="searchResults">
+                        <ul class="joblist-wrapper">
+                          <li class="job-wrapper ps-relative" *ngFor="let sect of NewSectorShow; let i=index">
+                            <ng-template #templateSector>
+                              <div class="modal-body text-center">
+                                <p>Do you want to delete this Training Sector?</p>
+                                <br />
+                                <br />
+                                <button type="button" class="btn yl-btn no-rd" (click)="deleteSector(i)">Yes</button>
+                                <button type="button" (click)="declineBoxSecor()" class="btn bl-btn no-rd">No</button>
+                              </div>
+                            </ng-template>
+
+                            <div class="clearfix"></div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-md-6"><strong>Training  Sector : </strong> <span>{{sect.sectorName}}</span></div>
+                                <div class="col-md-6"><strong>Training Trade : </strong> <span>{{sect.tradeName}}</span></div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="job-list-action card-view-btns">
+                                <!-- {{jobs.isjobowner}} -->
+                                <a class="viewit" href="javascript:void(0)" (click)="PusTemplateSector(templateSector)" title="Delete">Delete</a>
+                              </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="clearfix"></div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+        </div>
+        <!-- Sector And Trade section ends here-->
+        <div class="form-group">
+          <div class="col-md-12">
+            <div class="legend-box">
+              <div class="col-md-12 row">
+                <span class="legend-title"><label class="biz-label">Contact Person</label></span>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Name <span style="color:red;"> *</span></label>
+                  <input placeholder="Contact Person" type="text" class="form-control" formControlName="Name" maxlength="100"/>
+                  <errors [control]="EditJobForm.controls.Name"></errors>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Designation <span style="color:red;"> *</span></label>
+                  <input placeholder="Designation" type="text" class="form-control" formControlName="Designation" maxlength="100"/>
+                  <errors [control]="EditJobForm.controls.Designation"></errors>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Mobile No. <span style="color:red;"> *</span></label>
+                  <input placeholder="Mobile No." minlength="10" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                         type="text" class="form-control" formControlName="Mobile" />
+                  <errors [control]="EditJobForm.controls.Mobile"></errors>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Landline No. <span style="color:red;"> </span></label>
+                  <input placeholder="Landline No." maxlength="12" type="text" class="form-control" formControlName="LandlineNumber" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                  <errors [control]="EditJobForm.controls.LandlineNumber"></errors>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Email ID <span style="color:red;"> *</span></label>
+                  <input placeholder="Email ID" type="text" class="form-control" formControlName="Email" maxlength="100"/>
+                  <errors [control]="EditJobForm.controls.Email"></errors>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-12">
+                  <label>&#160;</label>
+                  <div class="cleafix"></div>
+                  <label>
+                    <input type="checkbox" id="publicemail" formControlName="EmailPublic"> Public
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <div class="legend-box">
+              <div class="col-md-12 row">
+                <span class="legend-title"><label class="biz-label">Eligibility Criteria</label></span>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Min. Education <span style="color:red;"> *</span></label>
+
+                  <select class="form-control" formControlName="MinEducation">
+                    <option value="" required class="" selected="selected">--Select--</option>
+                    <option *ngFor="let item of mineducations" value="{{item.id}}">{{item.name}}</option>
+                  </select>
+                  <errors [control]="EditJobForm.controls.MinEducation"></errors>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Specialization   </label>
+                  <!-- <input placeholder="Specialization" type="text" name="name" value="" class="form-control" formControlName="Specialization" /> -->
+                  <input  name="name" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" type="text"
+                  class="form-control" formControlName="Specialization" placeholder="Specialization" />
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label>Experience (in yrs)<span style="color:red;"> </span>: </label>
+                  <div class="col-md-12 p-d-0">
+                    <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+                      <p>   <errors [control]="EditJobForm.controls.MinExp"></errors></p>
+                      <input disabled value="{{minExp}}" type="text" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" (focusout)="ValidateExperience(EditJobForm.value.MinExp,EditJobForm.value.MaxExp)" class="form-control" formControlName="MinExp">
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+                      <p><errors [control]="EditJobForm.controls.MaxExp"></errors></p>
+                      <p style="color:red ! important" *ngIf="!ExpMsg">Please enter valid experience</p>
+                      <input disabled value="{{maxExp}}" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" (focusout)="ValidateExperience(EditJobForm.value.MinExp,EditJobForm.value.MaxExp)" type="text" class="form-control" formControlName="MaxExp">
+                    </div>
+                    <div class="custom-slider">
+                      <ng5-slider [(value)]="minExp" [(highValue)]="maxExp" [options]="ExpOptions"></ng5-slider>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <label>Height</label>
+                  <div class="cleafix"></div>
+                  <div class="col-md-6 col-sm-6 col-xs-6 p-l-0"><input maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="heightFeet" type="text" class="form-control" placeholder="Feet" /></div>
+                  <div class="col-md-6 col-sm-6 col-xs-6 p-r-0"><input maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="heightInch" type="text" class="form-control" placeholder="Inch" /></div>
+                  <errors></errors>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <label>Weight (in kg) <span style="color:red;"> </span></label>
+                  <input type="text" maxlength="3" class="form-control" placeholder="Kg" formControlName="Weight" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                  <errors></errors>
+                </div>
+
+                <div class="col-md-2 col-sm-6 col-xs-12">
+                  <label>Probation Period <span style="color:red;"> </span></label>
+                  <div class="cleafix"></div>
+                  <label>
+                    <input type="radio" formControlName="ISprobationtime" name="ISprobationtime" value="true"
+                           (click)="SetProbation(1)" />
+                    Yes
+
+                  </label>
+
+                  <label>
+                    <input type="radio" formControlName="ISprobationtime" name="ISprobationtime" value="false"
+                           (click)="SetProbation(0)" />
+                    No
+                  </label>
+                </div>
+
+
+                <div class="col-md-2 col-sm-6 col-xs-12">
+                  <label>Duration  ( in days)</label>
+                  <input maxlength="3" [attr.required]="!(!probation)? null : false" (input)="ValidProbation()" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" [attr.disabled]="!(!probation)? null : false" type="text" [disabled]="probation"
+                         formControlName="ProbationDuration" class="form-control" />
+                  <errors [control]="EditJobForm.controls.ProbationDuration"></errors>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <label>Gender <span style="color:red;"> *</span></label>
+                  <div class="clearfix"></div>
+                  <label>
+                    <input type="checkbox" name="Male" formControlName="Male" id="Gender-1" value="1" /> Male
+                  </label>
+                  <label>
+                    <input type="checkbox" name="Female" formControlName="Female" id="Gender-2" value="2" /> Female
+                  </label>
+                  <label>
+                    <input type="checkbox" name="Transgender" formControlName="Transgender" id="Gender-3" value="3" /> Transgender
+                  </label>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <label>Job Type <span style="color:red;"> </span></label>
+                  <div class="cleafix"></div>
+                  <select class="form-control" formControlName="ShiftTime">
+                    <option value="" selected>--Select--</option>
+                    <option value="FullTime" selected>FullTime</option>
+                    <option value="PartTime" selected>PartTime</option>
+                    <option value="contractual" selected>Contractual</option>
+                    <option value="Freelancer" selected>Freelancer</option>
+                  </select>
+                </div>
+                <div class="col-md-2 col-sm-6 col-xs-12">
+                  <label>Is OJT <span style="color:red;"> </span></label>
+                  <div class="cleafix"></div>
+                  <label>
+                    <input type="radio" formControlName="IsOjt" (click)="SetOjt(1)" value="true" />
+                    Yes
+                  </label>
+
+                  <label>
+                    <input type="radio" formControlName="IsOjt" (click)="SetOjt(0)" value="false" />
+                    No
+                  </label>
+                </div>
+
+                <div class="col-md-2 col-sm-6 col-xs-12">
+                  <label>OJT  ( in hrs. )</label>
+                  <input maxlength="5" (input)="ValidOjt()" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="ojtDuration" [attr.required]="!(!ojt)? null : false" [attr.disabled]="!(!ojt)? null : false" />
+                  <errors [control]="EditJobForm.controls.ProbationDuration"></errors>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <label>Age Limit<span style="color:red;"> </span>: </label>
+                  <div class="cleafix"></div>
+                  <div class="col-md-12 p-d-0">
+                    <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+                      <input disabled value="{{minAge}}" (focusout)="ValidateAge(EditJobForm.value.AgeMin,EditJobForm.value.AgeMax)" type="text"
+                             class="form-control" formControlName="AgeMin" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+                      <input disabled value="{{maxAge}}" (focusout)="ValidateAge(EditJobForm.value.AgeMin,EditJobForm.value.AgeMax)" type="text"
+                             class="form-control" formControlName="AgeMax" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                      <errors [control]="EditJobForm.controls.AgeMax"></errors>
+                      <p style="color:red ! important" *ngIf="!AgeMsg">Please enter valid Age</p>
+                    </div>
+                    <div class="custom-slider">
+                      <ng5-slider [(value)]="minAge" [(highValue)]="maxAge" [options]="ageOptions" (click)="onClickMe()"></ng5-slider>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <div class="legend-box">
+              <div class="col-md-12 row">
+                <span class="legend-title"><label class="biz-label">Other Details   </label></span>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label>Other Detail <span style="color:red;"> </span></label>
+                  <textarea placeholder="Other Details" type="text" class="form-control" formControlName="OtherDetail" maxlength="1000"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-w-shadow no-rd" tabindex="0" [disabled]="!(EditJobForm.valid)">Update</button>
+            <!--<button type="submit" [disabled]="!(EditJobForm.valid && jobFromvalid)" class="btn yl-btn">Update</button>-->
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div>
+    </div>
+  </div>
+
+</div>
+<div class="" *ngIf="EditOpeningFormShow">
+  <form (ngSubmit)="UpdateJobOpeningDetails(jobs.shiftTime)" [formGroup]="EditJobOpeningForm">
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="job-list-action">
+            <a class="viewit" href="javascript:void(0)" (click)="ExitJobOpening()" title="Close">Close</a>
+          </div>
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Opening</label></span>
+          </div>
+          <div class="">
+            <div class="form-group margin-top-20">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <input type="hidden" formControlName="jobdetailsid">
+                <input type="hidden" formControlName="jobId">
+                <label>State <span style="color:red;"> *</span></label>
+                <select (change)="onChangeState(EditJobOpeningForm.value.StateID)" required class="form-control"
+                        formControlName="StateID">
+                  <option value="" selected="selected">--Select-- </option>
+                  <option *ngFor="let item of lstState" value="{{item.id}}">{{item.stateName}}</option>
+                </select>
+                <errors [control]="EditJobOpeningForm.controls.StateID"></errors>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>District <span style="color:red;"> </span></label>
+                <select class="form-control" formControlName="DistrictID">
+                  <option value="" class="" selected="selected">--Select--</option>
+                  <option *ngFor="let item of district" value="{{item.id}}">{{item.districtName}}</option>
+                </select>
+                <errors [control]="EditJobOpeningForm.controls.DistrictID"></errors>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>City <span style="color:red;"> </span></label>
+                <select class="form-control" formControlName="CityID">
+                  <option value="" class="" selected="selected">--Select--</option>
+                  <option *ngFor="let item of city" value="{{item.id}}">{{item.cityname}}</option>
+                </select>
+                <errors [control]="EditJobOpeningForm.controls.CityID"></errors>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>No. of Vacancy <span style="color:red;"> *</span></label>
+                <input maxlength="10" placeholder="No. of Vacancy" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" (keydown)="decimals($event)" type="text" required class="form-control" formControlName="NoOfVacancy" placeholder="Number of Vacancy" />
+                <errors [control]="EditJobOpeningForm.controls.NoOfVacancy"></errors>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>Language Preference <span style="color:red;"> </span></label>
+                <ng-multiselect-dropdown [placeholder]="'please select language'" [data]="lstAllLanguage"
+                                         formControlName="LanguageId" [settings]="dropdownSettings" (onDeSelect)="onItemDeSelect($event)"
+                                         (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                </ng-multiselect-dropdown>
+
+                <errors [control]="EditJobOpeningForm.controls.LanguageId"></errors>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>CTC (per Month) INR :<span style="color:red;" *ngIf="jobs.shiftTime != 'Freelancer'">*</span></label>
+                <div class="cleafix"></div>
+                <div class="col-md-12 p-d-0">
+                  <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+                    <input disabled value="{{minCtc}}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                           (focusout)="ValidateCtc(EditJobOpeningForm.value.MinCtc,EditJobOpeningForm.value.MaxCtc)"
+                           type="text" formControlName="MinCtc" class="form-control">
+                    <errors [control]="EditJobOpeningForm.controls.MinCtc"></errors>
+                  </div>
+                  <!-- <label class="col-md-1 m-t-5 ">To</label> -->
+                  <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+                    <input disabled value="{{maxCtc}}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                           type="text" formControlName="MaxCtc" (focusout)="ValidateCtc(EditJobOpeningForm.value.MinCtc,EditJobOpeningForm.value.MaxCtc)"
+                           class="form-control">
+                    <p style="color:red ! important" *ngIf="!CtcMsg">Please enter valid CTC</p>
+                  </div>
+                  <div class="custom-slider">
+                    <ng5-slider [(value)]="minCtc" [(highValue)]="maxCtc" [options]="CtcOptions" (click)="ctcClick()"></ng5-slider>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4">
+                <label>In Hand Salary (Per Month) INR: </label>
+                <div class="cleafix"></div>
+                <input type="text" formControlName="NetSalary" placeholder="Net CTC" maxlength="8" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="" class="form-control" placeholder="In Hand Salary"/>
+              </div>
+            </div>
+
+
+
+            <div class="modal-header">
+              </div>
+              <div class="form-group">
+                  <div class="col-md-12">
+                    <div class="legend-box">
+                      <div class="col-md-12 row">
+                        <span class="legend-title"><label class="biz-label">Contact Person</label></span>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label>Name   <!-- <span style="color:red;"> *</span>  --> </label>
+                          <input type="text"  class="form-control" formControlName="ContactName" placeholder="Name" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" />
+                          <errors [control]="EditJobOpeningForm.controls.ContactName"></errors>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                          <label>Designation   <!--  <span style="color:red;"> *</span>  --> </label>
+                          <input type="text" class="form-control" formControlName="ContactDesignation"  placeholder="Designation" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" />
+                          <errors [control]="EditJobOpeningForm.controls.ContactDesignation"></errors>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                          <label>Mobile No.   <!-- <span style="color:red;"> *</span> --> </label>
+                          <input placeholder="Mobile No." maxlength="10" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="ContactMobile" />
+                          <errors [control]="EditJobOpeningForm.controls.ContactMobile"></errors>
+                        </div>
+                      </div>
+                      <div class="form-group">  
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <label>Landline No. <span style="color:red;"> </span></label>
+                              <input maxlength="12" placeholder="Landline No."(keydown)="decimals($event)"  type="text" class="form-control" formControlName="ContactLandlineNumber" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                              <errors [control]="EditJobOpeningForm.controls.ContactLandlineNumber"></errors>
+                            </div>                             
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                          <label>Email ID   <!--  <span style="color:red;"> *</span> --> </label>
+                          <input type="text" class="form-control" formControlName="ContactEmail" placeholder="Email ID" />
+                          <errors [control]="EditJobOpeningForm.controls.ContactEmail"></errors>
+                        </div> 
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label>&#160;</label>
+                            <div class="cleafix"></div>
+                            <label>
+                              <input type="checkbox" value="false" id="publicemail2" formControlName="ContactEmailPublic"> Shared with job
+                            </label>
+                          </div>                   
+                      </div>
+                      <!-- <div class="form-group">  
+                      <div class="job-list-action card-view-btns r-btn-group">                                  
+                          <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" [disabled]="!(JobForm.controls.ContactName.valid && JobForm.controls.ContactDesignation.valid&& JobForm.controls.ContactEmail.valid && JobForm.controls.ContactMobile.valid)"  (click)="addContactInopening()">Add</button>
+                          <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="closeContactModal()">close</button>
+                        </div> 
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 text-center">
+      <button class="btn btn-w-shadow no-rd" tabindex="0" type="submit" [disabled]="!(EditJobOpeningForm.controls.StateID.valid && JobFormDesable)">{{EditJobOpeningForm.value.jobdetailsid==''?'Add Opening':'Update'}}</button>
+    </div>
+  </form>
+</div>

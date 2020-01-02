@@ -1,0 +1,135 @@
+<div class="dash-head">
+  <p>Yuva Sandesh</p>
+  <a class="btn btn-w-shadow no-rd pull-right" *ngIf="clickbtn" (click)="SendSandesh()" tabindex="0">Send Sandesh</a>  
+</div>
+<div class="cleafix margin-bottom-30"></div>
+<div class="col-md-12 yuva-sandesh-wrapper" *ngIf="ShowForm">
+  <form [formGroup]="YuvaSandesh" class="edit-delete-h company-profile-update">
+    
+    <div class="edit-profile-wrapper">
+      <div class="box-title ps-relative">
+        <!-- <div class="job-list-action">          
+          <a class="viewit" href="javascript:void(0)" title="Close">Close</a>
+        </div> -->
+        <p class="box-title-content">
+          Yuva Sandesh
+        </p>
+      </div>
+      <div class="box-content">
+        <div class="col-md-9 col-sm-8 p-d-0">
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 text-right">
+              <label>Company Name<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-8 col-sm-8">
+              <input oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" type="text" readonly class="form-control" name='CompanyName' formControlName="CompanyName">
+              <errors [control]="YuvaSandesh.controls.CompanyName"></errors>
+            </div>            
+          </div>
+
+
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 text-right">
+              <label>Subject<span class="required-field">*</span></label>
+            </div>
+
+            <div class="col-md-8 col-sm-8">
+              <input type="text" class="form-control" formControlName="subject" autocomplete="off">
+              <errors [control]="YuvaSandesh.controls.subject"></errors>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 text-right">
+              <label>Content<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-8 col-sm-8">
+              <textarea class="form-control" placeholder="" rows="4" formControlName="content"></textarea>
+              <errors [control]="YuvaSandesh.controls.content"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 text-right">
+              <label>Sandesh Picture</label>
+            </div>
+            <div class="col-md-8 col-sm-8">
+              <!-- Check the correct way to iterate your form array -->
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-7 col-sm-10 col-xs-12">
+                    <input formControlName="SandeshPicture" type="file" (change)="onUploadChange1($event)" multiple>
+
+                  </div>
+                  <div class="col-md-2 col-sm-2 col-xs-12">
+                    <button class="btn btn-w-shadow no-rd" (click)="UploadImage()" [disabled]="!isValid">Upload</button>
+                    <!--<button (click)="UploadImage()" [disabled]="!isValid" class="btn btn-success">Upload</button>-->
+                  </div>
+                </div>
+              </div>
+                <div class="row">
+                  <div class="col-md-12" *ngFor="let url of Base64textString" style="margin:0px;padding:2px;">
+                    <img [src]="url" class="rounded">
+                  </div>
+                </div>               
+              </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-4 text-center p-d-0">          
+            <!-- <img [src]="sanitizer.bypassSecurityTrustUrl(this.DbResponce[0].image)" class="yuva-sandesh"/> -->
+            <img [src]="this.DbResponce[0].image" class="yuva-sandesh"/>
+            <!-- <img src="{{CompanyImage}}" /> -->          
+        </div>
+        
+      </div>
+    </div>
+   
+    <div class="row">
+      <div class="form-group m-t-10">
+        <div class="col-md-12 text-center">
+          <button class="btn btn-w-shadow no-rd" (click)="SaveSandesh()" [disabled]="!(YuvaSandesh.valid) || Isdisabled">Send</button>
+        
+        </div>
+      </div>
+    </div>
+    
+  </form>
+</div>
+
+<div class="cleafix"></div>
+<div class="all-jobs-list update-profile" *ngIf="ShowsandeshList">
+  <div id="" class="searchResults col-md-12">
+    <ul class="joblist-wrapper" >
+      <li class="job-wrapper ps-relative" *ngFor="let Sandesh of showList; let i=index">
+
+        <!-- <h2 class="job-title m-b-5">Company Location : {{ShowForm}}</h2> -->
+        <div class="clearfix"></div>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-12"><strong>Company Name : {{Sandesh.companyName}}</strong></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-12"><strong>Subject : {{Sandesh.subject}} </strong> </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-12"><strong>Content : {{Sandesh.content}} </strong> </div>
+          </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+              <div class="col-md-4">
+                  <img src="{{Sandesh.image}}" width="100px"/>
+              </div>
+            </div>
+          </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+

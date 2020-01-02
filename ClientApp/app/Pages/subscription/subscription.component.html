@@ -1,0 +1,103 @@
+<div class="culmn rojgaar">
+   <app-PublicHeader></app-PublicHeader>
+
+</div>
+
+<section class="banner-wrapper">
+  <div class="feedback-phrase">
+    <p> <i aria-hidden="true" class="fa fa-quote-left"></i> Please subscribe to get latest updates and offers. <i aria-hidden="true" class="fa fa-quote-right"></i></p>
+  </div>
+  <div class="container-wrapper">
+    <input autocomplete="off" id="checkLogintype" type="hidden">
+    <div class="container feedback-container">
+      <div class="col-md-8 col-sm-6">
+
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <div class="feedback-form feedback-form-r">
+          <h4 class="modal-title">subscribe</h4>
+          <form #JobForms [formGroup]="subcripForm" class="feedback-wrapper">
+            <div class="form-group">
+              <!-- <input type="text" class="form-control" formControlName="name" placeholder="Name *" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" /> -->
+              <input type="text" class="form-control" formControlName="name" placeholder="Name *" required (keypress)="removeSpecialnamechar($event)" maxlength="50">
+              <errors [control]="subcripForm.controls.name"></errors>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" formControlName="email" (change)="CheckEmailSub($event)" placeholder="Email ID *" (keypress)="removeSpecialemailchar($event)" maxlength="50" />
+              <errors [control]="subcripForm.controls.email"></errors>
+            </div>
+            <div class="form-group">
+              <input placeholder="Mobile No. *"  maxlength="10" id="myTextId" (keydown)="decimals($event)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="mobile" (change)="CheckMobileSub($event)" />
+              <errors [control]="subcripForm.controls.mobile"></errors>
+            </div>
+            <div class="form-group" tabindex="0">
+              <ng-multiselect-dropdown [placeholder]="' Select Industry *'"
+                                       [data]="IndustryArea" [(ngModel)]="selectedIndustry"
+                                       formControlName="industry"
+                                       [settings]="dropdownSettings"
+                                       (onDeSelect)="onItemDeSelect($event)"
+                                       (onSelect)="onItemSelect($event)"
+                                       (onSelectAll)="onSelectAll($event)"
+                                       (onDeSelectAll)="onDeSelectAll($event)">
+              </ng-multiselect-dropdown>
+              <errors [control]="subcripForm.controls.industry"></errors>
+            </div>
+            <div class="form-group" tabindex="0">
+              <ng-multiselect-dropdown [placeholder]="' Select Functional Area *'"
+                                       [data]="FunctionArea" [(ngModel)]="selectedFunctionalarea"
+                                       formControlName="functionalarea"
+                                       [settings]="dropdownSettings2"
+                                       (onDeSelect)="FunctionalonItemDeSelect($event)"
+                                       (onSelect)="FunctionalonItemSelect($event)"
+                                       (onSelectAll)="FunctionalonSelectAll($event)"
+                                       (onDeSelectAll)="FunctionalononDeSelectAll($event)">
+              </ng-multiselect-dropdown>
+              <errors [control]="subcripForm.controls.functionalarea"></errors>
+            </div>
+            <div class="form-group">
+              <select class="form-control" formControlName="zones" (change)="GetAllRegion($event.target.value)">
+                <option value="" class="" selected="selected">-- Select Zones --</option>
+                <option *ngFor="let zone of zoneList" [value]="zone.id">{{zone.zoneName}}</option>
+              </select>
+              <errors [control]="subcripForm.controls.zones"></errors>
+            </div>
+            <div class="form-group">
+              <select class="form-control" formControlName="regional" (change)="GetAllSubRegion($event.target.value)">
+                <option value="" class="" selected="selected">-- Select Regional --</option>
+                <option *ngFor="let reg of AllRegion" [value]="reg.id">{{reg.regionname}}</option>
+              </select>
+              <errors [control]="subcripForm.controls.regional"></errors>
+            </div>
+            <div class="form-group">
+              <select class="form-control" formControlName="subregional">
+                <option value="" class="" selected="selected">-- Select Sub Regional --</option>
+                <option *ngFor="let subreg of SubAllRegion" [value]="subreg.id">{{subreg.subRegionName}}</option>
+              </select>
+              <errors [control]="subcripForm.controls.subregional"></errors>
+            </div>
+
+            <div class="form-group">
+              <select class="form-control" formControlName="employer">
+                <option value="" class="" selected="selected">-- Select Employer --</option>
+                <option *ngFor="let emp of Getallemployer" [value]="emp.companyId">{{emp.companyName}}</option>
+              </select>
+              <errors [control]="subcripForm.controls.employer"></errors>
+            </div>
+            <div class="form-group">
+              <re-captcha #invisible (resolved)="resolved($event)" formControlName="captcha" siteKey="6Lf8A2cUAAAAAGgMF0eRboCS0VrzTzjNw86jimjP"></re-captcha>
+            </div>
+            <div class="form-group text-center m-t-10">
+              <button class="btn btn-w-shadow no-rd" (click)=subcripsubmit() tabindex="0" type="submit" [disabled]="!(subcripForm.valid && this.checkmobvalsuscribe==true)">Submit</button>
+             
+            </div>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+<app-PublicFooter></app-PublicFooter>
+
+
+

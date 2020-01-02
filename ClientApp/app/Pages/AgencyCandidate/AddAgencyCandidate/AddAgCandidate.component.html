@@ -1,0 +1,876 @@
+<div class="dash-head">
+  <p>Add Candidate</p>
+  <a class="btn btn-w-shadow no-rd pull-right" [routerLink]="'/Candidate'" href="javascript:void(0)" title="Go Back"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
+
+  <!--<a [routerLink]="'/Candidate'"><span class="pull-right btn btn-primary">Back</span></a>-->
+</div>
+<div class="cleafix"></div>
+<div class="col-md-12">
+  <!-- create sub user form statts here-->
+  <!-- <h4>Personal Information</h4> -->
+
+  <div class="all-jobs-list add-candidate">
+    <div class="searchResults" id="">
+      <div class="board-inner" id="status-buttons">
+        <aw-wizard>
+          <aw-wizard-step stepTitle="Personal Info" [canExit]="canExitStep1">
+            <div class="page-title">
+              <div class="p-info col-md-12">
+                <p class="discover-frnd"> Personal Info</p>
+              </div>
+            </div>
+            <div class="basic-profile">
+              <div class="yuvaDivBg cardA">
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label class="control-label">Name <span class="mandatory"> *</span></label>
+                    <input [(ngModel)]="name" type="text" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" class="form-control" maxlength="50" placeholder="Name">
+                    <div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Date of birth <span class="mandatory"> *</span></label>
+                    <div class="input-group">
+                      <input type="text" class="form-control fa fa-calendar" #valid="bsDatepicker" placeholder="Select Date" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', showWeekNumbers:false, beforeShowDay:false }" [maxDate]="maxDateOfBirth" [(ngModel)]="dob" readonly>
+                      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                    </div>
+                    <div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Email id<span class="mandatory"> *</span></label>
+                    <input [(ngModel)]="emailid" type="text" maxlength="100"
+                           class="form-control" placeholder="Email id"/>
+                    <div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Mobile <span class="mandatory"> *</span></label>
+                    <input [(ngModel)]="mobile" type="text" class="form-control RemArr" maxlength="10" (keypress)="onlyNumber($event)" placeholder="Mobile">
+                    <div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Gender<span class="mandatory"> *</span> <!--<span *ngIf="IsProfileEdit" style="color:red">*</span>--></label>
+                    <div>
+                      <label class="custom-radio">
+                        <input [(ngModel)]="gender" name="Gender" required type="radio" value="Male" />
+                        <span class="checkmark"></span> Male
+                      </label>
+                      <label class="custom-radio">
+                        <input [(ngModel)]="gender" name="Gender" required type="radio" value="Female" />
+                        <span class="checkmark"></span> Female
+                      </label>
+                      <label class="custom-radio">
+                        <input [(ngModel)]="gender" name="Gender" type="radio" value="Transgender" />
+                        <span class="checkmark"></span> Transgender
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Religion <span class="mandatory"> *</span></label>
+                    <!--formControlName="Religion"-->
+                    <select [(ngModel)]="religion" class="form-control">
+                      <option value="" class="" selected>--Select--</option>
+                      <option *ngFor="let relig of religions" [value]="relig.id">{{ relig.relationName}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Country of birth</label>
+                    <!--formControlName="CountryName"-->
+                    <input class="form-control" disabled value="India" />
+
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">State of birth <span class="mandatory"> *</span></label>
+                    <select [(ngModel)]="birthstate" (change)="GetAllDistrict($event.target.value)" class="form-control">
+                      <option value="" class="" selected>Select state of birth</option>
+                      <option *ngFor="let state of states" [value]="state.id">{{ state.stateName}}</option>
+
+                    </select>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label"> District of birth <span class="mandatory"> *</span></label>
+                    <select [(ngModel)]="birthdistrict" class="form-control">
+                      <option value="" class="" selected>Select District</option>
+                      <option *ngFor="let district of districts" [value]="district.id">{{ district.districtName}}</option>
+                    </select>
+                  </div>
+                </div>
+                <!--*ngIf="hidestateCity"-->
+
+                <div class="form-group">
+                  <div class="col-md-12 col-sm-12 col-xs-12" *ngIf="IsProfileEdit">
+                    <label for="" class="control-label">About Me <span class="mandatory"> *</span></label>
+                    <!--formControlName="AboutMe"-->
+                    <textarea placeholder="About Me" [(ngModel)]="aboutme" contentEditable class="form-control autoExpand" style="overflow:auto;height:auto !important" maxlength="1000"></textarea>
+                  </div>
+                </div>
+                <!-- candidate profile pic-->
+              <div class="form-group">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <label for="" class="control-label">Candidate Pic <span class="mandatory"> </span></label>
+                  <input type="file" (change)="onUploadChange($event)" class="" [(ngModel)]="ImgName" >
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                </div>
+                <div class="col-md-8 col-sm-6 col-xs-12 add-can-img">
+                  <img src="{{imagename!=''?imagename:'assets/images/NoImage.png'}}" alt="" />
+                </div>
+              </div>
+              <!--   End profile pic-->
+              </div>
+            </div>
+            <div class="col-md-12 m-t-10">
+              <button *ngIf="this.IsValidPersonal==false"   class="btn yl-btn next-step" (click)="AddPersonal()" >Save</button>
+
+              <button type="button"  *ngIf="this.IsValidPersonal" class="btn yl-btn next-step" awNextStep>Next Step <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
+            </div>
+            <!--<button class="yl-btn" type="button" [awGoToStep]="{stepIndex: 2}">Go directly to third Step</button>-->
+          </aw-wizard-step>
+
+          <aw-wizard-step stepTitle="Language">
+            <div class="col-md-12">
+              <div class="page-title">
+                <div class="p-info">
+                  <p class="discover-frnd">Language</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group margin-bottom-20">
+                  <div class="col-md-5 col-sm-4 col-xs-12 lang-sel">
+                    <label for="" class="control-label">Language <span class="mandatory">*</span></label>
+                    <select [(ngModel)]="language" (change)="GetAllLangg($event.target.value)" class="form-control">
+                      <option value="" class="" selected>Select Language</option>
+                      <option *ngFor="let language of languages" [value]="language.id">{{ language.name}}</option>
+                    </select>
+
+                  </div>
+                  <div class="col-md-7 col-sm-8 col-xs-12 lang">
+                    <label class="custom-checkbox">
+                      <!--formControlName="IsRead"-->
+                      <input [(ngModel)]="read" type="checkbox" class="">
+                      <span class="checkmark"></span>Read
+                    </label>
+
+                    <label class="custom-checkbox">
+                      <!--formControlName="IsWrite"-->
+                      <input [(ngModel)]="write" type="checkbox" class="">
+                      <span class="checkmark"></span>Write
+                    </label>
+
+                    <label class="custom-checkbox">
+                      <!--formControlName="IsSpeak"-->
+                      <input [(ngModel)]="speak" type="checkbox" class="">
+                      <span class="checkmark"></span> Speak
+                    </label>
+                    <button type="button" (click)="addLanguageList()" class="btn yl-btn m-l-30">Add Language</button>
+                  </div>
+                </div>
+                <!-- language list table -->
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table *ngIf="langinfodata?.length > 0" class="table table-bordered table-striped">
+                      <tr><th>Language</th><th>Read</th><th>Write</th><th>Speak</th><th>Action</th></tr>
+                      <tr *ngFor="let lang of langinfodata;let i = index">
+                        <ng-template #template>
+                          <div class="modal-body text-center">
+                            <p>Do you want to delete this language?</p>
+                            <br />
+                            <br />
+                            <button type="button" class="btn yl-btn no-rd" (click)="DeleteEmpCandidateLang(lang.id)">Yes</button>
+                            <button type="button" (click)="declineBox()" class="btn bl-btn no-rd">No</button>
+                          </div>
+                        </ng-template>
+                        <td>{{ lang.languageName }}</td>
+                        <td>{{ lang.isRead==true?"Yes":"No"}}</td>
+                        <td>{{ lang.isWrite==true?"Yes":"No"}}</td>
+                        <td>{{ lang.isSpeak==true?"Yes":"No"}}</td>
+                        <td>
+                          <a href="javascript:void(0)" class="mandatory" (click)="PushedTemplate(template)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        <!--<button (click)="DeleteEmpCandidateLang(lang.id)" class="btn btn-danger no-rd">Remove</button>-->
+                        </td>
+
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="btn bl-btn prev-step" awPreviousStep><i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous Step</button>
+              <button type="button" class="btn yl-btn next-step m-l-10" awNextStep>Next Step <i class="fa fa-angle-double-right" aria-hidden="true"></i>  </button>
+
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step stepTitle="Address" [canExit]="canExitStep3">
+            <div class="page-title">
+              <div class="p-info col-md-12">
+                <p class="discover-frnd"> Address</p>
+              </div>
+            </div>
+            <!--Add Address Details-->
+            <div class="modal-content-sec">
+
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <label for="" class="control-label">Permanent  Address </label>
+                  <!--formControlName="Address"-->
+                  <textarea [(ngModel)]="address" class="form-control" placeholder="Permanent Address" required maxlength="2000">
+                                      </textarea>
+                </div>
+
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label class="control-label">Country</label>
+                  <input [(ngModel)]="addressCountry" type="text" class="form-control" disabled value="1">
+                </div>
+
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label for="" class="control-label">State <span class="manadatory"></span></label>
+                  <!--formControlName="StateID" (change)="onChangeAddressState()"-->
+                  <select [(ngModel)]="addressState" (change)="GetAllDistrictaddress($event.target.value)" class="form-control">
+                    <option value="" class="" selected>Select state</option>
+                    <option *ngFor="let state of states" [value]="state.id">{{ state.stateName}}</option>
+
+                  </select>
+                  <!--<errors [control]="AddressForm.controls.StateID"></errors>-->
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label for="" class="control-label"> District</label>
+                  <!--formControlName="DistrictName"-->
+                  <!--<input class="form-control" disabled value="" />-->
+                  <select [(ngModel)]="addressDistrict" class="form-control">
+                    <option value="" class="" selected>Select District</option>
+                    <option *ngFor="let addressdist of addressdistirct" [value]="addressdist.id">{{ addressdist.districtName}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label for="" class="control-label">Pincode </label>
+                  <!--formControlName="Pincode"-->
+                  <input [(ngModel)]="addressPincode" type="text" placeholder="Pincode" class="form-control RemArr" maxlength="6" (keypress)="onlyNumber($event)">
+                  <!--<errors [control]="AddressForm.controls.Pincode"></errors>-->
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                  <label for="" class="control-label">Landmark </label>
+                  <!--formControlName="Landmark"-->
+                  <input [(ngModel)]="addressLamdmark" type="text" placeholder="Landmark" class="form-control" maxlength="100">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <label for="" class="control-label">Correspondence Address</label>
+
+                  <label for="" class="control-label m-l-30">
+                    ( Same as Permanent
+                    <!--formControlName="Address"-->
+                    <input [(ngModel)]="SameAsAbove" (change)="sameasabovechnage(this.SameAsAbove)" type="checkbox" class="" maxlength="1"> )
+                  </label>
+
+                  <!--formControlName="Address"-->
+                  <textarea [disabled]="checksameabovevalue==true" [(ngModel)]="caddress" class="form-control" required maxlength="100">
+                              </textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label for="" class="control-label">State <span class="manadatory"></span></label>
+                  <!--formControlName="StateID" (change)="onChangeAddressState()"-->
+                  <select [disabled]="checksameabovevalue==true" [(ngModel)]="caddressState" (change)="GetAllcDistrictaddress($event.target.value)" class="form-control">
+                    <option value="" class="" selected>Select state </option>
+                    <option *ngFor="let state of states" [value]="state.id">{{ state.stateName}}</option>
+
+                  </select>
+                  <!--<errors [control]="AddressForm.controls.StateID"></errors>-->
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label for="" class="control-label"> District  </label>
+                  <!--formControlName="DistrictName"-->
+                  <!--<input class="form-control" disabled value="" />-->
+                  <select [disabled]="checksameabovevalue==true" [(ngModel)]="caddressDistrict" class="form-control">
+                    <option value="" class="" selected>Select District</option>
+                    <option *ngFor="let caddressdist of cdistricaddress" [value]="caddressdist.id">{{ caddressdist.districtName}}</option>
+                  </select>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label for="" class="control-label">Pincode </label>
+                  <!--formControlName="Pincode"-->
+                  <input [disabled]="checksameabovevalue==true" placeholder="Pincode" [(ngModel)]="caddressPincode" type="text" class="form-control RemArr" maxlength="6" (keypress)="onlyNumber($event)">
+                  <!--<errors [control]="AddressForm.controls.Pincode"></errors>-->
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <label for="" class="control-label">Landmark </label>
+                  <!--formControlName="Landmark"-->
+                  <input [disabled]="checksameabovevalue==true" placeholder="Landmark" [(ngModel)]="caddressLamdmark" type="text" class="form-control" maxlength="100">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <button type="button" class="btn bl-btn prev-step" awPreviousStep><i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous Step</button>
+              <button type="button" class="btn yl-btn next-step m-l-10" awNextStep>Next Step <i class="fa fa-angle-double-right" aria-hidden="true"></i>  </button>
+            </div>
+          </aw-wizard-step>
+
+          <aw-wizard-step stepTitle="Family Details">
+            <div class="page-title">
+              <div class="p-info col-md-12">
+                <p class="discover-frnd"> Family Details</p>
+              </div>
+            </div>
+
+            <div class="modal-content-sec">
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label for="" class="control-label">Name </label>
+                  <!--formControlName="MemberName"-->
+                  <input [(ngModel)]="familyName" type="text" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');" class="form-control" maxlength="100" placeholder="Name"/>
+                  <!--<errors [control]="FamilyForm.controls.MemberName"></errors>-->
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label for="" class="control-label">Relation </label>
+                  <!--formControlName="Relation"-->
+                  <select [(ngModel)]="familyRelation" class="form-control">
+                    <option value="" class="" selected>--Select--</option>
+                    <option *ngFor="let rel of rel" [value]="rel.id">{{ rel.relation}}</option>
+                  </select>
+                  <!--<errors [control]="FamilyForm.controls.Relation"></errors>-->
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <label for="" class="control-label">Mobile </label>
+                  <input [(ngModel)]="familyMobile" type="text" class="form-control" placeholder="Mobile" (keypress)="onlyNumber($event)" maxlength="10">
+                  <!--<input type="text" (keyup)="MobileValidation()" class="form-control RemArr" formControlName="Mobile" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10" />-->
+                  <!--<errors [control]="FamilyForm.controls.Mobile"></errors>-->
+                </div>
+              </div>
+                <div class="form-group">
+
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Email</label>
+                    <!--<input type="email" class="form-control" [attr.disabled]="!objFamily.id>0 ?  null:'' " formControlName="Email" />-->
+                    <!--formControlName="Email"-->
+                    <input [(ngModel)]="familyEmail" type="email" placeholder="Email" class="form-control" maxlength="100">
+                    <!--<errors [control]="FamilyForm.controls.Email"></errors>-->
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="col-sm-12 col-sm-12 col-xs-12">&nbsp;</label>
+                    <button *ngIf="familyaddbuttonshow=='1'" class="btn bl-btn" (click)="familyadd()">Add</button>
+                    <button *ngIf="familyupdatebuttonshow=='1'" class="btn bl-btn" (click)="familyeditsave()">Update</button>
+                  </div>
+                </div>
+            </div>
+
+            <!--- database table data  -->
+            <div class="col-md-12 m-b-10 m-t-10">
+              <div class="table-responsive">
+                <table *ngIf="familyinfodata?.length > 0" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Relation</th>
+                      <th>Mobile </th>
+                      <th>Email</th>
+                      <th>Action</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let dbfamily of familyinfodata;let i=index">
+                      <td>{{ dbfamily.name}}</td>
+                      <td>{{ dbfamily.relation }} </td>
+                      <td>{{ dbfamily.mobile }} </td>
+                      <td>{{ dbfamily.email}}</td>
+
+                      <td>
+                        <!-- <a  href="javascript:void(0)"  (click)="familyedit(dbfamily.id)" title="Edit" ><i class="fa fa-pencil" aria-hidden="true"></i></a> -->
+
+                        <!-- <a href="javascript:void(0)" class="mandatory" (click)="DeleteEmpCertification(dbfamily.id)" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></a> -->
+                        <a href="javascript:void(0)" class="mandatory" (click)="DeleteEmpWorkExp(isDeleteFamilyTemplate,dbfamily.id)" ><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+                <ng-template #isDeleteFamilyTemplate>
+                    <div class="modal-body text-center">
+                        <p>Are you sure you want to Delete?</p>
+                        <br />
+                        <br />
+                        <button type="button" class="btn yl-btn no-rd" (click)="DeleteEmpFamilyDetail()">Yes</button>
+                        <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+                      </div>
+                </ng-template>
+              </div>
+            </div>
+            <!---  End Databse data  -->
+
+            <div class="col-md-12">
+              <button type="button" class="btn bl-btn prev-step" awPreviousStep><i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous Step</button>
+              <button type="button" class="btn yl-btn next-step m-l-10" awNextStep>Next Step <i class="fa fa-angle-double-right" aria-hidden="true"></i>  </button>
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step stepTitle="Interest / hobby">
+
+            <div class="page-title">
+              <div class="p-info col-md-12">
+                <p class="discover-frnd"> Interest / hobby</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <label for="" class="control-label">Area of interest / hobbies </label>
+                <!--formControlName="Area"-->
+                <input [(ngModel)]="interest" type="text" class="form-control hobbies-input" maxlength="50" required placeholder="Area of interest / hobbies">
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+
+                <!-- <select [(ngModel)]="batch" class="form-control settings-options">
+                  <option value="My Batch">My Batch</option>
+                  <option value="Sampark Only">Sampark Only</option>
+                  <option value="My Trade">My Trade</option>
+                  <option value="My Sector">My Sector</option>
+                </select> -->
+
+                <label class="col-md-12 col-sm-12 col-xs-12"> &nbsp; </label>
+                <!--[disabled]="!(InterestAreaForm.valid && !InterestAreaSubmitAttempt)"-->
+                <button (click)="addHobbiesList()" type="submit" class="btn bl-btn">Add Hobby</button>
+              </div>
+              <!-- list of database table-->
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive">
+                  <table *ngIf="areainfodata?.length > 0" class="table table-bordered table-striped m-t-10">
+                    <tr>
+                      <th>Hobbies</th>
+                      <!-- <th>Batch</th> -->
+                      <th>Action</th>
+                    </tr>
+                    <tr *ngFor="let area of areainfodata;let i = index">
+                        <ng-template #template>
+                            <div class="modal-body text-center">
+                              <p>Do you want to delete this hobby?</p>
+                              <br />
+                              <br />
+                              <button type="button" class="btn yl-btn no-rd" (click)="DeleteEmpCandidateAreaOfInterest(area.id)">Yes</button>
+                              <button type="button" (click)="declineBox()" class="btn bl-btn no-rd">No</button>
+                            </div>
+                          </ng-template>
+                      <td>{{ area.interest }}</td>
+                      <!-- <td>{{ area.interest }}</td> -->
+                      <td>
+                        <a href="javascript:void(0)" class="mandatory" (click)="PushedTemplate(template)" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        <!--<button (click)="DeleteEmpCandidateAreaOfInterest(area.id)" class="btn btn-danger no-rd">Remove</button>-->
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <button type="button" class="btn bl-btn prev-step" awPreviousStep><i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous Step</button>
+              <button type="button" class="btn yl-btn next-step m-l-10" awNextStep>Next Step <i class="fa fa-angle-double-right" aria-hidden="true"></i>  </button>
+            </div>
+          </aw-wizard-step>
+
+          <aw-wizard-step stepTitle="Work Experience">
+            <div class="page-title">
+              <div class="p-info col-md-12">
+                <p class="discover-frnd"> Work Experience</p>
+              </div>
+            </div>
+            <div class="modal-content-sec">
+              <div class="info-wrap">
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Job Title/Designation </label>
+                    <!--formControlName="JobTitle"-->
+                    <input [(ngModel)]="jobTile" type="text" class="form-control" maxlength="30" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" placeholder="Job Title/Designation">
+                    <!--<errors [control]="WorkExperienceForm.controls.JobTitle"></errors>-->
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Company/Organization </label>
+                    <!--formControlName="Company"-->
+                    <input [(ngModel)]="company" type="text" class="form-control" maxlength="50" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Company/Organization">
+                    <!--<errors [control]="WorkExperienceForm.controls.Company"></errors>-->
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label class="control-label">Country</label>
+                    <!--(change)="onChangeWorkDetail(event)" formControlName="CountryID"-->
+                    <input [(ngModel)]="jobCountry" type="text" class="form-control" disabled value="1">
+                  </div>
+                </div>
+                <!--*ngIf="!workDetail"-->
+                <div>
+                  <div class="form-group">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label for="" class="control-label">State </label>
+                      <select [(ngModel)]="jobState" (change)="GetAllDistrictwork($event.target.value)" class="form-control">
+                        <option value="" class="" selected>Select state of birth</option>
+                        <option *ngFor="let state of states" [value]="state.id">{{ state.stateName}}</option>
+
+                      </select>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label for="" class="control-label">District </label>
+                      <select [(ngModel)]="jobDistrict" class="form-control">
+                        <option value="" class="" selected>Select District</option>
+                        <option *ngFor="let district of workexpdistics" [value]="district.id">{{ district.districtName}}</option>
+                      </select>
+                    </div>
+                    <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+                      <label for="" class="col-md-12 col-sm-12 col-xs-12"> &nbsp; </label>
+                      <label for="" class="control-label">Currently Working (Yes/No) </label>&nbsp;&nbsp;&nbsp;
+
+                      <label class="custom-checkbox">
+                        <input [(ngModel)]="working" type="checkbox">
+                        <span class="checkmark"></span>
+                      </label>
+                    </div> -->
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label for="" class="col-md-12 col-sm-12 col-xs-12">&nbsp; </label>
+                      <label for="" class="control-label">Currently Working (Yes/No)<span class="mandatory"> *</span> <!--<span *ngIf="IsProfileEdit" style="color:red">*</span>--></label>
+                      <div>
+                        <label class="custom-radio">
+                          <input [(ngModel)]="working" name="Working" required type="radio" value="Yes" (click)="CurrentlyWorking('Yes')"/>
+                          <span class="checkmark"></span> Yes
+                        </label>
+                        <label class="custom-radio">
+                          <input [(ngModel)]="working" name="Working" required type="radio" value="No" (click)="CurrentlyWorking('No')"/>
+                          <span class="checkmark"></span> No
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Current CTC </label>
+
+                    <input [(ngModel)]="currentctc" type="text" class="form-control RemArr"(keypress)="onlyNumber($event)" 
+                    maxlength="8" placeholder="Current CTC">
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12 date1 datePicker_1">
+                    <label for="" class="control-label">Period [From] </label>
+                    <div class="input-group">
+
+                      <!-- <input  [(ngModel)]="periodFrom" type="text" class="form-control" /> -->
+
+                      <input type="text" class="form-control fa fa-calendar" #valid="bsDatepicker" placeholder="Select Date" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', showWeekNumbers:false, beforeShowDay:false }" class="form-control" [(ngModel)]="periodFrom" [maxDate]="today" readonly>
+                      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div *ngIf="ShowPeriodTo" class="col-md-4 col-sm-4 col-xs-12 date1 datePicker_1">
+                    <label for="" class="control-label">Period [To] </label>
+                    <div class="input-group">
+
+                      <!-- <input [(ngModel)]="periodTo" type="text" class="form-control" />
+      -->
+
+                      <input  type="text" class="form-control fa fa-calendar" #valid="bsDatepicker" placeholder="Select Date" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', showWeekNumbers:false, beforeShowDay:false }" [maxDate]="today" [(ngModel)]="periodTo" readonly>
+                      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label for="" class="control-label">Job Description </label>
+
+                    <textarea [(ngModel)]="jobDescription" placeholder="Job Description" type="text" class="form-control" maxlength="200"></textarea>
+                  </div>
+                </div>
+                <!-- <div class="form-group text-center" style="margin-top:15px;">
+
+                  <div class="col-md-6 col-sm-12 btn-mrg-reset">
+                    <select [(ngModel)]="jobBtach" class="form-control settings-options">
+                        <option value="">Selected</option>
+                        <option value="My Batch">My Batch</option>
+                        <option value="Sampark Only">Sampark Only</option>
+                        <option value="My Trade">My Trade</option>
+                        <option value="My Sector">My Sector</option>
+                    </select>
+                   <button class="btn btn-primary" [disabled]="!(WorkExperienceForm.valid && !WorkSubmitAttempt)" type="submit">Save</button>
+                      <button type="reset" class="btn btn-warning" (click)="ClearExperience();ShowStep=(ShowStep==1?0:1)">Close</button>
+                      <a data-dismiss="modal" #mdWorkExperienceFormClose></a>
+                  </div>
+                </div> -->
+              </div>
+              <div class="col-md-12">
+                <button class="btn bl-btn m-t-10" (click)="workexpadd()">Add</button>
+              </div>
+            </div>
+            <!--- databse  table data  -->
+            <div class="col-md-12">
+              <div class="table-responsive">
+                <table *ngIf="workexpinfodata?.length > 0" class="table table-striped table-bordered m-t-10">
+                  <thead>
+                    <tr>
+                      <th>Designation</th>
+                      <th>Organization</th>
+                      <th>Country</th>
+                      <th>State</th>
+                      <th>District</th>
+                      <th>Working</th>
+                      <th>CTC</th>
+                      <th>Period [From]</th>
+                      <th>Period [To]</th>
+                      <th>Job Description</th>
+                      <th>Action</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let dbworkexp of workexpinfodata;let i=index">
+                      <td>{{ dbworkexp.jobTitle }} </td>
+                      <td>{{ dbworkexp.companyName }} </td>
+                      <td>India</td>
+                      <td>{{ dbworkexp.stateName}}</td>
+                      <td>{{ dbworkexp.districtName }}</td>
+                      <td>{{ dbworkexp.currentlyWorking==true?"Yes":"No" }} </td>
+                      <td>{{ dbworkexp.currentCtc }} </td>
+                      <td>{{ dbworkexp.jobPeriodFrom | date: 'dd/MM/yyyy'}}</td>
+                      <td><span *ngIf="dbworkexp.currentlyWorking==true">N/A</span>
+                        <span *ngIf="dbworkexp.currentlyWorking==false">{{ dbworkexp.jobPeriodTo | date: 'dd/MM/yyyy'}}</span> 
+                      </td>
+                      <td>{{ dbworkexp.jobDesc }}</td>
+                      <td>
+                        <!-- <a href="javascript:void(0)" (click)="workexpedit(dbworkexp.id)" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a> -->
+                        <a href="javascript:void(0)" (click)="DeleteEmpCandidateWorkExp(dbworkexp.id)" title="Delete" class="mandatory"><i class="fa  fa-trash" aria-hidden="true"></i></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!---  End database data  -->
+
+              <button type="button" class="btn bl-btn prev-step" awPreviousStep><i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous Step</button>
+              <button type="button" class="btn yl-btn next-step m-l-10" awNextStep>Next Step <i class="fa fa-angle-double-right" aria-hidden="true"></i>  </button>
+            </div>
+          </aw-wizard-step>
+
+          <aw-wizard-step stepTitle="Education Qualification">
+            <div class="page-title">
+              <div class="p-info col-md-12">
+                <p class="discover-frnd">
+                  Education Qualification
+                </p>
+              </div>
+            </div>
+            <div class="modal-content-sec">
+              <div class="info-wrap">
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Qualification</label>
+                    <!--formControlName="qualification"-->
+                    <select [(ngModel)]="qualification" class="form-control" (change)="GetAllEducatiom($event.target.value)">
+                      <option Value="" class="" selected>--Select--</option>
+                      <option *ngFor="let minedu of mineducation"[value]="minedu.id">{{minedu.name}}</option>
+                      <!--<option *ngFor="let item of Qualificationlst" [ngValue]="item.qualificationName">{{item.qualificationName}}</option>-->
+                    </select>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Board / University</label>
+                    <!--formControlName="boardUniversity"-->
+                    <input [(ngModel)]="board" type="text" class="form-control" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" maxlength="100" placeholder="Board / University">
+                    <!--<errors [control]="EducationQualificationForm.controls.boardUniversity"></errors>-->
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Stream / Course </label>
+                    <!--formControlName="stream"-->
+                    <input [(ngModel)]="stream" type="text" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" class="form-control" maxlength="100" placeholder="Stream / Course">
+                    <!--<errors [control]="EducationQualificationForm.controls.stream"></errors>-->
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Percentage </label>
+                    <!--formControlName="gradePercentage"-->
+                    <input  [(ngModel)]="percenatge" type="number" class="form-control" maxlength="3"  (keypress)="onlyNumberForPercentage($event)"  placeholder="Percentage" onkeyup="this.value = this.value.replace(/^(\d{0,4}\.\d{0,5}|\d{0,3}|\.\d{0,8}).*/, '$1');">
+                    <!--<errors [control]="EducationQualificationForm.controls.gradePercentage"></errors>-->
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Year of passing</label>
+                    <!--formControlName="yearofPass"-->
+                    <select [(ngModel)]="passingYear" class="form-control">
+                      <option value="" class="" selected>--Select Year--</option>
+                      <option *ngFor="let number of year" [value]="number">{{number}}</option>
+                  <!--<option *ngFor="let Yearlst of lstYears"> {{Yearlst.Year}}</option>-->
+                    </select>
+                    <!--<errors [control]="EducationQualificationForm.controls.yearofPass"></errors>-->
+
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+                    <button class="btn bl-btn" (click)="educationadd()">Add</button>
+                  </div>
+                </div>
+
+                <!-- <div class="form-group text-center m-t-10">
+                  <div class="col-md-6 btn-mrg-reset">
+                     <select [(ngModel)]="myBtach" class="form-control settings-options">
+                      <option value="0">Selected</option>
+                      <option value="My Batch">My Batch</option>
+                        <option value="Sampark Only">Sampark Only</option>
+                        <option value="My Trade">My Trade</option>
+                        <option value="My Sector">My Sector</option>
+                    </select>
+                    <button class="btn btn-primary" [disabled]="!(EducationQualificationForm.valid && !EducationSubmitAttempt)" type="submit">Save</button>
+                    <button type="reset" class="btn btn-warning" (click)="ClearEducationForm();ShowStepEQ=(ShowStepEQ==1?0:1)">Close</button>
+                    <a data-dismiss="modal" #mdEducationQualificationFormClose></a>
+                  </div>
+
+                </div> -->
+              </div>
+
+            </div>
+            <!--- database table data  -->
+            <div class="col-md-12 m-b-10">
+              <div class="table-responsive">
+                <table *ngIf="empeduinfodata?.length > 0" class="table table-striped table-bordered m-t-10">
+                  <thead>
+                    <tr>
+                      <th>Qualification</th>
+                      <th>Board / University</th>
+                      <th>Stream / Course</th>
+                      <th>Percentage</th>
+                      <th>Year of passing</th>
+                      <th>Action</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let dbedu of empeduinfodata;let i=index">
+                      <td>{{ dbedu.educationName}} </td>
+                      <td>{{ dbedu.board }} </td>
+                      <td>{{ dbedu.stream}}</td>
+                      <td>{{ dbedu.percentage}}</td>
+                      <td>{{ dbedu.yearOfPassing}}</td>
+                      <td>
+                        <!-- <a  href="javascript:void(0)" (click)="educationedit(dbedu.id)" title="Edit"  > <i class="fa fa-pencil" aria-hidden="true"></i></a> -->
+                        <a href="javascript:void(0)" class="mandatory" (click)="DeleteEmpEducationQualification(dbedu.id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!---  End temp data  -->
+            <div class="col-md-12">
+              <button type="button" class="btn bl-btn prev-step" awPreviousStep><i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous Step</button>
+              <button type="button" class="btn yl-btn next-step m-l-10" awNextStep>Next Step <i class="fa fa-angle-double-right" aria-hidden="true"></i>  </button>
+            </div>
+          </aw-wizard-step>
+
+          <aw-wizard-step stepTitle="Certification">
+            <!--Certification-->
+            <div class="page-title">
+              <div class="p-info col-md-12">
+                <p class="discover-frnd">
+                  Certificate
+                </p>
+              </div>
+            </div>
+            <div class="modal-content-sec">
+              <div class="info-wrap">
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Certification No/UID </label>
+                    <!--formControlName="Certificateno"-->
+                    <input [(ngModel)]="certificateNo" type="text" class="form-control" maxlength="50" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Certification No/UID">
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Program Name/ Scheme</label>
+                    <!--formControlName="Programname"-->
+                    <input [(ngModel)]="programName" type="text" class="form-control" maxlength="100" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Program Name/ Scheme">
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="control-label">Issued By </label>
+                    <!--formControlName="Issuedby"-->
+                    <input [(ngModel)]="issuedBy" type="text" class="form-control" placeholder="Issued By" maxlength="100">
+
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12 date1 datePicker_1">
+                    <label for="" class="control-label">Issued On </label>
+                    <div class="input-group">
+                      <!-- <input [(ngModel)]="issuedOn" type="text" class="form-control" /> -->
+                      <input placeholder="Issued On" type="text" class="form-control fa fa-calendar" #valid="bsDatepicker" placeholder="Select Date" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', showWeekNumbers:false, beforeShowDay:false }" [maxDate]="today" class="form-control" [(ngModel)]="issuedOn" readonly>
+                      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar" (click)="valid.toggle()"></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label for="" class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+                    <button class="btn bl-btn" (click)="certadd()">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--- database table data  -->
+            <div class="col-md-12 m-t-10">
+              <div class="table-responsive">
+                <table *ngIf="empcertinfodata?.length > 0" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Certification No/UID</th>
+                      <th>Program Name/ Scheme</th>
+                      <th>Issued By</th>
+                      <th>Issued On</th>
+                      <th>Action</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let dbcert of empcertinfodata;let i=index">
+                      <td>{{ dbcert.certificationNo }} </td>
+                      <td>{{ dbcert.programName }} </td>
+                      <td>{{ dbcert.issuedBy}}</td>
+                      <td>{{ dbcert.issuedOn | date: 'dd/MM/yyyy'}}</td>
+                      <td>
+                        <a href="javascript:void(0)" class="mandatory" (click)="DeleteEmpCertification(dbcert.id)" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col-md-12 m-t-10">
+              <!---  End Databse data  -->
+              <button type="button" class="btn bl-btn prev-step" awPreviousStep><i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous Step</button>
+              <button type="button" class="btn yl-btn next-step m-l-10" awNextStep>Next Step <i class="fa fa-angle-double-right" aria-hidden="true"></i>  </button>
+            </div>
+          </aw-wizard-step>
+          <aw-wizard-step stepTitle="Complete">
+            <div class="col-md-12 m-t-10">
+              <!-- Content of Step 9 -->
+              <button type="button" class="btn bl-btn prev-step" awPreviousStep><i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous Step</button>
+              <button type="button" (click)="finalsubmit()" class="btn yl-btn m-l-10">Finish</button>
+            </div>
+          </aw-wizard-step>
+        </aw-wizard>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div>
+

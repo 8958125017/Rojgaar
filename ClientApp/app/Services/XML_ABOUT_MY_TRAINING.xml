@@ -1,0 +1,90 @@
+﻿<MRIGS>
+  <TrainingCenter>
+    <TCNAME>MANAV VIKAS EVAM SEWA SANSTHAN AMB</TCNAME>
+    <Scheme>DDU-GKY</Scheme>
+    <TPNAME>MANAV VIKAS EVAM SEWA SANSTHAN</TPNAME>
+    <TCADRESS>H.N.- JARIYA, -, NEAR BUS STOP, JARIYA, MANORA, JASHPUR, CHHATTISGARH, Pin code - 496331</TCADRESS>
+    <INCHARGENAME>Pankaj Kumar </INCHARGENAME>
+    <INCHARGEEMAIL>pankajlucknow8992@gmail.com</INCHARGEEMAIL>
+    <INCHARGEMOBILE>7275271916</INCHARGEMOBILE>
+    <BatchTrainer>
+      <BatchTrainer>
+        <TYPE>Non Domain</TYPE>KULDEEP  KUMAR</BatchTrainer>
+    </BatchTrainer>
+    <BatchDetails>
+      <BatchDetails>
+        <batchno>0309948331518004016</batchno>
+        <BATCHSTARTDATE>2015-01-05T00:00:00</BATCHSTARTDATE>
+        <BATCHCLOSEDATE>2015-03-31T00:00:00</BATCHCLOSEDATE>
+        <BATCHSTATUS>Closed</BATCHSTATUS>
+        <ASSESSMENTSTATUS>ASSESED</ASSESSMENTSTATUS>
+        <ASSESSMENTDATE />96<OJTHOURS>0</OJTHOURS><NONDOMAINHOURS>480</NONDOMAINHOURS></BatchDetails>
+    </BatchDetails>
+    <TradeDetails>
+      <TradeDetails>
+        <BATCHSECTOR>Logistics &amp; Supply Change Management</BATCHSECTOR>
+        <BATCHTRADE>Finish Goods Keeper</BATCHTRADE>
+        <Curriculum_Plan>MAM103-A</Curriculum_Plan>
+        <TOTALHOURS>160</TOTALHOURS>
+      </TradeDetails>
+    </TradeDetails>
+    <TerminalCompetencies>
+      <TerminalCompetencies>
+        <Competencies_Name>Acquaint with various store records and carry out staking of materials.</Competencies_Name>
+      </TerminalCompetencies>
+      <TerminalCompetencies>
+        <Competencies_Name>Handle all types of material handling equipment of store and its care &amp; Maintenance</Competencies_Name>
+      </TerminalCompetencies>
+      <TerminalCompetencies>
+        <Competencies_Name>Store the finished material &amp; issue the materials from stores</Competencies_Name>
+      </TerminalCompetencies>
+    </TerminalCompetencies>
+    <ModuleName>
+      <ModuleName>
+        <Module_Code>FGK-1</Module_Code>
+        <Duration>95</Duration>
+        <outcome />
+      </ModuleName>
+      <ModuleName>
+        <Module_Code>FGK-2</Module_Code>
+        <Duration>40</Duration>
+        <outcome />
+      </ModuleName>
+      <ModuleName>
+        <Module_Code>FGK-3</Module_Code>
+        <Duration>25</Duration>
+        <outcome />
+      </ModuleName>
+      <ModuleName>
+        <Module_Code>General Duties</Module_Code>
+        <Duration>61</Duration>
+        <outcome />
+      </ModuleName>
+      <ModuleName>
+        <Module_Code>STORE RECORDS</Module_Code>
+        <Duration>72</Duration>
+        <outcome />
+      </ModuleName>
+      <ModuleName>
+        <Module_Code>ISSUE OF STORES</Module_Code>
+        <Duration>30</Duration>
+        <outcome />
+      </ModuleName>
+      <ModuleName>
+        <Module_Code>FGK-1</Module_Code>
+        <Duration>61</Duration>
+        <outcome />
+      </ModuleName>
+      <ModuleName>
+        <Module_Code>FGK-2</Module_Code>
+        <Duration>72</Duration>
+        <outcome />
+      </ModuleName>
+      <ModuleName>
+        <Module_Code>FGK-3</Module_Code>
+        <Duration>30</Duration>
+        <outcome />
+      </ModuleName>
+    </ModuleName>
+  </TrainingCenter>
+</MRIGS>

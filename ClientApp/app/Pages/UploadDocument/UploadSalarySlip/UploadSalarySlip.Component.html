@@ -1,0 +1,299 @@
+<div class="dash-head">
+  <p>Upload Salary Slip</p>
+</div>
+<div class="cleafix"></div>
+<div>
+  <div class="page-filters">
+    <h2>
+      <a href="javascript:void(0);">
+        <i class="fa fa-filter" aria-hidden="true"></i> Apply Filters
+        <span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+    </h2>
+
+    <div class="filter-wrapper">
+      <form [formGroup]="candidate_form">
+        <div class="form-group">
+          <div class="col-md-3 col-sm-6 upload-auto-searchs">
+            <label> Candidate Name </label>
+            <input #clear formControlName="candidateName" class="form-control" placeholder="Candidate Name ...">
+          </div>
+          <!-- [minDate]="mintoDate" -->
+          <div class="col-md-3 col-sm-6">
+            <label> DOJ </label>
+            <div class="input-group">
+              <input type="text" #valid="bsDatepicker" placeholder="Select Date" disabled bsDatepicker [bsConfig]="{dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false }"
+                value="" class="form-control" formControlName="dateOfJoining" />
+              <span class="input-group-addon" (click)="valid.toggle()" [attr.aria-expanded]="valid.isOpen"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+
+
+          <div class="col-md-3 col-sm-6">
+            <label> Designation </label>
+            <input #clear formControlName="designation" class="form-control" placeholder="Designation ...">
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <label> Search</label>
+            <input #clear formControlName="searchKeyword" class="form-control" placeholder="search">
+          </div>
+        </div>
+
+        <div class="row text-center m-t-5">
+          <button type="button" (click)="ResetFilterResult()" class="btn btn-w-shadow no-rd">Reset</button>
+          <button class="btn btn-w-shadow no-rd" type="submit" (click)="submit()">Search</button>
+
+          <!-- <button class="btn yl-btn" type="submit" (click)="submit(0,'')">Filter</button> -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="cleafix"></div>
+<div class="col-md-12">
+  <div *ngIf="showsearchresult!=''" class="col-md-12 jd-detail job-wrapper searchResults">
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <h4 class="m-b-0">Search Result</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <span class="text-strong">Candidate Name</span>: {{showsearchresult.candidateName}}
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <span class="text-strong">D.O.J
+          </span>: {{showsearchresult.dateOfJoining ? (showsearchresult.dateOfJoining | date:'dd/MM/yyyy') :'NA'}}
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <span class="text-strong">Designation</span>: {{showsearchresult.designation}}
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <span class="text-strong">Search Keyword</span>: {{showsearchresult.searchKeyword}}
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="col-md-12">
+  <div class="content-area" id="cantable">
+    <div class="dash-head dash-head-2">
+      <p>Candidate List</p>
+    </div>
+    <div class="cleafix"></div>
+    <div class="col-md-12">
+      <div class="all-jobs-list">
+        <div id="" class="searchResults">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-striped aplication-th"
+              id="candtable">
+              <thead>
+                <tr>
+                  <th>S. No</th>
+                  <th style="min-width:110px;">Candidate Name</th>
+                  <th>Mobile Number</th>
+                  <th>Age</th>
+                  <th>Gender</th>
+                  <th>State</th>
+                  <th>District</th>
+                  <th>Upload</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr [style.background-color]="candidate.candId==candidateid?'rgb(204, 204, 204)':''" *ngFor="let candidate of candidatelist  let i=index ">
+                  <td>{{i + 1}} </td>
+                  <td>{{candidate.candname}}</td>
+                  <td>{{candidate.mobile}}</td>
+                  <td>{{candidate.age!=0?candidate.age:'NA'}}</td>
+                  <td>{{candidate.gender?candidate.gender:'NA'}}</td>
+                  <td>{{candidate.statename}}</td>
+                  <td>{{candidate.districtname ? candidate.districtname : 'NA'}}</td>
+
+                  <td class="text-center">
+                    <a href="javascript:void(0)" class="" title="View Details" (click)="viewcandidateProfile(candidate,uploadSalarySlipModal)">
+                      <span style="color:blue;">Upload</span>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+
+            <ng-template #uploadSalarySlipModal>
+              <div class="modal-header" >
+                <h6 class="modal-title pull-left">Candidate Details </h6>
+                <button type="button" class="btn btn-w-shadow no-rd pull-right" aria-label="Close" (click)="closeModal()">
+                  Close
+                </button>
+              </div>
+              <div class="modal-body" >
+                <div class="col-md-12" >
+
+                  <div class="job-view">
+                    <div>
+                      <figure class="text-center thumbnail">
+                        <br>
+                        <img onError="this.src='../../../../assets/images/NoImage.png'" src="{{candidatedetails.profileImage!=''?candidatedetails.profileImage:'assets/images/NoImage.png'}}"
+                          alt="No image" />
+                        <figcaption>
+                          <br>
+                        </figcaption>
+                      </figure>
+                    </div>
+                    <div >
+                      <h6 class="job-title m-b-5">Personal Details</h6>
+                      <div class="form-group" >
+                        <p class="col-md-6 lang-ellip" title="{{candidatedetails.candName}}"><span class="text-strong">Name:</span>
+                          {{candidatedetails.candName ?candidatedetails.candName : 'NA'}}</p>
+                        <p class="col-md-6"><span class="text-strong">Date of Birth:</span> {{candidatedetails.dob |
+                          date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                      <div class="form-group">
+                        <p class="col-md-6 lang-ellip" title="{{candidatedetails.email}}"><span class="text-strong">Email:</span>
+                          {{candidatedetails.email ? candidatedetails.email : 'NA'}}</p>
+                        <!-- <p class="col-md-6"><a href="javascript:void(0)" title="show" (click)="v =!v"><span><strong>Mobile No:</strong></span></a> {{v==true?candidatedetails.mobile:'XXX-XXX-XXXX'}} </p> -->
+                        <p class="col-md-6"><span><strong>Mobile No:</strong></span> {{candidatedetails.mobile ?
+                          candidatedetails.mobile : 'NA'}} </p>
+                      </div>
+                      <div class="form-group">
+                        <p class="col-md-6"><span class="text-strong">Gender:</span> {{candidatedetails.gender?
+                          candidatedetails.gender :'NA'}}</p>
+                        <p class="col-md-6"><span class="text-strong">Religion:</span>
+                          {{candidatedetails.religionName?candidatedetails.religionName:'NA'}}</p>
+                      </div>
+                      <div class="form-group">
+                        <p class="col-md-12"><span class="text-strong">About Me:</span> {{candidatedetails.aboutMe
+                          ?candidatedetails.aboutMe:'NA'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cleafix margin-bottom-20"></div>
+                  <div class="dash-head dash-head-2">
+                    <p>Upload Documents</p>
+                  </div>
+                  <div class="table-responsive">
+                    <form [formGroup]="candidate_document" (ngSubmit)="uploaddocument()">
+                      <table class="table table-bordered table-striped margin-top-20">
+                        <thead class="bg-info">
+                          <tr>
+                            <th>Type</th>
+                            <th>Month</th>
+                            <th>Uploaded Document</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              Salary Slip
+                            </td>
+                            <td>
+                              <div class="input-group" >
+                                <input type="text" (ngModelChange)="updateCalcs($event)" placeholder="Select Date"
+                                  class="form-control 12" formControlName="docdateyear" [bsConfig]="{ dateInputFormat: 'MMM YYYY', showWeekNumbers:false, beforeShowDay:false,minMode:'month', adaptivePosition: true }"
+                                  #dp="bsDatepicker" readonly [maxDate]="maxDate" bsDatepicker (onShown)="onOpenCalendar($event)" placement="right center">
+                                
+                                <errors [control]="candidate_document.controls.docdateyear"></errors>
+                              </div>
+                            </td>
+                            <td>
+                              <input type="file" id='fileProfile'  required (change)="onUploadChange($event)" class="" formControlName="uploaddocument"
+                                [(ngModel)]="ImgName">
+                              <span class="highlight"></span>
+                              <span class="bar"></span>
+                              <img src="{{imagename!=''?imagename:'assets/images/NoImage.png'}}" height="50px;" width="50px;"
+                                alt="" style="margin-top:10px" />
+                              <errors [control]="candidate_document.controls.uploaddocument"></errors>
+
+                            </td>
+                            <td>
+                              <!--  <input type="submit" class="form-control"> -->
+                              <button class="btn btn-w-shadow no-rd" type="submit" [disabled]="!candidate_document.valid">Upload</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </form>
+                  </div>
+
+                  <div class="dash-head dash-head-2" *ngIf="CandModifyShowData?.length > 0">
+                    <p>List of Docs</p>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-striped margin-top-20" *ngIf="CandModifyShowData?.length > 0">
+                      <thead class="bg-info">
+                        <tr>
+                          <th class="imageDownloadIcon">Type</th>
+                          <th class="imageDownloadIcon">Date</th>
+                          <th class="imageDownloadIcon">Uploaded Document</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let docs of CandModifyShowData;let i = index">
+                          <td class="imageDownloadIcon">
+                            {{docs.documentName}}
+                          </td>
+                          <td class="imageDownloadIcon">
+                            {{docs.begnningOfDate | date: 'MMM yyyy' }}
+                          </td>
+                          <td *ngIf="docs.fileExtension =='pdf'" class="imageDownloadIcon">
+                            <a [href]="docs.image" target="_blank" *ngIf="docs.image">
+                              <!-- <i class="fa fa-file-pdf-o" aria-hidden="true"></i> -->
+                              <i aria-hidden="true" class="fa fa-eye"></i>
+                            </a>|
+                            <a [href]="" target="_blank">
+                                  <i aria-hidden="true" class="fa fa-trash"></i>
+                            </a>
+                          </td>
+                          <td *ngIf="docs.fileExtension !='pdf'" class="imageDownloadIcon">
+                            <a [href]="docs.image" target="_blank" *ngIf="docs.image">
+                              <!-- <img src="{{docs.image!=''?docs.image:'assets/images/NoImage.png'}}" height="50px;" width="50px;"
+                                alt="" /> -->
+                                <i aria-hidden="true" class="fa fa-eye"></i>
+                          </a>|
+                          <a [href]="" target="_blank">
+                                <i aria-hidden="true" class="fa fa-trash" (click)="PushedTemplate(template)" style=cursor:pointer></i>
+                          </a>
+                          <ng-template #template>
+                              <div class="modal-body text-center">
+                                <p>Do you want to delete this salary?</p>
+                                <br />
+                                <br />
+                                <button type="button" class="btn yl-btn no-rd" (click)="deleteSalarySlip(docs)">Yes</button>
+                                <button type="button" (click)="declineBox()" class="btn bl-btn no-rd">No</button>
+                              </div>
+                            </ng-template>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    
+                  </div>
+
+                </div>
+              </div>
+              <div class="cleafix"></div>
+              <div class="modal-footer form-group text-right">
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-w-shadow no-rd" aria-label="Close" (click)="closeModal()">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,239 @@
+<div class="dash-head">
+  <p>Candidate Search</p>
+</div>
+<div class="cleafix"></div>
+<div>
+  <div class="page-filters">
+    <h2>
+      <a href="javascript:void(0);">
+        <i class="fa fa-filter" aria-hidden="true"></i> Apply Filters
+        <span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+    </h2>
+    <div class="filter-wrapper">
+      <form [formGroup]="candidate_form">
+        <div class="form-group">
+          <div class="col-md-12 m-t-10">
+            <span>
+              <input #option1 (click)="addradiovalue($event,'r1')" value="r1" name="option_radio" type="radio"
+                formControlName="option_radio"> <span> Registered Pool</span>
+            </span>
+            <span class="m-l-30">
+              <input #option2 (click)="addradiovalue($event,'o2')" value="o2" name="option_radio" formControlName="option_radio"
+                [(ngModel)]="open_database" type="radio"> <span> Open Database</span>
+            </span>
+            <span *ngIf="UserInfo.loginType=='Agency'" class="m-l-30">
+              <input #option3 (click)="addradiovalue($event,'m3')" value="m3" name="option_radio" formControlName="option_radio"
+                type="radio"> <span> My Database</span>
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div *ngIf="schemetypeshow==true" class="col-md-3 col-sm-6">
+            <label>Scheme<span class="mandatory">*</span> </label>
+            <select formControlName="schemetype" class="form-control" (change)="schemtype()">
+              <option value="">Select Scheme</option>
+              <option [value]="1">DDUGKY</option>
+              <option [value]="2">Other</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <label> State </label>
+            <select (change)="GetAllDistrict($event.target.value)" class="form-control" formControlName="domicile_state">
+              <option value="">Select State</option>
+              <option *ngFor="let state of states" [value]="state.id">{{ state.stateName}}</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <label> District</label>
+            <select class="form-control" formControlName="domicile_district">
+              <option value="">Select District</option>
+              <option *ngFor="let district of districts" [value]="district.id">{{ district.districtName}}</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <label>Sector</label>
+            <select formControlName="sector" class="form-control" (change)="GetAllTrades($event.target.value)">
+              <option value="">Select Sector</option>
+              <option *ngFor="let sector of sector" [value]="sector.id">{{ sector.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-3 col-sm-6">
+            <label>Trade</label>
+            <select formControlName="trade" class="form-control">
+              <option value="">Select Trade</option>
+              <option *ngFor="let trade of trade" [value]="trade.tradeCode">{{ trade.tradeName}}</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <label>Age</label>
+            <select formControlName="candage" class="form-control">
+              <option value="">Select Age</option>
+              <option [value]="'15'+'-'+'25'">15-25</option>
+              <option [value]="'26'+'-'+'35'">26-35</option>
+              <option [value]="'36'+'-'+'45'">36-45</option>
+              <option [value]="45">45 & above</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label>Gender</label>
+            <div class="cleafix"></div>
+            <span>
+              <input type="radio" name="Gender" formControlName="Gender" id="Gender-1" value="Male" /> Male
+            </span>
+            <span class="m-l-30">
+              <input type="radio" name="Gender" formControlName="Gender" id="Gender-2" value="Female" /> Female
+            </span>
+            <span class="m-l-30">
+              <input type="radio" name="Gender" formControlName="Gender" id="Gender-3" value="Transgender" />
+              Transgender
+            </span>
+            <span class="m-l-30">
+              <input type="radio" name="Gender" formControlName="Gender" id="Gender-4" value="" /> All
+            </span>
+          </div>
+        </div>
+        <div class="row text-center m-t-5">
+            <button type="button" (click)="ResetFilterResult()" class="btn btn-w-shadow no-rd">Reset</button>
+          <button class="btn btn-w-shadow no-rd" type="submit" (click)="submit(0,'')">Search</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="cleafix"></div>
+<div class="col-md-12">
+  <div *ngIf="showsearchresult!=''" class="col-md-12 jd-detail job-wrapper searchResults">
+    <div class="form-group m-b-0">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <h4 class="m-b-0">Search Result</h4>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12" *ngIf="showsearchresult.Scheme!='NA'">
+          <span class="text-strong">Scheme</span>: {{showsearchresult.Scheme}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">State</span>: {{showsearchresult.State}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">District</span>: {{showsearchresult.District}}
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Sector</span>: {{showsearchresult.Sector}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Trade</span>: {{showsearchresult.Trade}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Age</span>: {{showsearchresult.Age}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Gender</span>: {{showsearchresult.Gender}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">No of Records</span>: {{candidatelist.length}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cleafix"></div>
+<div class="col-md-12" *ngIf="candidatelist!=null && !viewProfile">
+  <h4 *ngIf="candidatelist?.length>0" style="text-align:center">Candidate Listing</h4>
+  <div class="all-jobs-list">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper ps-relative candidate-searc-card" *ngFor="let cand of candidatelist;let i = index">
+
+          <div class="job-view">
+            <div class="p-l-0">
+              <img onError="this.src='../../../../assets/images/NoImage.png'" src="{{cand.profileImage!=''?cand.profileImage:'assets/images/NoImage.png'}}"
+                class="img-thumbnail" alt="{{cand.profileImage!=''?cand.name:'No image'}}" width="60" height="40">
+            </div>
+            <div>
+              {{cand.companyName}}
+              <!--<a href="javascript:void(0)" (click)="viewcandidateProfile(cand.candidateID)" class="pull-right">View</a>-->
+              <div class="clearfix"></div>
+              {{cand.jobTitle}}
+              <div class="clearfix"></div>
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12">
+                    <span class="text-strong">Name : </span> <span>{{cand.name}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12">
+                    <a href="javascript:void(0)" title="show" (click)="mobshow(cand.candidateID,mobv=!mobv)">
+                      <span class="text-strong">
+                        Mobile No. :
+                      </span> <span>{{mobv==true && phone==cand.candidateID?cand.mobile:'XXX-XXX-XXXX'}}</span>
+
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="cand.districtName">
+                <div class="row">
+                  <div class="col-md-12">
+                    <span class="text-strong">District : </span> <span>{{cand.districtName}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="cand.stateName">
+                <div class="row">
+                  <div class="col-md-12">
+                    <span class="text-strong">State : </span> <span>{{cand.stateName}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="cand.sectorName">
+                <div class="row">
+                  <div class="col-md-12">
+                    <span class="text-strong">Sector : </span> <span>{{cand.sectorName}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="cand.tradeName">
+                <div class="row">
+                  <div class="col-md-12">
+                    <span class="text-strong">Trade : </span> <span>{{cand.tradeName}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="cand.tcName">
+                <div class="row">
+                  <div class="col-md-12">
+                    <span class="text-strong">Training Center Name : </span> <span>{{cand.tcName}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="job-list-action card-view-btns">
+                  <a class="viewit" href="javascript:void(0)" title="View" (click)="viewcandidateProfile(cand.candidateID,cand.apitype)">View</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="cleafix"></div>
+<app-CommonView-Layout></app-CommonView-Layout>

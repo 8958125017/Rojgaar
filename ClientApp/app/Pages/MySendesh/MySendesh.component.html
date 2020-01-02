@@ -1,0 +1,71 @@
+<div class="dash-head">
+    <p>My Sandesh</p>
+  </div>
+<div class="all-jobs-list update-profile">
+    <div id="" class="searchResults col-md-12">
+      <ul class="joblist-wrapper" >
+        <li class="job-wrapper ps-relative" *ngFor="let Sandesh of Messagelist; let i=index">
+            <!--  -->
+          <!-- <h2 class="job-title m-b-5">Company Location : {{ShowForm}}</h2> -->
+          <div class="clearfix"></div>
+  
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12"><strong>Subject :</strong> {{Sandesh.subject}}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+                <div class="col-md-12"><strong>Message :</strong>  {{Sandesh.message ==
+                  null?
+                  'NA':(Sandesh.message.length>22)? (Sandesh.message |
+                  slice:0:22)+'..':(Sandesh.message)}}</div>
+            </div>
+          </div>
+          
+         <div class="form-group">
+            <div class="row">
+                <div class="col-md-12"><strong>Source Type :</strong> {{Sandesh.sourceType}}</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+                <div class="col-md-12"><strong>Created Date :</strong> {{Sandesh.createdate | date: 'dd/MM/yyyy'}}</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="job-list-action card-view-btns">
+              <a class="postit" href="javascript:void(0)" (click)="ViewMessage(template,Sandesh.message)" title="Read Message">Read Message</a>
+              <a class="postit" href="javascript:void(0)" title="Delete" (click)="PushedTemplate(template1)">Delete Message</a>
+            </div>
+           </div>
+
+           <ng-template #template1>
+            <div class="modal-body text-center">
+              <p>Do you want to delete this Message ?</p>
+              <br />
+              <br />
+              <button type="button" class="btn yl-btn no-rd" (click)="DeleteNdscMessage(Sandesh.sandeshId,i)">Yes</button>
+              <button type="button" (click)="modalRef.hide()" class="btn bl-btn no-rd">No</button>
+            </div>
+          </ng-template>
+
+
+          <ng-template #template>
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">Ndsc Message</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+         
+          {{messagemodal}}
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+    </div>
+  </div>

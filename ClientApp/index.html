@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rojgaar</title>
+  <base href="/">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Hard Shell Technologies Pvt Ltd">
+  <meta name="keywords" content="HSTPL, MRIGS, RURALSKILLS, SKILLS,INDIA, HARDSHELL,MRIGS,HARDSHELL TECHNOLOGIES PVT LTD, JOB, BLUE COLLAR JOB, NAUKRI, ROJGAAR, EMPLOYMENT, BLUE COLLAR NAUKRI, Naukri search, Rozgaar, Gift jobs, Government jobs, Rojgaar post, YUVA, EDUCATION, TRAINING,CURRICULUM, ROJGAAR, EMPLOYMENT, JOBS, EMPLOYER, TRAINING, TRAINING PARTNER, PIA, IMPLEMENTING AGENCIES, YOUTH, RURAL YOUTH, YOUTH 18-35, BLUE COLLAR JOBS, PLACEMENT, ASSESSMENT, GRIEVANCE, FINANCE, SOCIAL, CONNECTION, CERTIFICATION, APPTITUTDE, EVALUATION, ONLINE EXAM ">
+  <meta name="description" content="Rojgaar is an employer’s portal which intended to focus on lowest level of organization hierarchy (also termed as blue-collar jobs) moving towards higher level of jobs (white collar). The Rojgaar is a dedicated portal for employers which are linked to the MRIGS and Yuva Sampark.">
+  <meta name="google-site-verification" content="5aGYdarCClHUm7J9oulEAuO_2fxT5HD_XSQOw6XxxOU" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+  <link href="/assets/css/multiple-select.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://www.jquery-az.com/boots/css/bootstrap-multiselect/bootstrap-multiselect.css" />
+  <link rel="stylesheet" href="/assets/css/fonticons.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+  <link rel="stylesheet" href="/assets/css/plugins.css" />
+  <link rel="stylesheet" href="/assets/css/responsive.css" />
+  <script src="/assets/js/jquery-3.3.1.min.js"></script>
+  <script src="/assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/admin-style.css">
+  <link rel="stylesheet" href="/assets/css/common-style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/vendor/bootstrap.min.js"></script>
+  <script src="https://cdn.ckeditor.com/4.7.1/full/ckeditor.js"></script>
+  <link href="/assets/css/animate.min.css" rel="stylesheet" />
+  <style class="cp-pen-styles">
+    #carousel3d .carousel-3d-slide {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      text-align: center;
+      background-color: #fff;
+      padding: 10px;
+      -webkit-transition: all .4s;
+      transition: all .4s;
+    }
+
+      #carousel3d .carousel-3d-slide.current {
+        background-color: #333;
+        color: #fff;
+      }
+
+        #carousel3d .carousel-3d-slide.current span {
+          font-size: 20px;
+          font-weight: 500;
+        }
+  </style>
+  <style>
+    /* For Firefox */
+    .RemArr {
+      -moz-appearance: textfield;
+    }
+    /* Webkit browsers like Safari and Chrome */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target=".navbar-collapse">
+  <app-root>
+  </app-root>
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-7461373922907561",
+      enable_page_level_ads: true
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.2.201711092/classList.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-73402997-4"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkvPepni5qJnH6v4jdAacXH-qsJOSMAVU&&libraries=geometry,drawing,places,address"
+          async defer></script>
+  <script src="/assets/js/multiple-select.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-73402997-4');
+  </script>
+  <script>
+
+    function checkDec(el) {
+      var ex = /^[0-9]+\.?[0-9]*$/;
+      if (ex.test(el.value) = false) {
+        el.value = el.value.substring(0, el.value.length - 1);
+      }
+    }
+
+    $(document).ready(function () {
+      $('.arrow').click(function () {
+        $('.collapse-tab').toggleClass('show_it');
+        $(this).toggleClass('rotated');
+      });
+    });
+
+    $(document).ready(function () {
+      $('.custom-accordion .panel-title > a').click(function () {
+        $(this).toggleClass('active');
+        $(this).parent().parent().parent().siblings().children().children('.panel-title').children('a').removeClass('active');
+      });
+    });
+    $(document).mouseup(function (e) {
+      $('.user-sec a').click(function () {
+        $('.nav-user-opt').toggleClass('show_it');
+      });
+      var container = $(".nav-user-opt"); // YOUR CONTAINER SELECTOR
+
+      if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+      {
+        $('.nav-user-opt').removeClass('show_it');
+      }
+    });
+    $(document).mouseup(function (e) {
+      $('#dropd-btn').click(function () {
+        $('#accordion').toggleClass('show_it');
+      });
+      var container = $("#accordion"); // YOUR CONTAINER SELECTOR
+
+      if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+      {
+        $('#accordion').removeClass('show_it');
+      }
+    });
+    $(document).on('click', '.browse', function () {
+      var file = $(this).parent().parent().parent().find('.file');
+      file.trigger('click');
+    });
+    $(document).on('click', '.browsePhotos', function () {
+      var file = $(this).parent().parent().parent().find('.file');
+      file.trigger('click');
+    });
+    $(document).on('change', '.file', function () {
+      try {
+
+        var fp = $("#filUploadDocument");
+        var name = '';
+        for (var i = 0; i < fp[0].files.length; i++) {
+          name += fp[0].files[i].name + ","
+        }
+        $(this).parent().find('.form-control').val(name.replace(/C:\\fakepath\\/i, ''));
+
+      } catch (e) {
+
+      }
+
+    });
+
+    $(document).on('click', '.Cover', function () {
+      var file = $(this).parent().parent().parent().find('.file1');
+      file.trigger('click');
+    });
+    $(document).on('change', '.file1', function () {
+      try {
+
+        var fp = $("#CoverUploadDocument");
+        var name = '';
+        for (var i = 0; i < fp[0].files.length; i++) {
+          name += fp[0].files[i].name + ","
+        }
+        $(this).parent().find('.form-control').val(name.replace(/C:\\fakepath\\/i, ''));
+
+      } catch (e) {
+
+      }
+
+    });
+
+    // To fix left menu
+
+    if ($(window).width() > 1200) {
+      $(window).scroll(function () {
+        var y = $(this).scrollTop();
+
+        if (y >= 550) {
+          $('.add-sec').addClass('fixed-aside');
+        }
+        else {
+          $('.add-sec').removeClass('fixed-aside');
+        }
+
+      });
+    }
+
+    if ($(window).width() < 1200 && $(window).width() > 768) {
+      $(window).scroll(function () {
+        var y = $(this).scrollTop();
+
+        if (y >= 120) {
+          $('.add-sec').addClass('fixed-aside-tab');
+        }
+        else {
+          $('.add-sec').removeClass('fixed-aside-tab');
+        }
+
+      });
+    }
+
+    //more less
+    $(document).ready(function () {
+      var showChar = 100;
+      var ellipsestext = "...";
+      var moretext = "More";
+      var lesstext = "Less";
+      $('.more').each(function () {
+        var content = $(this).html();
+
+        if (content.length > showChar) {
+
+          var c = content.substr(0, showChar);
+          var h = content.substr(showChar - 1, content.length - showChar);
+
+          var html = c + '<span class="moreellipses">' + ellipsestext + ' </span><span class="morecontent"><span>' + h + '</span>  <a href="" class="morelink">' + moretext + '</a></span>';
+
+          $(this).html(html);
+        }
+
+      });
+
+      $(".morelink").click(function () {
+        if ($(this).hasClass("less")) {
+          $(this).removeClass("less");
+          $(this).html(moretext);
+        } else {
+          $(this).addClass("less");
+          $(this).html(lesstext);
+        }
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+      });
+    });
+
+    // Applied globally on all textareas with the "autoExpand" class
+    $(document)
+      .one('focus.autoExpand', 'textarea.autoExpand', function () {
+        var savedValue = this.value;
+        this.value = '';
+        this.baseScrollHeight = this.scrollHeight;
+        this.value = savedValue;
+      })
+      .on('input.autoExpand', 'textarea.autoExpand', function () {
+        var minRows = this.getAttribute('data-min-rows') | 0, rows;
+        this.rows = minRows;
+        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
+        this.rows = minRows + rows;
+      });
+
+    // Examination full screen view
+    function errorHandler() {
+      alert('mozfullscreenerror');
+    }
+    document.documentElement.addEventListener('mozfullscreenerror', errorHandler, false);
+
+    // toggle full screen
+    function toggleFullScreen() {
+      if (!document.fullscreenElement &&    // alternative standard method
+        !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (document.documentElement.mozRequestFullScreen) {
+          document.documentElement.mozRequestFullScreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+        }
+      } else {
+        // enable();
+        if (document.cancelFullScreen) {
+          document.cancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
+      }
+      disable();
+    }
+    function removeFullScreen() {
+      enable();
+      if (document.cancelFullScreen) {
+        document.cancelFullScreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
+      }
+    }
+    function disable() {
+      disableoncontextmenu();
+      disableonkeydown();
+      disableondragstart();
+    }
+
+    function disableoncontextmenu() {
+      document.oncontextmenu = function (e)        //check for the right click
+      {
+        return false;
+      }
+    }
+    function disableonkeydown() {
+      document.onkeydown = function (e) {
+        return disableCtrlKeyCombination(e);
+      }
+    }
+    function disableondragstart() {
+      document.ondragstart = function (e) {
+        return false;
+      }
+    }
+
+    function enable() {
+      enableoncontextmenu();
+      enableonkeydown();
+      enableondragstart();
+    }
+
+    function enableoncontextmenu() {
+      document.oncontextmenu = function (e)        //check for the right click
+      {
+        return true;
+      }
+    }
+    function enableonkeydown() {
+      document.onkeydown = function (e) {
+        return true;
+      }
+    }
+    function enableondragstart() {
+      document.ondragstart = function (e) {
+        return true;
+      }
+    }
+
+    function disableCtrlKeyCombination(e) {
+      //list all CTRL + key combinations you want to disable
+      var forbiddenKeys = new Array('a', 'n', 'c', 'x', 'v', 'j', 'w');
+      var key;
+      var isCtrl;
+      if (window.event) {
+        key = window.event.keyCode;     //IE
+        if (window.event.ctrlKey)
+          isCtrl = true;
+        else
+          isCtrl = false;
+      }
+      else {
+        key = e.which;     //firefox
+        if (e.ctrlKey)
+          isCtrl = true;
+        else
+          isCtrl = false;
+      }
+      //if ctrl is pressed check if other key is in forbidenKeys array
+      if (isCtrl) {
+        for (i = 0; i < forbiddenKeys.length; i++) {
+          //case-insensitive comparation
+          if (forbiddenKeys[i].toLowerCase() == String.fromCharCode(key).toLowerCase()) {
+            //alert('Key combination CTRL + ' + String.fromCharCode(key) + ' has been disabled.');
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+    //tooltip
+    $(document).ready(function () {
+      //  $('[data-toggle="tooltip"]').tooltip();
+      // Mobile top menu
+      $('.mobile-navigation').click(function () {
+        $('.desktop-main-nav').toggleClass('show-menu');
+        $('.mobile-navigation i').toggleClass('fa-bars fa-times');
+      });
+
+      $('.mobile-left-menu').click(function () {
+        $('.left-menu-item').toggleClass('show-left-menu');
+        $('.mobile-left-menu i').toggleClass('fa-location-arrow fa-times');
+      });
+
+      $('.nav-font ul li ul li a').click(function () {
+        $('.left-menu-item').toggleClass('show-left-menu');
+        $('.mobile-left-menu i').toggleClass('fa-location-arrow fa-times');
+      });
+
+    });
+
+    jQuery.each(jQuery('textarea[data-autoresize]'), function () {
+      var offset = this.offsetHeight - this.clientHeight;
+
+      var resizeTextarea = function (el) {
+        jQuery(el).css('height', 'auto').css('height', el.scrollHeight + offset);
+      };
+      jQuery(this).on('keyup input', function () { resizeTextarea(this); }).removeAttr('data-autoresize');
+    });
+
+    //my sampark tab
+    $(document).ready(function () {
+      $('.samaparkTab ul li a').click(function () {
+        $(this).parent().addClass('tabActive');
+        $(this).parent().siblings().removeClass('tabActive');
+      });
+    });
+
+  </script>
+
+  <script>
+    new WOW().init();
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      //signupmenu next step script
+      $('.signupmenu .nextBtn').click(function () {
+        $(this).parent().parent().siblings('.div1').addClass('hide');
+        $(this).parent().parent().siblings('.div2').addClass('show');
+        $(this).hide();
+      });
+    });
+  </script>
+  <script>
+    $('#signInModal').on('shown.bs.modal', function () {
+      $('input').trigger('focus')
+    });
+  </script>
+  <script>
+    function toggleChevron(e) {
+      $(e.target)
+        .prev('.panel-heading')
+        .find("i.indicator")
+        .toggleClass('fa-caret-down fa-caret-right');
+    }
+    $('#accordion').on('hidden.bs.collapse', toggleChevron);
+    $('#accordion').on('shown.bs.collapse', toggleChevron);
+  </script>
+</body>
+</html>

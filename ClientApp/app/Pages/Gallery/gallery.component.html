@@ -1,0 +1,75 @@
+<div class="culmn rojgaar">
+  <app-PublicHeader></app-PublicHeader>
+</div>
+
+<div class="gallery">
+  <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery> 
+</div>
+<app-PublicFooter></app-PublicFooter>
+
+<ng-template #template> 
+  <div class="modal-body">
+    <div class="legend-box m-b-5 p-l-0 margin-top-20 event-creation">
+      <div class="col-md-12">
+        <span class="legend-title"><label class="biz-label">Please fill below details</label></span>
+      </div>
+      <div class="form-group m-t-10">
+        <div class="col-md-3 col-md-offset-1">
+          Name<span class="mandatory">*</span>
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-3 col-md-offset-1">
+          Designation<span class="mandatory">*</span>
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-3 col-md-offset-1">
+          Mobile<span class="mandatory">*</span>
+        </div>
+        <div class="col-md-6">
+          <input type="number" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-3 col-md-offset-1">
+          Email<span class="mandatory">*</span>
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" />
+        </div>
+      </div>
+
+      <div class="form-group m-t-10">
+        <div class="col-md-9 col-md-offset-1">
+          <input type="checkbox" class="" />  I am an Employer?
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-9 col-md-offset-1">
+          <input type="checkbox" class="" />  I am an Agency?
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-9 col-md-offset-1">
+          <input type="checkbox" class="" />  Others
+        </div>
+      </div>
+    </div>      
+    </div>
+  <div class="modal-footer p-t-0">
+    <button type="button" class="btn btn-w-shadow no-rd">
+      Save
+    </button>
+    <button type="button" class="btn btn-w-shadow no-rd" aria-label="Close" (click)="modalRef.hide()">
+      Close
+    </button>
+  </div>
+</ng-template>

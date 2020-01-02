@@ -1,0 +1,10 @@
+<router-outlet>
+  <ng4-loading-spinner  [timeout]="10000"   [zIndex]="9999"></ng4-loading-spinner>
+  <!--<div *ngIf="showLoader!=0"  class="loading"><img src="../assets/images/LOADER-ROJ1.gif" /></div>-->
+</router-outlet>
+<ng-progress style="height: 4px;" [positionUsing]="'marginLeft'" [minimum]="0.15" [maximum]="1"
+             [speed]="200" [showSpinner]="false" [color]="'#f19636'" [trickleSpeed]="250" [thick]="false" [ease]="'linear'"></ng-progress>
+
+
+             
+<!--<img src="../assets/images/blog2.jpg" />-->

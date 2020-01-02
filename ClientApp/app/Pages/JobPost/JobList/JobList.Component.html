@@ -1,0 +1,303 @@
+<div class="dash-head">
+  <p>Listed Jobs</p>
+  <a class="btn btn-w-shadow no-rd pull-right" tabindex="0" [routerLink]="'/CreateJobs'">Create Job</a>
+</div>
+<div class="cleafix"></div>
+<div class="page-filters">
+  <h2>
+    <a href="javascript:void(0);">
+      <i class="fa fa-filter" aria-hidden="true"></i> Apply Filters
+      <span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+    </a>
+  </h2>
+  <form (submit)="GetFilterJobsList()" [formGroup]="FilterJobList">
+    <div class="filter-wrapper">
+      <div class="form-group">
+        <div class="col-md-4 col-sm-4">
+          <label>Industry</label>
+          <select class="form-control" formControlName="industry">
+            <option value="" selected>Select</option>
+            <option *ngFor="let item of IndustryArea" value="{{item.id}}">{{item.industryName}}</option>
+          </select>
+
+        </div>
+        <div class="col-md-4 col-sm-4">
+          <label>Functional Area</label>
+          <select class="form-control" formControlName="functionalarea">
+            <option value="" class="" selected="selected">Select</option>
+            <option *ngFor="let item of FunctionArea" value="{{item.id}}">{{item.functionalAreaName}}</option>
+          </select>
+        </div>
+        <div class="col-md-4 col-sm-4">
+          <label>Search Keywords<span></span></label>
+          <input type="text" class="form-control" formControlName="JobKeyword" placeholder="Search" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-4 col-sm-6 p-l-0">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <label>MIN CTC</label>
+            <input disabled value="{{minCtc}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MinCtc" class="form-control" placeholder="MinCtc">
+
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+            <label>Max CTC</label>
+            <input disabled value="{{maxCtc}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MaxCtc" class="form-control" placeholder="MaxCtc">
+            <div class="custom-slider">
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 custom-slider mrg-min p-r-0">
+            <label></label>
+            <ng5-slider [(value)]="minCtc" [(highValue)]="maxCtc" [options]="CtcOptions"></ng5-slider>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+            <label>MIN Exp</label>
+            <input disabled value="{{minExp}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MinExp" class="form-control" placeholder="MinExp">
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+            <label>Max Exp</label>
+            <input disabled value="{{maxExp}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MaxExp" class="form-control" placeholder="MaxExp">
+          </div>
+          <div class="col-md-12 col-sm-12 custom-slider mrg-min p-d-0">
+            <label></label>
+            <ng5-slider [(value)]="minExp" [(highValue)]="maxExp" [options]="ExpOptions"></ng5-slider>
+          </div>
+        </div>        
+      </div>
+      <div class="row text-center m-t-5 r-btn-group">
+          <button type="button" (click)="ResetFilterResult()" class="btn btn-w-shadow no-rd">Reset</button>
+          <button type="submit" class="btn btn-w-shadow no-rd filter-toggle">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="col-md-12" *ngIf="Showpushdata && searchsts==1">
+  <div class="col-md-12 jd-detail job-wrapper searchResults">
+    <div class="form-group m-b-0">
+      <div class="row">
+        <div class="col-md-12">
+          <h4 class="m-b-5">Search Result</h4>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Industry</span>: {{ShowPushData.industry}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Functional Area</span>: {{ShowPushData.functionalarea}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Min CTC</span>: {{ShowPushData.Minctc}}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Max CTC</span>: {{ShowPushData.Maxctc}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Min Exp</span>: {{ShowPushData.MinExp}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Max Exp</span>: {{ShowPushData.MaxExp}}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <span class="text-strong">Search Keywords</span>: {{ShowPushData.JobKeyword}}
+        </div>
+      </div>
+    </div>
+  </div>
+ </div>
+
+ <div class="cleafix"></div>
+ <div  *ngIf="showErrorMessage" class="alert alert-danger col-md-12">
+  <strong>{{errormsg}} !</strong>
+</div>
+
+ <div  class="col-md-12">
+      <div class="all-jobs-list">
+        <div id="" class="searchResults">
+          <ul class="joblist-wrapper">
+            <li class="job-wrapper ps-relative {{item.isJobPushed?'posted':''}}" *ngFor="let item of jobdetail">
+              <ng-template #template>
+                <div class="modal-body text-center">
+                  <p>Do you want to Revoke this job?</p>
+                  <br />
+                  <br />
+                  <button type="button" class="btn yl-btn no-rd" (click)="RevokeJob(item.jobId)">Yes</button>
+                  <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+                </div>
+              </ng-template>
+              <ng-template #template10>
+                <div class="modal-body text-center">
+                  <p>Do you want to Re-create this job?</p>
+                  <br />
+                  <br />
+                  <button type="button" class="btn yl-btn no-rd" (click)="reCreateJob(item)">Yes</button>
+                  <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+                </div>
+              </ng-template>
+              <ng-template #template9>
+                <div class="modal-body text-center">
+                  <p>Do you want to Scrap this job?</p>
+                  <br />
+                  <br />
+                  <button type="button" class="btn yl-btn no-rd" (click)="performJobAction(item,'scrapjob')">Yes</button>
+                  <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+                </div>
+              </ng-template>
+              <ng-template #template2>
+                <div class="modal-body text-center">
+                  <p>Do you want to post this job?</p>
+                  <br />
+                  <br />
+                  <button type="button" class="btn yl-btn no-rd" (click)="performJobAction(item,'postjob')">Yes</button>
+                  <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+                </div>
+              </ng-template>
+              <ng-template #template3>
+                <div class="modal-body text-center">
+                  <p>Please add opening!</p>
+                  <br />
+                  <br />
+
+                  <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">Ok</button>
+                </div>
+              </ng-template>
+
+              <ng-template #template4>
+                <div class="modal-body text-center">
+                  <p>Do you want to close this job?</p>
+                  <br />
+                  <br />
+                  <button type="button" class="btn yl-btn no-rd" (click)="performJobAction(item,'closeJob')">Yes</button>
+                  <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+                </div>
+              </ng-template>
+              <div class="form-group m-b-0">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h2 class="job-title"><a href="javascript:void(0)" [routerLink]="'/ViewJob'" (click)="setId(item.jobId)">{{item.companyName}}</a></h2>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group m-b-0">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3 class="company-name" style="text-transform:capitalize">{{item.jobTitle}} </h3>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h3 class="company-name m-b-0">Job Code : {{item.jobcode ? item.jobcode : 'NA'}}</h3>
+                  </div>
+                  <div class="col-md-6"><strong>Valid upto : </strong> <span>{{item.validDate | date: 'dd/MM/yyyy'}}</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12"><strong>Contact Person : </strong> <span>{{item.name}}</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6"><strong>Contact No. : </strong> <span>{{item.mobile}}</span></div>
+                  <div class="col-md-6"><strong>No. of Vacancies : </strong> <span>{{item.noofvacancy}}</span></div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6"><strong>Min Experience (in Yrs): </strong> <span>{{item.minExp!=null?item.minExp:'NA'}}</span></div>
+                  <div class="col-md-6"><strong>Max Experience (in Yrs): </strong> <span>{{item.maxExp!=null?item.maxExp:'NA'}}</span></div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6"><strong>Min Ctc(INR): </strong> <span>{{item.minctc!=null?item.minctc:'NA'}}</span></div>
+                  <div class="col-md-6"><strong>Max Ctc(INR): </strong> <span>{{item.maxctc!=null?item.maxctc:'NA'}}</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12"><strong>Industry: </strong> <span>{{item.industryArea}}</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12"><strong>Functional Area : </strong> <span>{{item.functionalArea}}</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12 lang-ellip" title="{{item.jobDescription}}">
+                    <strong>Job Description : </strong> {{item.jobDescription}}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="item.isJobPushed && item.isClosed==false">
+                <div class="row">
+                  <div class="col-md-12">
+                    <span><strong>Posted Date : </strong> {{item.jobPushedDate | date: 'dd/MM/yyyy' }}</span>
+                  </div>
+                </div>
+                
+              </div>
+           
+              
+                      <div class="form-group">
+                          
+                          <!-- {{item.isValidJob}}||{{item.isJobPushed}}||{{item.isClosed}}||{{item.isScrap}} -->
+                <div class="job-list-action card-view-btns">
+                  <!-- <a href="javascript:void(0)" [ngClass]="(!item.isJobPushed && item.isScrap == false)?'postit':'viewit'" title="Replicate this job" (click)="reCreateJob(item)" *ngIf="item.isjobowner && (!item.isValidJob||item.isJobPushed||item.isClosed||item.isScrap)">Replicate</a> -->
+                  <a href="javascript:void(0)" [ngClass]="(!item.isJobPushed && item.isScrap == false)?'postit':'viewit'" title="Replicate this job" (click)="reCreateJob(item)" *ngIf="item.isjobowner && (item.isJobPushed||item.isClosed||item.isScrap) && (!item.isValidJob)">Replicate</a>
+
+                  <a href="javascript:void(0)" [ngClass]="(!item.isJobPushed && item.isScrap == false)?'postit':'viewit'" title="Replicate this job" (click)="reCreateJob(item)" *ngIf="item.isjobowner && (item.isJobPushed||item.isClosed||item.isScrap) && item.isValidJob">Replicate</a>
+
+                  <a href="javascript:void(0)" class="revokeit" title="Scrap this job" *ngIf="item.isJobPushed && item.isScrap == false && item.isClosed == false && item.isjobowner && item.isValidJob" (click)="scrapTemplate(template9)">Scrap</a>
+                  <a href="javascript:void(0)" class="viewit" title="Revoke this job" *ngIf="item.isJobPushed && item.isScrap == false &&item.isClosed==false &&item.isjobowner && item.isValidJob" (click)="RevokeTemplate(template)">Revoke</a>
+                  <a href="javascript:void(0)" class="revokeit" title="Close this job" *ngIf="item.isJobPushed && item.isScrap == false && item.isClosed==false && item.isjobowner && item.isValidJob" (click)="RevokeTemplate(template4)">Close</a>
+                  <a href="javascript:void(0)" class="revokeit" title="This job is scraped" *ngIf="item.isJobPushed ==false && item.isScrap==true &&item.isClosed==false&&item.isjobowner">Scraped</a>
+                  <a href="javascript:void(0)" class="revokeit" title="This job is closed" *ngIf=" item.isJobPushed && item.isScrap == false && item.isClosed && item.isjobowner">Closed</a>
+                  <a href="javascript:void(0)" class="postit" *ngIf="item.noofvacancy=='0' && !item.isJobPushed && item.isScrap == false && item.isjobowner" title="Post this jobssss" (click)="AlertBox(template3)">Post</a>
+                  <a href="javascript:void(0)" class="postit" *ngIf="!item.isJobPushed && item.noofvacancy!='0' && item.isScrap == false && item.isValidJob && item.isjobowner" title="Post this job" (click)="PushedTemplate(template2)">Post</a>
+                  <a href="javascript:void(0)" class="viewit" title="View this job" [routerLink]="'/ViewJob'" *ngIf="item.isJobPushed || item.isScrap || item.isClosed || item.isjobowner==false" (click)="setId(item.jobId,item.isJobPushed,item.isScrap,item.isClosed)">View</a>
+                  <a href="javascript:void(0)" class="viewit" title="Edit/View this job" [routerLink]="'/ViewJob'" *ngIf="!item.isJobPushed && !item.isScrap && item.isjobowner" (click)="setId(item.jobId,item.isJobPushed,item.isScrap,item.isClosed)">Edit/View</a>
+                  <!-- <a href="javascript:void(0)" class="viewit" title="View this job" [routerLink]="'/ViewJob'" *ngIf="!item.isJobPushed && !item.isScrap && !item.isValidJob && item.isjobowner" (click)="setId1(item.jobId,item.isJobPushed,item.isScrap)">View</a> -->
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <div class="job-list-action card-view-btns">{{item.isjobowner}}
+                  <a href="javascript:void(0)" [ngClass]="(!item.isJobPushed && item.isScrap == false)?'postit':'viewit'" title="Replicate this job" (click)="reCreateJob(item)" *ngIf="!item.isValidJob||item.isJobPushed||item.isClosed||item.isScrap &&item.isjobowner">Replicate</a>
+                  <a href="javascript:void(0)" class="revokeit" title="Scrap this job" *ngIf="item.isJobPushed && item.isScrap == false && item.isClosed == false && item.isjobowner" (click)="scrapTemplate(template9)">Scrap</a>
+                  <a href="javascript:void(0)" class="viewit" title="Revoke this job" *ngIf="item.isJobPushed && item.isScrap == false &&item.isClosed==false && item.isjobowner" (click)="RevokeTemplate(template)">Revoke</a>
+                  <a href="javascript:void(0)" class="revokeit" title="Close this job" *ngIf="item.isJobPushed && item.isScrap == false && item.isClosed==false && item.isjobowner" (click)="RevokeTemplate(template4)">Close</a>
+                  <a href="javascript:void(0)" class="revokeit" title="This job is scraped" *ngIf="item.isJobPushed ==false && item.isScrap==true &&item.isClosed==false && item.isjobowner">Scraped</a>
+                  <a href="javascript:void(0)" class="revokeit" title="This job is closed" *ngIf=" item.isJobPushed && item.isScrap == false && item.isClosed">Closed</a>
+                  <a href="javascript:void(0)" class="postit" *ngIf="item.noofvacancy=='0' && !item.isJobPushed && item.isScrap == false && item.isjobowner" title="Post this job" (click)="AlertBox(template3)">Post</a>
+                  <a href="javascript:void(0)" class="postit" *ngIf="!item.isJobPushed && item.noofvacancy!='0' && item.isScrap == false && item.isValidJob && item.isjobowner" title="Post this job" (click)="PushedTemplate(template2)">Post</a>
+                  <a href="javascript:void(0)" class="viewit" title="View this job" [routerLink]="'/ViewJob'" *ngIf="item.isJobPushed || item.isScrap || item.isClosed || !item.isjobowner" (click)="setId(item.jobId,item.isJobPushed,item.isScrap,item.isClosed)">View</a>
+                  <a href="javascript:void(0)" class="viewit" title="Edit/View this job" [routerLink]="'/ViewJob'" *ngIf="!item.isJobPushed && !item.isScrap && item.isValidJob && item.isjobowner" (click)="setId(item.jobId,item.isJobPushed,item.isScrap,item.isClosed)">Edit/View</a>
+                  <a href="javascript:void(0)" class="viewit" title="View this job" [routerLink]="'/ViewJob'" *ngIf="!item.isJobPushed && !item.isScrap && !item.isValidJob && !item.isjobowner" (click)="setId1(item.jobId,item.isJobPushed,item.isScrap)">View</a>
+                </div>
+              </div> -->
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>

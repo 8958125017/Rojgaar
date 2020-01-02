@@ -1,0 +1,389 @@
+<div class="dash-head">
+  <p>Reschedule Interview</p>
+  <a href="javascript:void(0)" *ngIf="BackToInterviewList" (click)="BackToJobList()" class="back-button pull-right"
+    title="Go Back"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+</div>
+<!-- {{jobdetail|json}} -->
+<div class="col-md-12" *ngIf="JobInterviewListValid">
+  <div class="job-description">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper edit-delete-h" *ngFor="let jobs of jobdetail">
+          <div class="margin-bottom-20"></div>
+          <div class="job-header-1">Posted Job Details</div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="job-title">Job Posted By : {{jobs.companyName ? jobs.companyName : 'NA'}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name m-b-10">Job Title : {{jobs.jobTitle ? jobs.jobTitle : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="company-name m-b-10">Job Code : {{jobs.jobcode ? jobs.jobcode : 'NA'}}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4">
+                <span class="text-strong">Name : </span> {{jobs?.name}}
+              </div>
+              <div class="col-md-4">
+                <span class="text-strong">Designation : </span> {{jobs?.designation}}
+              </div>
+              <div class="col-md-4">
+                <span class="text-strong">Mobile No. : </span> {{jobs?.mobile}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4">
+                <span class="text-strong">Phone No. : </span> {{jobs.landlineNumber ? jobs.landlineNumber :'NA'}}
+              </div>
+              <div class="col-md-4">
+                <span class="text-strong">Email : </span> {{jobs.email ? jobs.email : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Other Detail : </span>
+                <span [innerHtml]="jobs.otherDetail ? jobs.otherDetail :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Job Description : </span>
+                <span [innerHtml]="jobs.jobDescription ? jobs.jobDescription :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4">
+                <span *ngIf="jobs.ageMax != '0'">
+                  <span class="text-strong">Age :</span> {{jobs.ageMin ?jobs.ageMin:'NA'}} - {{jobs.ageMax ?
+                  jobs.ageMax : 'NA'}}
+                </span>
+                <span *ngIf="jobs.ageMax=='0'">
+                  <span class="text-strong">Age :</span> NA
+                </span>
+              </div>
+
+              <div class="col-md-4">
+                <span *ngIf="jobs.male!=0||jobs.female!=0||jobs.transgender!=0">
+                  <span class="text-strong">Gender : </span> {{jobs.male==1?' Male ':''}} {{jobs.female==2 ?' ,
+                  ':''}} {{jobs.female==2 ?' Female
+                  ':''}}{{jobs.transgender==3?' , ':''}}
+                  {{jobs.transgender==3?' Transgender ':''}}
+                </span>
+                <span *ngIf="jobs.male == '0' &&jobs.female == '0' && jobs.transgender == '0'">
+                  <span class="text-strong">Gender : </span> NA
+                </span>
+              </div>
+              <div class="col-md-4">
+                <span *ngIf="jobs.maxExp != '0'">
+                  <span class="text-strong">Experience (in Yrs) :</span> {{jobs.minExp ?jobs.minExp:'NA'}} -
+                  {{jobs.maxExp ?
+                  jobs.maxExp : 'NA'}}
+                </span>
+                <span *ngIf="jobs.maxExp=='0'">
+                  <span class="text-strong">Experience :</span> NA
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4">
+                <span class="text-strong">Posted by : </span> {{jobs.posteDby ? jobs.posteDby : 'NA'}}
+              </div>
+              <div class="col-md-4">
+                <span class="text-strong">Probation Duration (in days) : </span> {{jobs.probationDuration !=0 ?
+                jobs.probationDuration :'NA'}}
+              </div>
+              <div class="col-md-4">
+                <span class="text-strong">OJT Duration (in Hrs) : </span> {{jobs.ojtDuration !=0 ? jobs.ojtDuration :
+                'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Keyword : </span>
+                <!--{{jobs.keyword ? jobs.keyword : 'NA'}}-->
+                <span [innerHtml]="jobs.keyword ? jobs.keyword : 'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Functional Area : </span> {{jobs.functionalArea ? jobs.functionalArea :
+                'NA'}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Industry Area : </span> {{jobs.industryArea ? jobs.industryArea : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Training Sector : </span> {{jobs.trainingSectorList ?
+                jobs.trainingSectorList : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Training Trade : </span> {{jobs.tradeList ?
+                jobs.tradeList : 'NA'}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="text-strong">Role and Responsibility : </span>
+                <span [innerHtml]="jobs.rolesresPonsiblty ? jobs.rolesresPonsiblty :'NA'" style="white-space: pre-wrap;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix margin-bottom-20"></div>
+          <div class="dash-head dash-head-2">
+            <p>Interview Details</p>
+          </div>
+          <div class="clearfix margin-bottom-20"></div>
+          <div class="location-details-wrapper">
+            <div class="label-normal ps-relative location-details">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-4">
+                    <span class="text-strong">Date : </span>{{InterviewById.interviewDateFrom | date:
+                    'dd/MM/y'}} - {{InterviewById.interviewDateTo | date:
+                    'dd/MM/y'}}
+                  </div>
+                  <div class="col-md-4">
+                    <span class="text-strong">Time : </span>{{converttime(InterviewById.interviewFrom)}}-{{converttime(InterviewById.interviewTo)}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4" *ngIf="InterviewById.workloc!=0">
+                    <span class="text-strong">Location : </span>{{InterviewById.worklocName}}
+                  </div>
+                  <div class="col-md-4" *ngIf="InterviewById.workloc==0">
+                    <span class="text-strong">Address : </span>{{InterviewById.address}}
+                  </div>
+                  <div class="col-md-4">
+                    <span class="text-strong">State : </span> {{InterviewById.stateName}}
+                  </div>
+                  <div class="col-md-4">
+                    <span class="text-strong">District : </span> {{InterviewById.districtName}}
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix margin-bottom-20"></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- Job detail and interviewdetail end here  -->
+<!-- {{FilteredResult|json}} -->
+<div class="col-md-12">
+  <div class="usersWrapper">
+    <div class="table-responsive">
+      <table datatable id="DataTables_Table_0" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-bordered">
+        <thead class="bg-info">
+          <tr>
+            <th>S.No.</th>
+            <th>Applicant Name</th>
+            <th>Opening Code</th>
+            <th>Gender</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Domicile Address</th>
+            <th>Partner Name</th>
+            <th>Training Scheme</th>
+            <th>Training Trade</th>
+            <th>View</th>
+            <th>PIA Contact Details</th>
+            <th>Action</th>
+          </tr>
+        </thead> 
+        <tbody>
+          <tr *ngFor="let item of FilteredResult let i=index" [class.row-active]="i == selectedRow">
+            <td>{{i+1}}</td>
+            <td>{{item.candname}}</td>
+            <td>{{item.jobopeningcode}}</td>
+            <td>{{item.candidategender}}</td>
+            <td>{{item.interviewdatefrom | date:
+                'dd/MM/y'}}-{{item.interviewdateto | date:
+                'dd/MM/y'}}</td>
+            <td>{{converttime(item.interviewfrom)}}-{{converttime(item.interviewto)}}</td>
+            <td>{{item.jobopeninglocation ? item.jobopeninglocation:'NA'}}</td>
+            <td>{{item.candidatedomicile ? item.candidatedomicile:'NA'}}</td>
+            <td>{{item.partnername ? item.partnername:'NA'}}</td>
+            <td>{{item.trainingscheme ? item.trainingscheme:'NA'}}</td>
+            <td>{{item.traningtrade ? item.traningtrade:'NA'}}</td>
+            <td>
+              <a href="javascript:void(0)" class="" title="View Details" (click)="setClickedRow(i);viewcandidateProfile(item.candidatesourceid==0?item.candId:item.candidatesourceid,item.apitype)">
+                View
+              </a>
+            </td>
+            <td style="text-align:center">
+              <a *ngIf="item.apitype=='MRIGS'" href="javascript:void(0)" class="" title="View Details" (click)="openpiaData(item.interviewSchldJOBID,item.jobOpeningCode,item.candidatesourceid==0?item.candId:item.candidatesourceid,item.apitype)">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+              </a>
+              <p *ngIf="item.apitype!='MRIGS'">N/A </p>
+            </td>
+            <td class="text-center">
+              <a class="btn btn-w-shadow no-rd" *ngIf = "item.interviewresultstatus==2" href="javascript:void(0)" tabindex="0" (click)="ViewRescheduleInterview(item.interviewSchldJOBID,item.interviewSchldId,item.candId,item.candjobopeningid,item.interviewdatefrom,item.interviewdateto,item.interviewfrom,item.interviewto,template5)">Reschedule</a>
+              <span *ngIf = "(item.interviewresultstatus==1 && item.offerletterstatus == 0)"><b>Selected</b></span>
+              <span *ngIf = "(item.interviewresultstatus == 0)"><b>Rejected</b></span>
+              <span *ngIf = "(item.offerletterstatus == 1 && item.joiningstatus == 0)"><b>Offer Letter Released</b></span>
+              <span *ngIf = "(item.joiningstatus == 1)"><b>Placed</b></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #temppia>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">PIA Contact Detail</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modaldpia.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <span [innerHtml]="PiaContacDetials.contactHtml | KeepHtml: 'html' "></span>
+  </div>
+</ng-template>
+<ng-template #template5>
+  <div class="modal-header">
+    <!--<h6 class="modal-title pull-left">Reschedule Interview</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="ResetRescheduleform();modalRefReschedule.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>-->
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="RescheduleInterviewForm" (ngSubmit)="submit()">
+      <div class="edit-profile-wrapper">
+        <div class="box-title">
+          <p class="box-title-content">
+            Reschedule Interview
+          </p>
+        </div>
+        <div class="box-content">
+          <div class="form-group m-b-10">
+            <div class="col-md-3 text-right">
+              <label>Date From<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-8">
+              <div class="input-group">
+                <input type="text" #valid1="bsDatepicker" [minDate]="minDate" placeholder="Select Date" disabled
+                  bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false  }" class="form-control"
+                  formControlName="InterviewDate" />
+                <span class="input-group-addon" (click)="valid1.toggle()" [attr.aria-expanded]="valid1.isOpen"><i class="fa fa-calendar"></i></span>
+                <errors [control]="RescheduleInterviewForm.controls.InterviewDate"></errors>
+              </div>
+              <p style="color:red ! important" *ngIf="!DateMsg">From Date Can Not Be Greater Than To Date</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-3 text-right">
+              <label>Date To<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-8">
+              <div class="input-group">
+                <input type="hidden" formControlName="jobid" />
+                <input type="hidden" formControlName="interviewid" />
+                <input type="hidden" formControlName="candidateid" />
+                <input type="text" #valid="bsDatepicker" [minDate]="minDate" placeholder="Select Date" disabled
+                  bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false  }" class="form-control"
+                  formControlName="InterviewDateTo" />
+                <span class="input-group-addon" (click)="valid.toggle()" [attr.aria-expanded]="valid1.isOpen"><i class="fa fa-calendar"></i></span>
+                <errors [control]="RescheduleInterviewForm.controls.InterviewDateTo"></errors>
+              </div>
+              <p style="color:red ! important" *ngIf="!DateMsg">From Date Can Not Be Greater Than To Date</p>
+
+            </div>
+          </div>
+
+          <div class="form-group m-b-10">
+            <div class="col-md-3 text-right">
+              <label>Time<span class="mandatory">*</span></label>
+            </div>
+            <div class="col-md-4">
+              <label>From<span class="mandatory"></span></label>
+              <div>
+                <input type="time" formControlName="fromtime" class="form-control" atp-time-picker />
+                <!-- <p style="color:red ! important" *ngIf="!TimeMsg">Please enter valid Time</p> -->
+                <!-- <p style="color:red ! important" *ngIf="!TimeRange">Interview Time Can Not Be Less Than 6 AM</p> -->
+              </div>
+              <errors [control]="RescheduleInterviewForm.controls.fromtime"></errors>
+            </div>
+            <div class="col-md-4">
+              <label>To<span class="mandatory"></span></label>
+              <div>
+                <input type="time" formControlName="totime" class="form-control" atp-time-picker />
+                <!-- <p style="color:red ! important" *ngIf="!TimeMsg">Please enter valid Time</p> -->
+                <!-- <p style="color:red ! important" *ngIf="!TimeRange">Interview Time Can Not Be More Than 10 PM</p> -->
+              </div>
+              <errors [control]="RescheduleInterviewForm.controls.totime"></errors>
+            </div>
+          </div>
+          <div class="form-group m-b-10">
+            <div class="col-md-3 text-right">
+              <label>Remarks<span class="mandatory"></span></label>
+            </div>
+            <div class="col-md-2">
+              <div class="input-group">
+                <input type="text" formControlName="remarks">
+              </div>
+              <errors [control]="RescheduleInterviewForm.controls.remarks"></errors>
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <button type="button" [disabled]="!(RescheduleInterviewForm.valid)" (click)="SubmitRescheduleInterview();"
+              class="btn btn-w-shadow no-rd pull-middle">Submit</button>
+          </div>
+        </div>
+      </div>
+      <div class="text-right">
+        <button class="btn btn-w-shadow no-rd" aria-label="Close" (click)="ResetRescheduleform();modalRefReschedule.hide()">Close</button>
+      </div>
+    </form>
+  </div>
+
+</ng-template>
+
+<div class="cleafix"></div>
+<app-CommonView-Layout></app-CommonView-Layout>

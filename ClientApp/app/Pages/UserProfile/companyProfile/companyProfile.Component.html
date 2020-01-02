@@ -1,0 +1,654 @@
+<div class="dash-head">
+  <p>company Profile</p>
+
+  <a (click)="backprofile()" href="javascript:void(0)" title="Go Back" *ngIf="closeStatus" class="btn btn-w-shadow no-rd pull-right"
+    tabindex="0"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
+  <!--<a class="back-button pull-right" (click)="backprofile()" href="javascript:void(0)" title="Go Back"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>-->
+</div>
+<div class="cleafix margin-bottom-20"></div>
+<div class="col-md-12">
+  <div class="update-profile company-profile" *ngIf="(CompanyProfileShow=='1')">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper ps-relative">
+          <div class="job-view">
+            <div>
+              <a href="javascript:void(0)">
+                <img src="{{GetCompanyProfileData[0]?.image!=null?GetCompanyProfileData[0]?.image :'assets/images/NoImage.png'}}"
+                  onError="this.src='../../../../assets/images/NoImage.png'" alt="" />
+              </a>
+            </div>
+            <div>
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <h2 class="job-title text-strong">Company Name</h2>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  <h2 class="job-title">{{GetCompanyProfileData[0]?.companyName}}
+                    {{GetCompanyProfileData[0]?.companyshortname?'(' + GetCompanyProfileData[0]?.companyshortname
+                    +')':''}}</h2>
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Registration Number</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.registraionNo}}
+                </div>
+              </div> -->
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Company Short Name</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.companyShortName}}
+                </div>
+              </div>
+
+              <!-- <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Short Name</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.description}}
+                </div>
+              </div> -->
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Tag Line</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.tagLine ? GetCompanyProfileData[0]?.tagLine : 'NA'}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Email</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.companyEmail}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Mobile</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.mobile}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Landline No.</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.landLineNo ? GetCompanyProfileData[0]?.landLineNo : 'NA'}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">WebSite Address.</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.website ? GetCompanyProfileData[0]?.website : 'NA'}}
+                </div>
+              </div>
+
+              <!-- <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">WebSite Address.</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.website}}
+                </div>
+              </div> -->
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">PAN</span>
+                </div>
+                <div class="col-md-3 col-sm-4">
+                  <span style="text-transform: uppercase">
+                    {{GetCompanyProfileData[0]?.pan ? GetCompanyProfileData[0]?.pan : 'NA'}}
+                  </span>
+                </div>
+                <div class="col-md-3 col-sm-4">
+                  <a [href]="panGetImage" target="_blank" *ngIf="panGetImage" class="pan-view" title="View Pan Card Image"><i
+                      class="fa fa-eye" aria-hidden="true"></i></a>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">GSTIN</span>
+                </div>
+                <div class="col-md-3 col-sm-4">
+                  <span style="text-transform: uppercase">{{GetCompanyProfileData[0]?.gstn ? GetCompanyProfileData[0]?.gstn : 'NA'}}</span>
+                </div>
+                <div class="col-md-3 col-sm-4">
+                  <a [href]="gstGetImage" target="_blank" *ngIf="gstGetImg" class="pan-view" title="View GST Image"><i
+                      class="fa fa-eye" aria-hidden="true"></i></a>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Industry Type</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.industryType}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Office Address</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.officeAddress}}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">District</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.districtName}}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">State</span>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                  {{GetCompanyProfileData[0]?.stateName}}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Company Description</span>
+                </div>
+                <div class="col-md-9 col-sm-8" align="justify">
+                  {{GetCompanyProfileData[0]?.description ? GetCompanyProfileData[0]?.description :'NA'}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">About Company</span>
+                </div>
+                <div class="col-md-9 col-sm-8" align="justify">
+                  {{GetCompanyProfileData[0]?.aboutCompany ? GetCompanyProfileData[0]?.aboutCompany :'NA'}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-3 col-sm-4">
+                  <span class="text-strong">Company Geo Location</span>
+                </div>
+                <div class="col-md-9 col-sm-8" align="justify">
+                  {{GetCompanyProfileData[0]?.userlocmapaddress ? GetCompanyProfileData[0]?.userlocmapaddress :'NA'}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="job-list-action card-view-btns">
+                  <a class="postit" href="javascript:void(0)" *ngIf="isowner" (click)="EditCompanyProfile()" title="Edit">Edit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="col-md-12" *ngIf="(profileshow1==0)">
+  <form [formGroup]="CompanyProfileForm" class="edit-delete-h company-profile-update">
+    <div class="edit-profile-wrapper">
+      <div class="box-title ps-relative">
+        <div class="job-list-action">
+          <a class="viewit" href="javascript:void(0)" *ngIf="(Exitprofile=='1')" (click)="ExitCompanyProfileform()"
+            title="Close">Close</a>
+        </div>
+        <p class="box-title-content">
+          Company Details
+          <!--<a *ngIf="(Exitprofile=='1')" class="pull-right mandatory" href="javascript:void(0)" title="close" (click)="ExitCompanyProfileform()"><i aria-hidden="true" class="fa fa-times"></i></a>-->
+        </p>
+      </div>
+      <div class="box-content">
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Company Name<span class="mandatory">*</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <input oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');"
+              type="text" readonly class="form-control" name='CompanyName' formControlName="CompanyName" maxlength="100">
+            <errors [control]="CompanyProfileForm.controls.CompanyName"></errors>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Short Name<span class="mandatory">*</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <input oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');"
+              type="text" [attr.disabled]="(GetCompanyProfileData[0]?.companyshortname)?true:null" class="form-control"
+              name='companyshortname' formControlName="companyshortname" placeholder="Short Name" maxlength="100">
+            <errors [control]="CompanyProfileForm.controls.companyshortname"></errors>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Company Logo<span class="mandatory"></span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <input type="file" (change)="onUploadChange($event,'logo')" class="" formControlName="ImgName" accept="image/x-png,image/jpeg,image/jpg,image/png,"
+              style="width: 77px;
+            ">
+            <div class="cleafix"></div>
+            <span class="upload-file-info">Max. file size 2MB, Format - JPEG, PNG, JPG</span>
+            <errors [control]="CompanyProfileForm.controls.ImgName"></errors>
+          </div>
+          <div class="col-sm-4 visible-sm"></div>
+          <div class="col-md-3 col-sm-7 recruiter-logo">
+            <a href="javascript:void(0)" *ngFor="let item of base64textString"><img src="{{item!=''?item:'assets/images/NoImage.png'}}" /></a>
+            <img src="{{imagename!=null?imagename:'assets/images/NoImage.png'}}" alt="" />
+            <img src="{{imagename!=''?imagename:'assets/images/NoImage.png'}}" alt="" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Tag Line</label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <input type="text" style="display:none" class="form-control" formControlName="ImgNames">
+            <input oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');"
+              type="text" class="form-control" formControlName="TagLine" placeholder="TagLine" maxlength="100">
+            <errors [control]="CompanyProfileForm.controls.TagLine"></errors>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Email<span class="required-field">*</span></label>
+          </div>
+
+          <div class="col-md-6 col-sm-7">
+            <input type="text" class="form-control" formControlName="email" name="email" autocomplete="off" placeholder="Email"
+              maxlength="100" readonly>
+            <errors [control]="CompanyProfileForm.controls.email"></errors>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Mobile<span class="required-field">*</span></label>
+          </div>
+
+          <div class="col-md-6 col-sm-7">
+            <!-- <input type="text" class="form-control" formControlName="mobile" autocomplete="off"> -->
+            <input placeholder="Mobile No." (keydown)="decimals($event)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+              type="text" class="form-control" formControlName="mobile" placeholder="Mobile" readonly />
+            <errors [control]="CompanyProfileForm.controls.mobile"></errors>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Landline No.</label>
+          </div>
+
+          <div class="col-md-6 col-sm-7">
+            <!-- <input maxlength="12" (keydown)="decimals($event)" placeholder="Landline No." type="text" class="form-control"
+              formControlName="LandlineNumber" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+              (focusout)="Validationforlandline($event.target.value)" placeholder="Landline Number" maxlength="12" /> -->
+              <input placeholder="LandlineNumber" minlength="10" maxlength="12" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="LandlineNumber"  />
+            <errors [control]="CompanyProfileForm.controls.LandlineNumber"></errors>
+          </div>
+        </div>
+
+
+
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>WebSite Address</label>
+          </div>
+
+          <div class="col-md-6 col-sm-7">
+            <input type="text" class="form-control" formControlName="website" autocomplete="off" placeholder="WebSite Address"
+              maxlength="100">
+            <errors [control]="CompanyProfileForm.controls.website"></errors>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <!-- <label>GST IN<span class="mandatory">*</span></label> -->
+            <label>GSTIN</label>
+          </div>
+          <div class="col-md-3 col-sm-7">
+            <input #gstin type="text" class="form-control" formControlName="gstn" data-validation="gstn"
+              [attr.disabled]="(GetCompanyProfileData[0]?.gstn)?true:null" placeholder="GSTIN" maxlength="15" >
+
+
+            <!-- <input id="gst" name="gst" class="form-control" type="text" data-validation="gst" formControlName="gst" (keyup)="gstncheck($event)" autocomplete="off" > -->
+
+            <errors [control]="CompanyProfileForm.controls.gstn"></errors>
+          </div>
+          <div class="col-sm-4 visible-sm"></div>
+          <div class="col-md-3 col-sm-6 col-xs-10">
+            <input type="file" (change)="onUploadChange($event,'gstImg')" class="" formControlName="gstImg" accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf">
+            <div class="cleafix"></div>
+            <span class="upload-file-info">Max. file size 2MB, Format - JPEG, PNG, JPG, PDF</span>
+            <errors [control]="CompanyProfileForm.controls.gstImg"></errors>
+          </div>
+
+          <div class="col-md-2 col-sm-2 col-xs-2">
+            <a [href]="gstGetImage" target="_blank" *ngIf="gstGetImg"><span class="glyphicon glyphicon-zoom-in"></span></a>
+            <a [href]="gstImage" download="{{imgGstName}}"><span class="glyphicon glyphicon-zoom-in" *ngIf="showMagGst"></span></a>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>PAN<span class="mandatory">*</span></label>
+          </div>
+          <div class="col-md-3 col-sm-7">
+            <input type="text" value="" class="form-control" formControlName="PAN" [attr.disabled]="(GetCompanyProfileData[0]?.pan)?true:null"
+              accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" maxlength="10" uppercase>
+
+            <errors [control]="CompanyProfileForm.controls.PAN"></errors>
+          </div>
+          <div class="col-sm-4 visible-sm"></div>
+          <div class="col-md-3 col-sm-6 col-xs-10">
+            <input type="file" (change)="onUploadChange($event,'panImg')" class="" formControlName="panImg">
+            <div class="cleafix"></div>
+            <span class="upload-file-info">Max. file size 2MB, Format - JPEG, PNG, JPG, PDF</span>
+            <errors [control]="CompanyProfileForm.controls.panImg"></errors>
+          </div>
+          <div class="col-md-2 col-sm-2 col-xs-2">
+            <a [href]="panGetImage" target="_blank" *ngIf="panGetImg"><span class="glyphicon glyphicon-zoom-in"></span></a>
+            <a [href]="panImage1" download="{{imgPanName}}"><span class="glyphicon glyphicon-zoom-in" *ngIf="showMagPan"></span></a>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-3  col-sm-4 text-right">
+            <label>Industry <span class="mandatory">*</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <select class="form-control" required formControlName="IndustryType">
+              <option value="" class="" selected="selected">-- Select --</option>
+              <option *ngFor="let ind of industialrea" value="{{ind.id}}">{{ind.industryName}}</option>
+            </select>
+            <errors [control]="CompanyProfileForm.controls.IndustryType"></errors>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Company Description</label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <textarea formControlName="Description" class="form-control" placeholder="Description" rows="4" maxlength="1000"></textarea>
+            <errors [control]="CompanyProfileForm.controls.Description"></errors>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>About Company</label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <textarea formControlName="aboutCompany" class="form-control" placeholder="About Company" rows="4" maxlength="1000"></textarea>
+            <errors [control]="CompanyProfileForm.controls.aboutCompany"></errors>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="edit-profile-wrapper">
+      <div class="box-title">
+        <p class="box-title-content">
+          Registered Office Address
+        </p>
+      </div>
+      <div class="box-content">
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>State <span class="required-field"> *</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <select class="form-control" required formControlName="StateiD" (change)="GetAllDistrict($event)">
+              <option value="" selected>--Select--</option>
+              <option *ngFor="let st of states" [value]="st.id">{{st.stateName}}</option>
+            </select>
+            <errors [control]="CompanyProfileForm.controls.StateiD"></errors>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>District <span class="required-field"> *</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <select class="form-control" #val required formControlName="DistrictID">
+              <option value="" selected="selected">--Select--</option>
+              <option *ngFor="let district of district" [value]="district.id">{{district.districtName}}</option>
+            </select>
+            <errors [control]="CompanyProfileForm.controls.DistrictID"></errors>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Office Address <span class="required-field"> *</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <textarea formControlName="OfficeAddress" class="form-control" placeholder="Address" rows="4" maxlength="1000"></textarea>
+            <errors [control]="CompanyProfileForm.controls.OfficeAddress"></errors>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group m-t-10">
+        <div class="col-md-12 text-center">
+          <button class="btn btn-w-shadow no-rd" (click)="updatecompanyProfile()" [disabled]="!(CompanyProfileForm.valid)">Update</button>
+          <!--<button (click)="companyProfile()" [disabled]="!(CompanyProfileForm.valid)" type="submit" class="btn yl-btn">Update</button>-->
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="form-group m-t-10" *ngIf="addworkStatus">
+  <div class="col-md-12 text-left">
+    <button class="btn btn-w-shadow no-rd" (click)="Addsectorbutton()">Add Work Location</button>
+    <!--<button class="pull-right btn yl-btn" type="button" (click)="Addsectorbutton()">Add Work Location</button>-->
+  </div>
+</div>
+<div class="col-md-12">
+  <form novalidate [formGroup]="sectorskils" *ngIf="showSectorskillForm=='1'" class="edit-delete-h margin-top-40">
+    <div class="edit-profile-wrapper">
+      <div class="box-title ps-relative">
+        <div class="job-list-action">
+          <a class="viewit" (click)="exitHireForm()" href="javascript:void(0)" title="Close">Close</a>
+        </div>
+        <p class="box-title-content">
+          {{editid==0?'Add':'Update'}} Work Location
+          <!--<a class="pull-right mandatory" (click)="exitHireForm()" href="javascript:void(0)" title="close"><i aria-hidden="true" class="fa fa-times"></i></a>-->
+        </p>
+      </div>
+      <div class="box-content">
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>State <span class="mandatory"> *</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <select class="form-control" required formControlName="Stateid" (change)="GetDistrict($event)">
+              Add Work Location
+              <option value="" class="" selected="selected">-- Select --</option>
+              <option *ngFor="let state of states" [value]="state.id">{{state.stateName}}</option>
+            </select>
+            <errors [control]="sectorskils.controls.Stateid"></errors>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>District <span class="mandatory"> *</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <select class="form-control" required formControlName="Districtid">
+              <option value="" selected="selected">-- Select --</option>
+              <option *ngFor="let district of district1" [value]="district.id">{{district.districtName}}</option>
+            </select>
+            <errors [control]="sectorskils.controls.Districtid"></errors>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Address Type <span class="required-field"> *</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <select class="form-control" formControlName="CtypeName" (change)='ShowTextBox($event)'>
+              <option value="" class="" selected="selected">-- Select --</option>
+              <option *ngFor="let type of companytype" [value]="type.id">{{type.companyType}}</option>
+            </select>
+            <errors [control]="sectorskils.controls.CtypeName"></errors>
+          </div>
+        </div>
+        <div class="form-group" *ngIf='displaytextBox== 1'>
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Other <span class="mandatory"> *</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <input type="text" class="form-control" formControlName="CompanyTypeOther" maxlength="50">
+            <errors [control]="CompanyProfileForm.controls.CompanyTypeOther"></errors>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label>Address <span class="required-field"> *</span></label>
+          </div>
+          <div class="col-md-6 col-sm-7">
+            <textarea formControlName="Caddress" required class="form-control" placeholder="" rows="4" maxlength="1000"></textarea>
+            <errors [control]="sectorskils.controls.Caddress"></errors>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group m-t-10">
+      <div class="col-md-12 text-center">
+        <button class="btn btn-w-shadow no-rd" *ngIf="editid==0" (click)="CompanyWorkLocation()" [disabled]="!(sectorskils.valid)"
+          type="submit">Add</button>
+        <button class="btn btn-w-shadow no-rd" *ngIf="editid==1" (click)="updatecompanyprofile()" [disabled]="!(sectorskils.valid)"
+          type="button">Update</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="col-md-12">
+  <div *ngIf="(showlist==1)" class="m-t-10">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered" *ngIf="WorkLocationshow?.length > 0">
+        <thead class="bg-info">
+          <tr>
+            <th class="th-w-500">Address</th>
+            <th>Type</th>
+            <th>State</th>
+            <th>District</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let location of WorkLocationshow;  let i = index">
+            <td>{{location.Caddress}}</td>
+            <td>{{location.CtypeName}}</td>
+            <td>{{location.Stateid}}</td>
+            <td>{{location.Districtid}}</td>
+            <td><a href="javascript:void(0)" (click)="PushedTemplate(template)" class="mandatory">Remove</a></td>
+            <ng-template #template>
+              <div class="modal-body text-center">
+                <p>Do you want to remove this work location?</p>
+                <br />
+                <br />
+                <button type="button" class="btn yl-btn no-rd" (click)="onItemDeleted(i)">Yes</button>
+                <button type="button" (click)="declineBox()" class="btn bl-btn no-rd">No</button>
+              </div>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="form-group text-center">
+      <a class="btn btn-w-shadow no-rd" href="javascript:void(0)" (click)="SaveCompanyProfileData()" tabindex="0" title="Save">Save</a>
+    </div>
+  </div>
+</div>
+
+<div class="cleafix"></div>
+<div class="all-jobs-list update-profile" *ngIf="(hidecompanyprofile=='1')">
+  <div id="" class="searchResults col-md-12">
+    <ul class="joblist-wrapper" *ngIf="(ShowCompanyData?.length > 0)">
+      <li class="job-wrapper ps-relative" *ngFor="let companydata of ShowCompanyData;let i=index">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="job-title">Work Location</h2>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div *ngIf="(companydata.companyTypeOther)" class="lang-ellip col-md-12" title="({{companydata.companyTypeOther}})">
+              <span class="text-strong ">Office Type:</span> {{companydata.companyType}}
+              ({{companydata.companyTypeOther}})</div>
+
+            <div *ngIf="(!companydata.companyTypeOther)" class="col-md-12"><span class="text-strong ">Office Type:</span>
+              {{companydata.companyType}}</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-12"><strong>Address : </strong> {{companydata.address | slice:0:100}}</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6"><strong>State : </strong> {{companydata.stateName}}</div>
+            <div class="col-md-6"><strong>District : </strong> {{companydata.districtName}}</div>
+          </div>
+        </div>
+        <!-- <div class="form-group" *ngIf="(companydata.companyTypeOther)">
+          <div class="row">
+            <div class="col-md-12"><strong>Address Other Type : </strong> {{companydata.companyTypeOther}}</div>
+          </div>
+        </div> -->
+        <div class="form-group" *ngIf="companydata.isowner">
+          <div class="job-list-action card-view-btns">
+            <a class="postit" href="javascript:void(0)" title="Edit" (click)="editcompanydetails(companydata.id,companydata.address,companydata.stateId,companydata.districtId,companydata.workLocationId,companydata.companyId,companydata.workLocationId,companydata.companyTypeOther);">Edit</a>
+            <a class="viewit" href="javascript:void(0)" [disabled]="isDelete" (click)="confirmBox(confirm,companydata.id)"
+              title="Delete">Delete</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<ng-template #confirm>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to delete work location?</p>
+    <br />
+    <br />
+    <button type="button" class="btn yl-btn no-rd" (click)="deletecompanydetail()">Yes</button>
+    <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+  </div>
+</ng-template>

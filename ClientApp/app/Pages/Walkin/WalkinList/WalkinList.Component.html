@@ -1,0 +1,351 @@
+<div class="dash-head">
+  <p>Walk-In List</p>
+  <a [routerLink]="'/CreateWalkins'" class="btn btn-w-shadow no-rd pull-right" tabindex="0">Create Walk-In</a>
+  <!--<a [routerLink]="'/CreateWalkins'" class="yl-btn pull-right">Create Walk-In</a>-->
+</div>
+<div class="cleafix"></div>
+
+<div class="cleafix"></div>
+<div class="page-filters">
+  <h2>
+    <a href="javascript:void(0);">
+      <i class="fa fa-filter" aria-hidden="true"></i> Apply Filters
+      <span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+    </a>
+  </h2>
+
+  <form (submit)="GetFilterWalkins()" [formGroup]="WalkingFilterForm">
+    <div class="filter-wrapper">
+      <div class="form-group">
+        <div class="col-md-3 col-sm-6">
+          <label>Industry</label>
+          <select class="form-control" formControlName="industry">
+            <option value="" selected>Select</option>
+            <option *ngFor="let item of IndustryArea" value="{{item.id}}">{{item.industryName}}</option>
+          </select>
+
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label>Functional Area</label>
+          <select class="form-control" formControlName="functionalarea">
+            <option value="" class="" selected="selected">Select</option>
+            <option *ngFor="let item of FunctionArea" value="{{item.id}}">{{item.functionalAreaName}}</option>
+          </select>
+        </div>
+
+        <!-- <div class="col-md-3 col-sm-6">
+          <label>From Date </label>
+          <input readonly type="text" placeholder="Select Date" class="form-control" formControlName="walkInFromDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false}" bsDatepicker>
+
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label>To Date </label>
+          <input readonly type="text" placeholder="Select Date" class="form-control" formControlName="walkInToDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false}" bsDatepicker>
+        </div> -->
+
+        <div class="col-md-3 col-sm-6 ">
+          <div class="col-md-6 col-sm-6 col-xs-6  p-l-0">
+            <label>Min CTC</label>
+            <input disabled value="{{minCtc}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MinCtc" class="form-control" placeholder="MinCtc">
+
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+            <label>Max CTC</label>
+            <input disabled value="{{maxCtc}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MaxCtc" class="form-control" placeholder="MaxCtc">
+            <div class="custom-slider">
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 custom-slider mrg-min p-d-0">
+            <label></label>
+            <ng5-slider [(value)]="minCtc" [(highValue)]="maxCtc" [options]="CtcOptions"></ng5-slider>
+
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+          <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+            <label>Min Exp</label>
+            <input disabled value="{{minExp}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MinExp" class="form-control" placeholder="MinExp">
+
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+            <label>Max Exp</label>
+            <input disabled value="{{maxExp}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MaxExp" class="form-control" placeholder="MaxExp">
+
+          </div>
+          <div class="col-md-12 col-sm-12 custom-slider mrg-min p-d-0">
+            <label></label>
+            <ng5-slider [(value)]="minExp" [(highValue)]="maxExp" [options]="ExpOptions"></ng5-slider>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="form-group">
+             <div class="col-md-3 col-sm-6 ">
+        <div class="col-md-6 col-sm-6 p-l-0">
+          <label>MIN CTC</label>
+          <input disabled value="{{minCtc}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MinCtc" class="form-control" placeholder="MinCtc">
+
+        </div>
+
+        <div class="col-md-6 col-sm-6 p-r-0">
+          <label>Max CTC</label>
+          <input disabled value="{{maxCtc}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MaxCtc" class="form-control" placeholder="MaxCtc">
+          <div class="custom-slider">
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 custom-slider mrg-min p-d-0">
+          <label></label>
+          <ng5-slider [(value)]="minCtc" [(highValue)]="maxCtc" [options]="CtcOptions"></ng5-slider>
+
+        </div>
+      </div> -->
+      <!-- <div class="col-md-3 col-sm-6">
+          <div class="col-md-6 col-sm-6 p-l-0">
+            <label>MIN Exp</label>
+            <input disabled value="{{minExp}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MinExp" class="form-control" placeholder="MinExp">
+
+          </div>
+
+          <div class="col-md-6 col-sm-6 p-r-0">
+            <label>Max Exp</label>
+            <input disabled value="{{maxExp}}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" formControlName="MaxExp" class="form-control" placeholder="MaxExp">
+
+          </div>
+          <div class="col-md-12 col-sm-12 custom-slider mrg-min p-d-0">
+            <label></label>
+            <ng5-slider [(value)]="minExp" [(highValue)]="maxExp" [options]="ExpOptions"></ng5-slider>
+          </div>
+        </div>
+      </div> -->
+      <div class="form-group text-center m-t-5 r-btn-group">
+        <button type="button" (click)="ResetFilterResult()" class="btn btn-w-shadow no-rd">Reset</button>
+        <button type="submit" class="btn btn-w-shadow no-rd filter-toggle" tabindex="0">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="col-md-12" *ngIf="wlakinListStatus && searchsts==1">
+  <div class="col-md-12 jd-detail job-wrapper searchResults">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-12">
+          <h4 class="m-b-0">Search Result</h4>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4 col-sm-12 col-xs-12">
+          <span class="text-strong">Industry</span>: {{searchWalkins.IndustryAreaId!=0?searchWalkins.IndustryAreaId:'NA'}}
+        </div>
+        <div class="col-md-4 col-sm-12 col-xs-12">
+          <span class="text-strong">Functional Area</span>: {{searchWalkins.FunctionAreaId!=0?searchWalkins.FunctionAreaId:'NA'}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Min CTC</span>: {{searchWalkins.minCtc}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Max CTC</span>: {{searchWalkins.maxCtc}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Min Exp</span>: {{searchWalkins.minExp}}
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <span class="text-strong">Max Exp</span>: {{searchWalkins.maxExp}}
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+
+<div class="cleafix"></div>
+ <div  *ngIf="errormsg!=''" class="alert alert-danger col-md-12">
+  <strong>{{errormsg}} !</strong>
+</div>
+
+
+
+<div class="col-md-12">
+  <div class="all-jobs-list" *ngIf="wlakinListStatus">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper edit-delete-h" *ngFor="let item of walkindetail">
+          <ng-template #template>
+            <div class="modal-body text-center">
+              <p>Do you want to Revoke this Walk-In?  </p>
+              <br />
+              <br />
+              <button type="button" class="btn yl-btn no-rd" (click)="RevokeJob(item.walkInId)">Yes</button>
+              <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+            </div>
+          </ng-template>
+          <ng-template #template2>
+            <div class="modal-body text-center">
+              <p>Do you want to post this Walk-In?</p>
+              <br />
+              <br />
+              <button type="button" class="btn yl-btn no-rd" (click)="performJobAction(item.walkInId,'postwalkin')">Yes</button>
+              <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+            </div>
+          </ng-template>
+          <ng-template #template3>
+            <div class="modal-body text-center">
+              <p>Please add opening!</p>
+              <br />
+              <br />
+
+              <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">Ok</button>
+            </div>
+          </ng-template>
+          <ng-template #template4>
+            <div class="modal-body text-center">
+              <p>Do you want to close this Walkin?</p>
+              <br />
+              <br />
+              <button type="button" class="btn yl-btn no-rd" (click)="performJobAction(item.walkInId,'closeWalkin')">Yes</button>
+              <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+            </div>
+          </ng-template>
+          <ng-template #template12 >
+            <div class="modal-body text-center">
+              <p>Do you want to Repost this Walkin?</p>
+              <br />
+              <br />
+              <button type="button" class="btn yl-btn no-rd" (click)="performJobAction(item.walkInId,'postwalkin')">Yes</button>
+              <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+            </div>
+          </ng-template>
+
+          <ng-template #template13 >
+            <div class="modal-body text-center">
+              <p>Please change walkin date</p>
+              <br />
+              <br />
+
+              <div class="row">
+                <div  class="col-sm-6">
+                <label>From Date <span class="mandatory"> *</span></label>
+                <input type="text" #valid1="bsDatepicker" [minDate]="minDate" placeholder="Select Date"  bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false  }" class="form-control"  [(ngModel)]="fromdate"/>
+                </div>
+
+                <div  class="col-sm-6">
+                    <label>To Date <span class="mandatory"> *</span></label>
+                    <input type="text" #valid1="bsDatepicker" [minDate]="mintoDate" placeholder="Select Date"  bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false  }" class="form-control"  [(ngModel)]="todate" />
+                    </div>
+
+              </div>
+
+              <br><br>
+
+              <button type="button" class="btn yl-btn no-rd" (click)="updateWalkinDate(item.walkInId)">Update</button>
+              <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">Cancel</button>
+            </div>
+          </ng-template>
+
+          <ng-template #template9>
+            <div class="modal-body text-center">
+              <p>Do you want to Scrap this Walkin-In?</p>
+              <br />
+              <br />
+              <button type="button" class="btn yl-btn no-rd" (click)="performJobAction(item.walkInId,'scrapWalkin')">Yes</button>
+              <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+            </div>
+          </ng-template>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-12">
+                <h2 class="job-title"><a href="javascript:void(0)">{{item.companyName | uppercase}}</a></h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6 col-sm-12 col-12">
+                <h3 class="company-name">{{item.jobTitle | uppercase}}</h3>
+              </div>
+              <div class="col-md-6">
+                  <h3 class="company-name" style="text-transform:capitalize">Walkin Code : {{item.jobcode ? item.jobcode : 'NA'}}</h3>
+               </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6"><strong>Contact Person : </strong><span>{{item.name}}</span></div>
+              <div class="col-md-6"><strong>Contact No. : </strong> <span>{{item.mobile}}</span></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6"><strong>Walkin Time : </strong> <span>{{converttime(item.walkinFromTime)}}- {{converttime(item.walkinToTime) }}</span></div>
+              <div class="col-md-6"><strong>No. of Vacancies : </strong> <span>{{item.noOfVacancy}}</span></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12"><strong>Walkin Dates : </strong> <span>{{item.walkInDate | date:"dd/MM/yyyy"}} - {{item.walkinToDate | date:"dd/MM/yyyy"}}</span></div>
+              <div class="col-md-12 lang-ellip"><strong>Job Description :</strong> <span>{{item.jobDescription}}</span></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+              <div class="row">
+                <div class="col-md-6"><strong>Functional Area: </strong> <span>{{item.functionalArea}}</span></div>
+                <div class="col-md-6 lang-ellip"><strong>Industry: </strong> <span>{{ item.industryArea }}</span></div>
+              </div>
+          </div>
+
+          <div class="form-group">
+              <div class="row">
+                <div class="col-md-6"><strong>Min Ctc(INR): </strong> <span>{{ item.minCtc!=null?item.minCtc:'NA'}}</span></div>
+                <div class="col-md-6 lang-ellip"><strong>Max Ctc(INR): </strong> <span>{{ item.maxCtc!=null?item.maxCtc:'NA'}}</span></div>
+              </div>
+          </div>
+
+
+          <div class="form-group">
+              <div class="row">
+                <div class="col-md-6"><strong>Min Exp(in Yrs):</strong><span>{{ item.minExp  }}</span></div>
+                <div class="col-md-6 lang-ellip"><strong>Max Exp(in Yrs): </strong> <span>{{ item.maxExp}}</span></div>
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="job-list-action card-view-btns">
+              <a href="javascript:void(0)" class="postit" *ngIf="item.noOfVacancy==0 && !item.isJobPushed && item.isScrap == false && item.jobExpiraryStatus==false" title="Post this walkin" (click)="AlertBox(template3)">Post</a>
+
+              <!-- <a href="javascript:void(0)" class="postit" *ngIf="!item.isJobPushed && item.noOfVacancy!='0' && item.isScrap == false && item.isjobowner && item.jobExpiraryStatus==false" title="Post this walkin" (click)="PushedTemplate(template2)">Post</a> -->
+
+              <a href="javascript:void(0)" class="postit" *ngIf="!item.isJobPushed && item.noOfVacancy!='0' && item.isScrap == false && item.isjobowner && item.jobExpiraryStatus==false" title="Post this walkin" (click)="PushedTemplate(template2)">Post</a>
+
+              <a href="javascript:void(0)" class="revokeit" title="Repost this Walkin" *ngIf="item.isJobPushed && !item.isScrap  && !item.isClosed && item.jobExpiraryStatus==false && item.isjobowner" (click)="repostWalkin(template12)">Repost</a>
+
+              <a href="javascript:void(0)" class="revokeit" title="Repost this Walkin" *ngIf="item.isJobPushed && !item.isScrap  && !item.isClosed && item.jobExpiraryStatus==true && item.isjobowner" (click)="repostWalkin(template13)">Repost</a>
+
+              <a href="javascript:void(0)" class="viewit" title="Scrap this Walkin" *ngIf="item.isJobPushed && !item.isScrap  && !item.isClosed && item.isjobowner &&item.jobExpiraryStatus==false" (click)="scrapTemplate(template9)">Scrap</a>
+
+              <a href="javascript:void(0)" class="revokeit" title="Close this Walkin" *ngIf="item.isJobPushed && !item.isScrap  && !item.isClosed && item.isjobowner&&item.jobExpiraryStatus==false" (click)="scrapWalkinTemplate(template4)">Close</a>
+              <a href="javascript:void(0)" class="revokeit" title="Scraped this Walkin" *ngIf="item.isJobPushed ==false && item.isScrap && item.isjobowner">Scraped</a>
+              <a href="javascript:void(0)" class="revokeit" title="Closed this Walkin" *ngIf=" item.isJobPushed && item.isScrap == false && item.isClosed && item.isjobowner">Closed</a>
+            
+              <!-- <a href="javascript:void(0)" class="viewit" title="View this Walkin" *ngIf="item.isJobPushed || item.isScrap || item.isjobowner==false || item.jobExpiraryStatus==true" [routerLink]="'/viewwalkin'" (click)="setId(item)">View</a> -->
+              <a href="javascript:void(0)" class="viewit" title="View this Walkin" *ngIf="item.isJobPushed || item.isScrap || item.isjobowner==false" [routerLink]="'/viewwalkin'" (click)="setId(item)">View</a>
+
+              <a href="javascript:void(0)" class="viewit" title="Edit/View this Walkin" *ngIf="!item.isJobPushed && !item.isScrap && item.jobExpiraryStatus==false && item.isjobowner" [routerLink]="'/viewwalkin'" (click)="setId(item)">Edit/View</a>
+              
+              <a href="javascript:void(0)" class="viewit" title="Edit/View this Walkin" *ngIf="!item.isJobPushed && !item.isScrap && item.jobExpiraryStatus==true && item.isjobowner" [routerLink]="'/viewwalkin'" (click)="setId(item)">Edit/View</a>
+
+
+              
+
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+

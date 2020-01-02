@@ -1,0 +1,30 @@
+<div class="dash-head">
+  <p>Agency List</p>
+  <!-- <a class="btn btn-w-shadow no-rd pull-right" tabindex="0" >Agency List</a> -->
+</div>
+<div class="cleafix"></div>
+<div class="col-md-12"> 
+  <div class="all-jobs-list">
+    <div id="" class="searchResults agency-list">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper homepage-job-listing" *ngFor="let agency of agencyDetail">
+          <div class="job-view">
+            <div>
+              <img src="{{agency?.image!=null?agency?.image :'assets/images/NoImage.png'}}" alt="" />
+              <h3 class="company-name">{{agency.companyname ? agency.companyname : 'NA'}}</h3>
+            </div>
+            <div>
+              <h2 class="job-title">{{agency.companyShortName}}</h2>
+              <p class="tag-line">{{agency.tagLine}}</p>             
+              <p class="m-b-0"><strong>Industry:</strong> {{agency.industryName}}</p>
+              <p class="m-b-0"><strong>Email:</strong> {{agency.email}} </p>
+              <p class="m-b-0"><strong>Phone No:</strong> {{agency.phoneno}} </p>
+              <p class="m-b-0"><strong>State:</strong> {{agency.stateName}} </p>
+              <p class="m-b-0"><strong>District:</strong> {{agency.districtName}}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

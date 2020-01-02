@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "\\app",
+    "\\app\\Guards",
+    "\\app\\Pages\\Index",
+    "\\app\\Pages\\Layouts\\Public",
+    "\\app\\Pages\\Layouts\\Public\\Herder",
+    "\\app\\Pages\\Layouts\\Secure",
+    "\\app\\Pages\\Layouts\\Secure\\Herder"
+  ],
+  "PreviewInSolutionExplorer": false
+}

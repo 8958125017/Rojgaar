@@ -1,0 +1,375 @@
+<ng-template #companyalert>
+  <div class="modal-body text-center">
+    <p>You are being re-directed to Company Profile, required before posting of jobs.</p>
+    <br />
+    <br />
+    <button type="button" class="btn yl-btn no-rd" (click)="GoToCompanyProfile()">OK</button>
+  </div>
+</ng-template>
+<div class="dash-head">
+  <p>Update Profile</p>
+  <a href="javascript:void(0)" (click)="Back()" title="Go Back" class="btn btn-w-shadow no-rd pull-right"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
+</div>
+<div class="col-md-12">
+  <label class="col-md-12 required-field" style="text-align: center;">
+    <!-- <a [routerLink]="'/companyprofile'"></a> -->
+    <!-- You are requested to update the Company Profile before posting a new Job. -->
+  </label>
+</div>
+<div class="cleafix"></div>
+<div class="col-md-12" *ngIf="showProfileForm=='0' ">
+  <div class="update-profile ">
+    <div id="" class="searchResults">
+      <ul class="joblist-wrapper">
+        <li class="job-wrapper ps-relative">
+          <div class="job-list-action" *ngIf="ShowEdit">
+            <a class="postit" href="javascript:void(0)" (click)="EditProfile()" title="Edit">Edit</a>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12 col-sm-12">
+              <h2 class="job-title">Personal Details</h2>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4">
+              <h3 class="company-name">Name</h3>
+            </div>
+            <div class="col-md-6 col-sm-8">
+              <h3 class="company-name">{{ profile.firstName!=''?profile.firstName:'' }}</h3>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4">
+              <span class="text-strong">Current Employer</span>
+            </div>
+            <div class="col-md-6 col-sm-8">
+              {{profile.companyName!='' ?profile.companyName:''}}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4">
+              <span class="text-strong">Current Designation</span>
+            </div>
+            <div class="col-md-6 col-sm-8">
+              {{profile.designation!='' ?profile.designation:''}}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4">
+              <span class="text-strong">State</span>
+            </div>
+            <div class="col-md-6 col-sm-8">
+              {{profile.statename? profile.statename:'' }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4">
+              <span class="text-strong">District</span>
+            </div>
+            <div class="col-md-6 col-sm-8">
+              {{profile.districtName!=''?profile.districtName:''}}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div class="col-md-12">
+  <div class="edit-profile">
+    <form (ngSubmit)="updateprofiledata(companyalert)" [formGroup]="updateprofile" *ngIf="showProfileForm=='1'">
+      <div class="edit-profile-wrapper">
+        <div class="box-title ps-relative">
+          <div class="job-list-action">
+            <a class="viewit" href="javascript:void(0)" (click)="ExitProfileform()" title="Close">Close</a>
+          </div>
+          <p class="box-title-content">
+            Edit Personal Details
+            <!--<a href="javascript:void(0)" (click)="ExitProfileform()" title="close" class="pull-right" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></a>-->
+          </p>
+        </div>
+        <div class="box-content">
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4 text-right">
+              <label>Name <span class="required-field">*</span></label>
+            </div>
+            <div class="col-md-6 col-sm-7">
+              <input type="text" class="form-control" formControlName="name" [attr.disabled]="(UserInfo.loginType=='Agency'||UserInfo.loginType=='Employer')? true : null">
+              <errors [control]="updateprofile.controls.name"></errors>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4 text-right">
+              <label>Current Designation <span class="required-field">*</span></label>
+            </div>
+            <div class="col-md-6 col-sm-7">
+              <!-- <input type="text" class="form-control" formControlName="designation"> -->
+              <input required oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" type="text"
+              class="form-control" formControlName="designation" placeholder="Designation" maxlength="100"/>
+              <errors [control]="updateprofile.controls.designation"></errors>
+
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4 text-right">
+              <label>Current Employer <span class="required-field">*</span></label>
+            </div>
+            <div class="col-md-6 col-sm-7">
+              <!-- <input type="text" class="form-control" readonly formControlName="currentemployer"> -->
+              <input required oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" type="text"
+              class="form-control" formControlName="currentemployer" readonly />
+
+
+              <errors [control]="updateprofile.controls.currentemployer"></errors>
+
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4 text-right">
+              <label>State <span class="required-field">*</span></label>
+            </div>
+            <div class="col-md-6 col-sm-7">
+              <select class="form-control" required formControlName="state" (change)="GetAllDistrict($event)">
+                <option value="" class="" selected="selected">-- Select --</option>
+                <option *ngFor="let states of states" [value]="states.id">{{states.stateName}}</option>
+              </select>
+              <errors [control]="updateprofile.controls.state"></errors>
+
+            </div>
+
+          </div>
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4 text-right">
+              <label>District <span class="required-field">*</span></label>
+            </div>
+            <div class="col-md-6 col-sm-7">
+              <select class="form-control" required formControlName="city">
+                <option value="" class="" selected="selected">-- Select --</option>
+
+                <option *ngFor="let district of district" [value]="district.id">{{district.districtName}}</option>
+
+              </select>
+              <errors [control]="updateprofile.controls.city"></errors>
+
+            </div>
+          </div>
+          <div class="form-group m-t-10">
+            <div class="col-md-12 text-center">
+              <button class="btn btn-w-shadow no-rd" type="submit" [disabled]="!(updateprofile.valid && updateprofileFormdisable)">Update</button>
+              <!--<button class="btn yl-btn" type="submit" [disabled]="!(updateprofile.valid && updateprofileFormdisable)">Update</button>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="form-group m-t-10" *ngIf="showSectorskillForm=='0'">
+      <div class="col-md-12 text-left">
+        <button class="btn btn-w-shadow no-rd" [disabled]="(UserInfo.loginType=='Employer' && EnableSkillBtn)" (click)="Addsectorbutton()">Add Sectors and Skills/Roles</button>
+        <!--<button [disabled]="(UserInfo.loginType=='Employer' && skilsdetails?.length > 0)" class="pull-right btn yl-btn" type="button" (click)="Addsectorbutton()">Add Sectors and Skills/Roles</button>-->
+      </div>
+    </div>
+    <form [formGroup]="sectorskils" *ngIf="showSectorskillForm=='1'">
+      <div class="edit-profile-wrapper">
+        <div class="box-title ps-relative">
+          <div class="job-list-action">
+            <a class="viewit" (click)="exitHireForm()" href="javascript:void(0)" title="Close">Close</a>
+          </div>
+          <p class="box-title-content">
+            Sectors and Skills/Roles I hire for
+            <!--<a (click)="exitHireForm()" href="javascript:void(0)" title="close" class="pull-right" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></a>-->
+          </p>
+        </div>
+        <div class="box-content">
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4 text-right">
+              <label>Industrial Area<span class="required-field">*</span></label>
+            </div>
+            <div class="col-md-6 col-sm-7">
+              <select class="form-control" required formControlName="industries">
+                <option value="" class="" selected="selected"> -- Select --</option>
+                <option *ngFor="let ind of industialrea" value="{{ind.id}}">{{ind.industryName}}</option>
+              </select>
+              <errors [control]="sectorskils.controls.industries"></errors>
+
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4 text-right">
+              <label>Functional Area<span class="required-field">*</span></label>
+            </div>
+            <div class="col-md-6 col-sm-7">
+              <select class="form-control" required formControlName="functionalareas">
+                <option value="" class="" selected="selected">-- Select --</option>
+                <option *ngFor="let farea of functionalarea" [value]="farea.id">{{farea.functionalAreaName}}</option>
+              </select>
+              <errors [control]="sectorskils.controls.functionalareas"></errors>
+
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4 text-right">
+              <label>Levels I hire for<span class="required-field">*</span></label>
+            </div>
+            <div class="col-md-6 col-sm-7">
+              <!-- <select class="form-control" required formControlName="levelsihirefor">
+                <option value="" class="" selected="selected">-- Select --</option>
+                <option *ngFor="let hlevel of gethiringlevel" [value]="hlevel.id">{{hlevel.hiringName}}</option>
+              </select> -->
+               <ng-multiselect-dropdown [placeholder]="'Please select level'"
+                                         [data]="gethiringlevel"
+                                         formControlName="levelsihirefor"
+                                         [settings]="dropdownSettings"
+                                         (onDeSelect)="onItemDeSelect($event)"
+                                         (onSelect)="onItemSelect($event)"
+                                         (onSelectAll)="onSelectAll($event)">
+                </ng-multiselect-dropdown> 
+
+              <!-- <errors [control]="sectorskils.controls.levelsihirefor"></errors> -->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4 text-right">
+              <label>Client I hire for<span class="required-field">*</span> </label>
+            </div>
+            <div class="col-md-6 col-sm-7">
+              <!-- <input type="text" class="form-control" formControlName="clientihirefor"> -->
+              <input required placeholder="Client I hire for" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" type="text"
+              class="form-control" formControlName="clientihirefor" maxlength="250"/>
+              <errors [control]="sectorskils.controls.clientihirefor"></errors>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-3 col-sm-4 text-right">
+              <label>Skills/Roles I hire for<span class="required-field">*</span></label>
+            </div>
+            <div class="col-md-6 col-sm-7">
+              <!-- <input type="text" class="form-control" formControlName="skillsroles" /> -->
+              <input placeholder="Skills/Roles I hire for"  required oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" type="text"
+              class="form-control" formControlName="skillsroles" maxlength="250" />
+              <input type="text" placeholder="Skills/Roles I hire for" style="display:none !important" class="form-control" style="display:none !important" formControlName="ID" [value]="" />
+              <input type="text" placeholder="Skills/Roles I hire for"  style="display:none !important" class="form-control" formControlName="STATUS" [value]="" />
+              <errors [control]="sectorskils.controls.skillsroles"></errors>
+
+            </div>
+          </div>
+
+          <div class="form-group m-t-10">
+            <div class="col-md-12 text-center">
+
+              <button class="btn btn-w-shadow no-rd" *ngIf="UserInfo.loginType=='Employer' && editid==0" type="button" [disabled]="!(sectorskils.valid)" (click)="employer_save()">Save</button>
+              <button class="btn btn-w-shadow no-rd" *ngIf="UserInfo.loginType=='Agency' && editid==0" type="button" [disabled]="!(sectorskils.valid)" (click)="agency_save()">Add</button>
+              <button class="btn btn-w-shadow no-rd" *ngIf="editid==1" type="button" [disabled]="!(sectorskils.valid )" (click)="updatesectorskilsdata()">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div *ngIf='sectorclose==1'>
+      <div *ngIf="skilsshow?.length > 0">
+        <table *ngIf="skilsshow?.length > 0" class="table table-bordered table-striped">
+          <thead class="bg-info">
+            <tr>
+              <th>Industrial Area</th>
+              <th>Functional Area</th>
+              <th>Levels I hire for</th>
+              <th>Client I hire for</th>
+              <th>Skills/Roles I hire for</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let skil of skilsshow;let i=index">
+              <td>{{ skil.industries }} </td>
+              <td>{{ skil.functionalareas }} </td>
+              <td>{{ skil.levelsihirefor }}</td>
+              <td>{{ skil.clientihirefor}}</td>
+              <td>{{ skil.skillsroles }}</td>
+              <!-- <td><a href="javascript:void(0)" (click)="onItemDeleted($event)" class="mandatory">Remove</a></td> -->
+              <td><a class="mandatory" href="javascript:void(0)" (click)="PushedTemplate(template)" title="Delete">Remove</a></td>
+              <ng-template #template>
+                  <div class="modal-body text-center">
+                    <p>Do you want to remove this work location?</p>
+                    <br />
+                    <br />
+                    <button type="button" class="btn yl-btn no-rd" (click)="onItemDeleted($event)">Yes</button>
+                    <button type="button" (click)="declineBox1()" class="btn bl-btn no-rd">No</button>
+                  </div>
+                </ng-template>
+            </tr>
+
+          </tbody>
+        </table>
+        <div class="col-md-12 text-center m-t-10">
+          <button class="btn btn-w-shadow no-rd" (click)="finaldata()">Save</button>
+          <!--<button class="btn cr-profile-btn" (click)="finaldata()">Save</button>-->
+        </div>
+      </div>
+    </div>
+
+
+    <div class="all-jobs-list update-profile" *ngIf="showSectorskillForm=='0'">
+      <div id="" class="searchResults">
+        <ul class="joblist-wrapper" *ngIf="skilsdetails?.length > 0">
+          <li class="job-wrapper ps-relative" *ngFor="let skildeatails of skilsdetails;let i=index"> 
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12">
+                  <h2 class="job-title">I hire for</h2>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Industries : </strong> {{ skildeatails.industryname }}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Functional Area : </strong> {{ skildeatails.functionalareaname }}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Levels I hire for : </strong> <span *ngFor="let hirefordata1 of skildeatails.levelsihirefor">{{hirefordata1!=''?hirefordata1.hiringName + '/':''}} </span></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Client I hire for : </strong> {{ skildeatails.clientihirefor }}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Skills/Roles I hire for : </strong> {{ skildeatails.skillsroles }}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="job-list-action card-view-btns">
+                <a class="postit" href="javascript:void(0)" title="Edit" (click)="editsectordetails(skildeatails.sKillid, skildeatails.industryid,skildeatails.functionaareaid,skildeatails.levelsihirefor,skildeatails.clientihirefor,skildeatails.skillsroles);Editsectorskill();">Edit</a>
+                <a class="viewit" href="javascript:void(0)" (click)="confirmBox(confirm,skildeatails.sKillid)" title="Delete">Delete</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #confirm>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to delete sectors and skills/roles?</p>
+    <br />
+    <br />
+    <button type="button" class="btn yl-btn no-rd" (click)="deletesectordetails()">Yes</button>
+    <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+  </div>
+</ng-template>

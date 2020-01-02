@@ -1,0 +1,123 @@
+
+    <div class="content-area">
+      <div class="dash-head">
+        <p>Candidate List</p>
+        <a [routerLink]="['/AgencyJobList']" class="btn btn-primary pull-right">Back</a>
+      </div>
+
+      <div class="cleafix"></div>
+      <div class="col-md-12">
+        <!-- create sub user form statts here-->
+        <h4>Candidate Listing</h4>
+
+        <div class="row">
+          <div class="col-sm-6">
+              <p>JobTitle: <b>{{ jobTitle }}</b></p>
+              <p>Company Name : <b> {{ companyName}}</b></p>
+              <p>Job Description :<b>  {{ jobDescription}} </b></p>
+          </div>
+
+          <div class="col-sm-6">
+                <div class="row">Select Skills
+                    <select class="form-control">
+                        <option>Angular</option>
+                        <option>PHP</option>
+                        <option>Java</option>
+                        <option>HTML</option>
+                      </select>
+
+                </div>
+                <div class="row">Select Name Keyword
+                    <select class="form-control" id="sel1">
+                        <option>A</option>
+                        <option>B</option>
+                        <option>C</option>
+                        <option>D</option>
+                      </select>
+
+                </div>
+          </div>
+        </div>
+
+
+
+        <div class="all-jobs-list">
+          <div id="" class="searchResults">
+
+              <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                    <th><input  [(ngModel)]="selectedAll"  type="checkbox"></th>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Akash</td>
+                    <td>767676786</td>
+                    <td>akash@gmail.com</td>
+                    <td>Delhi</td>
+                    <td><button type="button" class="btn btn-pri btn-primary" data-toggle="modal" data-target="#myModal">View</button></td>
+                    </tr>
+                    <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Praksh</td>
+                    <td>767676786</td>
+                    <td>prakash@gmail.com</td>
+                    <td>Noida</td>
+                    <td><button type="button" class="btn btn-info btn-primary" data-toggle="modal" data-target="#myModal">View</button></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Rajesh</td>
+                    <td>767676786</td>
+                    <td>rajesh@gmail.com</td>
+                    <td>Delhi</td>
+                    <td><button type="button" class="btn btn-info btn-primary" data-toggle="modal" data-target="#myModal">View</button></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Neeraj</td>
+                    <td>767676786</td>
+                    <td>neeraj@gmail.com</td>
+                    <td>Noida</td>
+                    <td><button type="button" class="btn btn-info btn-primary" data-toggle="modal" data-target="#myModal">View</button></td>
+                    </tr>
+                  </tbody>
+                  </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<!-- candidate details popup -->
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Candidate Details</h4>
+        </div>
+        <div class="modal-body">
+          <p>Name:Rajesh</p>
+          <p>Email:rajesh@gmail.com</p>
+          <p>Phone:7827162410</p>
+          <p>Address:Delhi</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>

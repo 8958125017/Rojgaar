@@ -1,0 +1,82 @@
+
+<div class="culmn rojgaar">
+  <app-PublicHeader></app-PublicHeader>
+
+</div>
+{{FeedbackType|json}}
+<section class="banner-wrapper">
+  <div class="feedback-phrase">
+    <p> <i aria-hidden="true" class="fa fa-quote-left"></i> Your feedback is very important to us. We appreciate your feedback and will use it to evaluate changes and make improvements in our site. <i aria-hidden="true" class="fa fa-quote-right"></i></p>
+  </div>
+  <div class="container-wrapper">
+    <input autocomplete="off" id="checkLogintype" type="hidden">
+    <div class="container feedback-container">
+      <div class="col-md-8 col-sm-6">
+
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <div class="feedback-form feedback-form-r">
+          <h4 class="modal-title">Feedback</h4>
+          <form #JobForms [formGroup]="feedbackForm" class="feedback-wrapper">
+            <div class="form-group">
+              <label>Company Type <span style="color:red;"> *</span></label>
+              <div class="clearfix"></div>
+              <label class="fnt-normal m-b-0"><input type="radio" id="myTextId" name="usertype" formControlName="usertype" value="Employer" checked> Company Recruiter, HR Professional </label>
+              <div class="clearfix"></div>
+              <label class="fnt-normal"><input type="radio" id="myTextId" name="usertype" formControlName="usertype" value="Agency"> Recruitment/Placement Consultant	</label>
+            </div>
+
+            <!-- <div class="form-group">
+              <label>Feedback For <span style="color:red;"> *</span></label>
+              <select class="form-control" required formControlName="ClientType">
+                <option value="" class="" selected="selected">-- Select --</option>
+                <option *ngFor="let clienttype of FeedbackType" value="{{clienttype.feedbackId}}">{{clienttype.feedbackType}}</option>
+              </select>
+            
+            </div> -->
+
+            <div class="form-group">
+              <input type="text" required class="form-control" id="myTextId" formControlName="name" placeholder="Name *" (keypress)="removeSpecialnamechar($event)" maxlength="200" />
+              <errors [control]="feedbackForm.controls.name"></errors>
+            </div>
+            <div class="form-group">
+              <input type="text" required class="form-control" id="myTextId" formControlName="companyName" placeholder="Company Name *" maxlength="200" (keypress)="removeSpecialnamechar($event)" />
+              <errors [control]="feedbackForm.controls.companyName"></errors>
+            </div>
+            <div class="form-group">
+              <input placeholder="Mobile No. *" maxlength="10" id="myTextId" (keydown)="decimals($event)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="mobile" />
+              <errors [control]="feedbackForm.controls.mobile"></errors>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" id="myTextId" formControlName="email" placeholder="Email ID *" (keypress)="removeSpecialemailchar($event)" />
+              <errors [control]="feedbackForm.controls.email"></errors>
+            </div>
+            <div class="form-group">
+              <input placeholder="Landline No." id="myTextId" type="text" class="form-control" formControlName="landlineNumber"  minlength="10" maxlength="12" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" (focusout)="Validationforlandline($event.target.value)" />
+              <errors [control]="feedbackForm.controls.landlineNumber"></errors>
+
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" id="myTextId" maxlength="1000" placeholder="Feedback *" rows="2" formControlName="feedback"
+                        [ngClass]="{highlight: feedbackForm.controls.feedback.errors}"> </textarea>
+              <errors [control]="feedbackForm.controls.feedback"></errors>
+            </div>
+            <div class="form-group">
+              <re-captcha style="transform:scale(0.77);transform-origin:0 0" #invisible (resolved)="resolved($event)" class="g-captcha" formControlName="captcha" siteKey="6Lf8A2cUAAAAAGgMF0eRboCS0VrzTzjNw86jimjP"></re-captcha>
+            </div>
+            <div class="form-group text-center m-t-10">
+              <button class="btn btn-w-shadow no-rd" (click)=submit() tabindex="0" type="submit" [disabled]="!(feedbackForm.valid && btnsts==true)">Submit</button>
+              <!--<button type="button" id="myTextId" class="btn btn-w-shadow no-rd m-l-10" aria-label="Close" (click)="closeFeedback()">
+                Close
+              </button>-->
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+<app-PublicFooter></app-PublicFooter>
+

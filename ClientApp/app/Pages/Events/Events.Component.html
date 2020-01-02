@@ -1,0 +1,1172 @@
+<div class="">
+    <a (click)="BackToEventsList()" *ngIf="GoEventlist" href="javascript:void(0)" title="Go BackKK" class="btn btn-w-shadow no-rd pull-right"
+    tabindex="0"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
+</div>
+<!-- <div [ngClass]="EventList=='1'?'show':'hide'"> -->
+
+<!-- List of all created event -->
+
+<div [ngClass]="ListOfEvent==1?'show':'hide'">
+  <div class="dash-head">
+    <p>Event List</p>
+  </div>
+  <div class="page-filters">
+    <h2>
+      <a href="javascript:void(0);">
+        <i class="fa fa-filter" aria-hidden="true"></i> Apply Filters
+        <span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+    </h2>
+    <form [formGroup]="EventFilter">
+      <div class="filter-wrapper">
+        <div class="form-group">
+            <div class="col-md-3 col-sm-6">
+                <label>Event Type<span class="mandatory"></span></label>
+            
+                <select class="form-control"  formControlName="EvenType">
+                    <option value="" selected="selected">--Select--</option>
+                    <option *ngFor="let item of eventtype" value="{{item.eventId}}">{{item.eventName}}</option>
+                </select>
+              </div>
+          <div class="col-md-3 col-sm-6">
+            <label>State<span class="mandatory"></span></label>
+         
+            <select class="form-control"  formControlName="State" (change)="GetAllDistrict($event)">
+              <option value="" selected>--Select--</option>
+              <option *ngFor="let st of states" value="{{st.id}}">{{st.stateName}}</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <label>District<span class="mandatory"></span></label>
+           
+            <select class="form-control"   formControlName="District">
+              <option value="" selected="selected">--Select--</option>
+              <option *ngFor="let district of district" value="{{district.id}}">{{district.districtName}}</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3">
+              <label>Search Keywords<span></span></label>
+              <input type="text" formControlName="Search" class="form-control" placeholder="Search" />
+             
+
+          </div>
+         
+          <div class="form-group">
+              <div class="col-md-3 col-sm-6">
+                  <label>Start Date</label>
+                  <div class="input-group">
+                      <input type="text" #validTo="bsDatepicker" placeholder="Select Date" disabled bsDatepicker
+                             [bsConfig]="{dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false }"
+                             value=""
+                            
+                             class="form-control m-b-0" formControlName="filterstartDate" />
+                      <span class="input-group-addon" (click)="validTo.toggle()" [attr.aria-expanded]="validTo.isOpen"><i class="fa fa-calendar"></i></span>
+                  </div>
+              </div>
+              <div class="col-md-3 col-sm-6">
+                  <label>End Date</label>
+                  <div class="input-group">
+                      <input type="text" #validfrom="bsDatepicker" placeholder="Select Date" disabled bsDatepicker
+                             [bsConfig]="{dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false }"
+                             value=""
+                           
+                             class="form-control m-b-0" formControlName="filterendDate" />
+                      <span class="input-group-addon" (click)="validfrom.toggle()" [attr.aria-expanded]="validfrom.isOpen"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  
+              </div>
+             
+          </div>
+        </div>
+        <div class="row text-center m-t-5 r-btn-group">
+          <button type="reset" class="btn btn-w-shadow no-rd">Reset</button>
+          <button type="submit" (click)="GetAllSearchEvent(0,'')" class="btn btn-w-shadow no-rd filter-toggle">Search</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-12">
+    <div class="all-jobs-list">
+      <div class="searchResults">
+        <ul class="joblist-wrapper">
+          <li class="job-wrapper ps-relative approved" *ngFor="let item of getEventList">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12">
+                  <h2 class="job-title 1a" title="Vimal">
+                    {{
+item.eventName == null?
+                                'NA':(item.eventName.length>24)? (item.eventName | slice:0:24)+'..':(item.eventName)
+                    }}
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12">
+                  <strong>Event Type : </strong>{{item.eventType?item.eventType:'NA'}}
+                </div> 
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6">
+                  <strong>Start Date :</strong>{{ item.startDate=='' ?  'NA':item.startDate }}
+                </div>
+                <div class="col-md-6">
+                  <strong>End Date : </strong>{{ item.endDate == null ? 'NA':(item.endDate.length>28)? (item.endDate | slice:0:28)+'..':(item.endDate) }}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>State : </strong>{{ item.stateName=='' ?  'NA':item.stateName }}
+                  </div>
+                  <div class="col-md-6">
+                    <strong>District : </strong>{{ item.districtName=='' ?  'NA':item.districtName }}
+                  </div>
+                </div>
+              </div>            
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12">
+                  <strong>Venue : </strong>{{ item.address == null ? 'NA':item.address }}
+                </div>
+              </div>
+            </div>
+            <div class="form-group"> 
+              <div class="job-list-action card-view-btns">
+                <a class="viewit" href="javascript:void(0)" (click)="ViewcandidateList(item)" title="Registered Candidates">Registered Candidates</a>
+                
+                <a class="postit" *ngIf="(item.eventstatus==false)" href="javascript:void(0)" (click)="gGetEventDetail(item)"
+                   title="View">Register for Event</a>
+              </div>
+
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="cleafix"></div>
+<div  *ngIf="showErrorMessage" class="alert alert-danger col-md-12">
+ <strong>{{errormsg}} !</strong>
+</div>
+<!-- End of all created event -->
+
+<!-- View All Event Detail -->
+<div *ngIf="(EventDetails==1)">
+    <div class="dash-head">
+        <p>Event Details</p>
+        <!-- *ngIf="EmployerRegistrationBtn" -->
+        <a (click)="BackToEvents()" *ngIf="backToEventDetails" href="javascript:void(0)" title="Go Back" class="btn btn-w-shadow no-rd pull-right m-l-10"
+        tabindex="0"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
+        <a href="javascript:void(0)" *ngIf="EmployerRegistrationBtn" class="btn btn-w-shadow no-rd pull-right " (click)="EmployerRegistration(eventid)"> Employer Registration
+        </a>
+    </div>
+    <div class="col-md-12">
+      <div class="searchResults">
+        <ul class="joblist-wrapper">
+          <li class="job-wrapper ps-relative">
+            <div class="dash-head dash-head-2 m-b-5">
+              <p>Basic Event Details</p>               
+            </div>
+            <div>
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12">
+                  <h2 class="job-title" style="text-transform:capitalize">
+                    {{EventDetail.eventName ? EventDetail.eventName:'NA'  }}
+                  </h2>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4">
+                  <span class="text-strong">Event Type</span>: {{EventDetail.eventType ? EventDetail.eventType:'NA' }}
+                </div>
+                <div class="col-md-4 col-sm-4">
+                  <span class="text-strong">Start Date</span>: {{EventDetail.startDate ? EventDetail.startDate:'NA'}}
+                </div>
+                <div class="col-md-4 col-sm-4">
+                  <span class="text-strong">Start Time</span>: {{EventDetail.startTime ? EventDetail.startTime:'NA'}}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4">
+                  <span class="text-strong">End Date</span>: {{EventDetail.endDate ? EventDetail.endDate:'NA'}}
+                </div>
+                <div class="col-md-4 col-sm-4">
+                  <span class="text-strong">End Time</span>: {{EventDetail.endTime ? EventDetail.endTime:'NA'}}
+                </div>
+                <div class="col-md-4 col-sm-4">
+                  <span class="text-strong">Venue</span>: {{EventDetail.address ? EventDetail.address:'NA'}}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-4">
+                  <span class="text-strong">State</span>: {{EventDetail.stateName ? EventDetail.stateName:'NA' }}
+                </div>
+                <div class="col-md-4 col-sm-4">
+                  <span class="text-strong">District</span>: {{EventDetail.districtName ? EventDetail.districtName:'NA'}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12">
+                  <span class="text-strong">Description</span>: {{EventDetail.eventDescription ? EventDetail.eventDescription:'NA'}}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12 text-right">
+                  <a href="javascript:void(0)" class="text-link" (click)="togglediv();">{{texttoggle}}</a>
+                </div>
+              </div>
+              <div *ngIf="toggle">
+                <div class="dash-head dash-head-2">
+                  <p>Facilitated By Details</p>
+                </div>
+
+                <div class=" clients-section">
+                  <ng-marquee>
+                    <!-- <a *ngFor="let FBD of EventDetail.lstEventFacilitated" title="" href="javascript:void(0)" class="marquee-images">
+                      <img alt="No image" src="{{FBD.imagePath!=''?FBD.imagePath:'assets/images/NoImage.png'}}" />
+                      <br />
+                      <span>{{FBD.facilatedBy}}</span>
+                    </a> -->
+                    <a [href]="FBD.imagePath" *ngFor="let FBD of EventDetail.lstEventFacilitated" download="{{FBD.imagePath}}" class="marquee-images" target="_blank">   
+
+                      <img alt="No image" src="{{FBD.imagePath!=''?FBD.imagePath:'assets/images/NoImage.png'}}" />
+                      <br />
+                      <span>{{FBD.facilatedBy}}</span>
+
+                    <!-- </a> -->
+                    
+                  </a>
+
+                  </ng-marquee>
+                </div>
+
+                <div class="dash-head dash-head-2">
+                  <p>Uploaded Event Document Details</p>
+                </div>
+                <div class=" clients-section">
+                  <ng-marquee>
+                    <!-- <a title="" *ngFor="let EventPoster of EventDetail.lstEventPoster" href="javascript:void(0)" class="marquee-images"> -->
+                    
+
+                      <a [href]="EventPoster.posterImagePath" *ngFor="let EventPoster of EventDetail.lstEventPoster" download="{{EventPoster.posterImagePath}}" class="marquee-images" target="_blank">   
+
+                        <img alt="No image" src="{{EventPoster.posterImagePath!=''?EventPoster.posterImagePath:'assets/images/NoImage.png'}}" />
+                        <br />
+                        <span>{{EventPoster.posterImageName}}</span>
+
+                      <!-- </a> -->
+                      
+                    </a>
+                  </ng-marquee>
+                </div>
+
+                <div class="dash-head dash-head-2">
+                  <p>Chief Guest Details</p>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-6 col-sm-6" *ngFor="let chiefGuest of EventDetail.lstEventGuest">
+                    <span class="text-strong">Chief Guest Name</span>: {{chiefGuest.guestName}}
+                  </div>
+                </div>
+
+                <div class="dash-head dash-head-2">
+                  <p>Event Co-Ordinator Detail</p>
+                </div>
+                <div *ngFor="let CoordinateDetail of EventDetail.lstEventCoordinateDetail">
+                  <div class="form-group">
+                    <div class="col-md-4 col-sm-4">
+                      <span class="text-strong">Name</span>: {{CoordinateDetail.name}}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                      <span class="text-strong">Designation</span>: {{CoordinateDetail.designation}}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                      <span class="text-strong">Department</span>: {{CoordinateDetail.department}}
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-4 col-sm-4">
+                      <span class="text-strong">Email</span>: {{CoordinateDetail.email}}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                      <span class="text-strong">Mobile</span>: {{CoordinateDetail.mobile}}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                      <span class="text-strong">Remark</span>:{{CoordinateDetail.remarks}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+           <li>
+        </ul>
+      </div>
+        
+    </div>
+</div>
+<!-- End Of View All Event Detail -->
+
+<!-- Display Contact Detail -->
+<div class="col-md-12" *ngIf="ShowContactDetail ">
+  <div class="searchResults">
+    <ul class="joblist-wrapper">
+      <li class="job-wrapper ps-relative">
+        <div class="dash-head dash-head-2 m-b-5">
+          <p>Contact Details</p>               
+        </div>
+        <div>
+          <div class="form-group">
+            <div class="col-md-12 col-sm-12">
+              <h2 class="job-title" style="text-transform:capitalize" >
+                <div *ngFor="let contact of contactdetaillist; let i = index" >
+                   
+                  <div class="form-group" style="font-size:10px; margin-top: 20px;">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <span class="text-strong">{{i+1}}</span> 
+                          </div>
+                      <div class="col-md-2">
+                        <span class="text-strong">Name : </span>{{contact.contacPersionName}}
+                      </div>
+                      <div class="col-md-3">
+                        <span class="text-strong">Designation :</span> {{contact.designation}}
+                      </div>
+                      <div class="col-md-3">
+                          <span class="text-strong">Email : </span>{{contact.email}} 
+                        </div>
+                      <div class="col-md-3">
+                        <span class="text-strong">Mobile No. : </span> {{contact.mobile}}
+                      </div>
+                    
+                   
+                    </div>
+                  </div>
+              </div>
+              </h2>
+            </div>
+          </div>
+      
+       
+     
+
+        </div>
+       <li>
+    </ul>
+  </div>
+    
+</div>
+<!-- End of Contact Detail -->
+
+
+<!-- Event Detail on registration Page -->
+
+<div class="col-md-12" *ngIf="Show==1">
+    <div class="event-creation">
+       <div class="legend-box m-b-5 p-l-0 margin-top-20 margin-bottom-20">
+            <div class="col-md-12">
+                <span class="legend-title"><label class="biz-label">Event Detail</label></span>
+            </div>
+
+            <div class="form-group m-t-10">
+                <div class="col-md-2 col-sm-3">
+                    <span class="text-strong">Event Name</span>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                    {{eventdata.eventName ? eventdata.eventName:'NA'  }}
+                </div>
+                <div class="col-md-2 col-sm-3">
+                    <span class="text-strong">Event Type</span>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                    {{eventdata.eventType ? eventdata.eventType:'NA' }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2 col-sm-3">
+                    <span class="text-strong">Address</span>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  {{eventdata.address ? eventdata.address:'NA'}}
+                </div>
+                <div class="col-md-2 col-sm-3">
+                    <span class="text-strong">Description</span>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                    {{eventdata.eventDescription ? eventdata.eventDescription:'NA'}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2 col-sm-3">
+                    <span class="text-strong">State</span>
+                </div>
+                <div class="col-md-8 col-sm-7">
+                        {{eventdata.stateName ? eventdata.stateName:'NA' }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2 col-sm-3">
+                    <span class="text-strong">District</span>
+                </div>
+                <div class="col-md-8 col-sm-7">
+                        {{eventdata.districtName ? eventdata.districtName:'NA'}}
+                </div>
+            </div>
+     </div>
+
+
+<form [formGroup]="Eventform" >
+        <div class="legend-box m-b-5 p-l-0 margin-top-20 margin-bottom-20">
+            <div class="col-md-12">
+                <span class="legend-title"><label class="biz-label">Company Detail</label></span>
+            </div>
+     
+            <div class="form-group m-t-10">
+                <div class="col-md-2 col-sm-3">
+                    <span class="text-strong">Name</span>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                        <input required oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" type="text"
+                        class="form-control" readonly formControlName="Name" placeholder="name" maxlength="100"/>
+                </div>
+                <div class="col-md-2 col-sm-3">
+                    <span class="text-strong">About</span>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                        <input type="text" class="form-control" formControlName="Aboutcompany" placeholder="About Company" maxlength="1000" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2 col-sm-3">
+                    <span class="text-strong">Address</span>
+                </div>
+                <div class="col-md-8 col-sm-7">
+                        <input type="text" class="form-control" placeholder="Address" formControlName="Address" maxlength="1000">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2 col-sm-3">
+                    <span class="text-strong">Contact Details<span style="color:red;"> *</span></span>
+                </div>
+                <div class="col-md-4 col-sm-3">
+                    <select class="form-control" formControlName="ContactDetail"  (change)="getUserDetail($event.target.value)">
+                        <option value="" selected="selected">--Select--</option>
+                        <option *ngFor="let users of userList" [value]="users.userId">{{users.contacPersionName}} - {{users.mobile}}</option>
+                    </select>
+                    <errors [control]="Eventform.controls.ContactDetail"></errors>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                    <button class="event-add" (click)="AddContactDetails(openingContactModal)">Add Contact Details <span><i class="fa fa-plus" aria-hidden="true"></i></span></button>
+                </div>
+                <ng-template #openingContactModal>
+                <div class="modal-header">
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                        <div class="legend-box">
+                            <div class="col-md-12 row">
+                            <span class="legend-title"><label class="biz-label">Contact Person</label></span>
+                            </div>
+                            <div class="form-group">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label>Name <span style="color:red;"> *</span></label>
+                                <input type="text"  class="form-control" formControlName="ContactName" placeholder="Name" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" maxlength="200" />
+                                <errors [control]="Eventform.controls.ContactName"></errors>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label>Email ID <span style="color:red;"> *</span></label>
+                                <input type="text" class="form-control" formControlName="ContactEmail" placeholder="Email ID" maxlength="50"/>
+                                <errors [control]="Eventform.controls.ContactEmail"></errors>
+                            </div> 
+                                   
+                           
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label>Mobile No. <span style="color:red;"> *</span></label>
+                                <input placeholder="Mobile No." maxlength="10" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="ContactMobile"  />
+                                <errors [control]="Eventform.controls.ContactMobile"></errors>
+                            </div>
+                             <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label>Designation</label>
+                                <input type="text" class="form-control" formControlName="ContactDesignation"  placeholder="Designation" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" maxlength="200"/>
+                                <errors [control]="Eventform.controls.ContactDesignation"></errors>
+                            </div>
+                            </div>
+                           
+                            <div class="form-group">  
+                            <div class="job-list-action card-view-btns r-btn-group"> 
+                                <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" [disabled]="!(Eventform.controls.ContactName.valid && Eventform.controls.ContactEmail.valid && Eventform.controls.ContactMobile.valid)"  (click)="SaveContactDetail()">Add</button>                      
+                                <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="closeContactModal()">Close</button>
+                            </div> 
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                </ng-template>
+                <!-- <div *ngIf="ShowuserDetail">
+                  <div *ngFor="let item of userdata">
+                      <div class="form-group">
+                          <div class="col-md-2 col-sm-3">
+                              <span class="text-strong">Name</span>
+                          </div>
+                          <div class="col-md-3 col-sm-3">
+                              {{item.contacPersionName}}
+                          </div>
+                          <div class="col-md-2 col-sm-3">
+                              <span class="text-strong">Mobile</span>
+                          </div>
+                          <div class="col-md-3 col-sm-3">
+                              {{item.mobile}}
+                          </div>
+          
+                      </div>
+                      <div class="form-group">
+                          <div class="col-md-2 col-sm-3">
+                              <span class="text-strong">Email</span>
+                          </div>
+                          <div class="col-md-3 col-sm-3">
+                              {{item.email}}
+                          </div>
+                          <div class="col-md-2 col-sm-3">
+                              <span class="text-strong">Designation</span>
+                          </div>
+                          <div class="col-md-3 col-sm-3">
+                              {{item.designation}}
+                          </div>
+                      </div>
+                  </div>
+              </div> -->
+<!-- Display Contact Details -->
+<div class="col-md-12">
+    <div class="all-jobs-list">
+      <div id="" class="searchResults">
+        <ul class="joblist-wrapper">
+          <ng-template #template1>
+            <div class="modal-body text-center">
+              <p>Do you want to delete this Job Detail?,,</p>
+              <br />
+              <br />
+              <button type="button" class="btn yl-btn no-rd" (click)="DeleteContactDetail()">Yes</button>
+              <button type="button" (click)="declineBox()" class="btn bl-btn no-rd">No</button>
+            </div>
+          </ng-template>
+          <li class="job-wrapper" *ngFor="let field of ShowcontactDetail,let i=index">
+          
+            <div class="clearfix"></div>
+            <h3 class="company-name"></h3>
+            <div class="clearfix"></div>
+            <ul class="jd-detail">
+             <li>
+                  <strong>Name:</strong> <span >{{field.contacPersionName}}</span>
+              </li>
+              <li>
+                   <strong>Email ID:</strong> <span >{{field.email}}</span>
+             </li>
+
+             <li>
+                <strong>Mobile No:</strong> <span >{{field.mobile}}</span>
+          </li>
+
+          <li>
+            <strong>Designation:</strong> <span >{{field.designation}}</span>
+         </li>
+           
+            </ul>
+          
+          <div class="form-group">
+              <div class="job-list-action card-view-btns">
+                <a href="javascript:void(0)" class="viewit" title="Delete this opening" (click)="PushedTemplate(template1,i)">Delete</a>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<!-- End Contact Details -->
+
+            </div>
+        </div> 
+        <div class="legend-box m-b-5 p-l-0 margin-top-20 margin-bottom-20">
+          <div class="col-md-12">
+            <span class="legend-title"><label class="biz-label">Document Detail</label></span>
+          </div>
+          <div class="form-group m-t-10"> 
+            <div class="col-md-2 col-sm-3 col-xs-12">
+              <span class="text-strong">Upload Document</span>
+              <div class="cleafix"></div>
+              <span class="upload-file-info">(Like Company Promotion Image/Pamphlet)</span>
+            </div>
+            <div class="col-md-8 col-sm-9 col-xs-12">
+              <div class="event-logo m-b-10 ng-star-inserted">
+                <!---->
+                <div>
+                  <label class="upload1" for="ab1">
+                    <input id="ab1" type="file" (change)="onUploadChange($event)" class="form-control" formControlName="ImgName" accept="image/x-png,image/jpeg,image/jpg,image/png,"> Upload <span><i aria-hidden="true" class="fa fa-upload"></i></span>
+                  </label>
+                  <div class="clearfix"></div>
+                  <span class="upload-file-info">Max. file size 2MB, Format - JPEG, PNG, JPG</span>
+                </div>
+                <div style="width: 50%;">
+                  <!-- <a href="javascript:void(0)" *ngFor="let item of base64textString"> -->
+                      <a href="javascript:void(0)">
+                  <img class="img-responsive m-x-auto"  src="{{imagename!=''?imagename:'assets/images/NoImage.png'}}" />
+                </a>
+                  <!-- <img src="{{imagename!=null?imagename:'assets/images/NoImage.png'}}" alt="" />
+                  <img src="{{imagename!=''?imagename:'assets/images/NoImage.png'}}" alt="" /> -->
+                </div>
+             
+              </div>
+             
+            </div> 
+          </div>
+        </div>
+
+        <div class="legend-box m-b-5 p-l-0 margin-top-20 margin-bottom-20">
+          <div class="col-md-12">
+            <span class="legend-title"><label class="biz-label">Add Job Detail</label></span>
+          </div>
+          <div class="form-group m-t-10">
+            <div class="col-md-2 col-sm-3">
+              <span class="text-strong">Job Title</span>
+              <!-- <span class="required-field"> *</span> -->
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <input required oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" type="text"
+                     class="form-control" formControlName="JobTitle" placeholder="Job Title" maxlength="50" />
+              <!-- <errors [control]="Eventform.controls.JobTitle"></errors> -->
+            </div>
+            <div class="col-md-2 col-sm-3">
+              <span class="text-strong">Min. Qualification</span>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <select class="form-control" formControlName="MinEducation">
+                <option value="" required class="" selected="selected">--Select--</option>
+                <option *ngFor="let item of mineducation" value="{{item.id}}">{{item.name}}</option>
+              </select>
+              <!-- <errors [control]="Eventform.controls.MinEducation"></errors> -->
+            </div>
+
+          </div> 
+          <div class="form-group m-t-10">
+            <div class="col-md-2 col-sm-3">
+              <span class="text-strong">Min. Weight (in kg)</span>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <input maxlength="3" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="weight" type="text" class="form-control" placeholder="Weight" />
+            </div>
+            <div class="col-md-2 col-sm-3">
+              <span class="text-strong">Height</span>
+            </div>
+            <div class="col-md-2 col-sm-2">
+              <input maxlength="1" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="Height" type="text" class="form-control" placeholder="Feet" />
+              <!-- <errors [control]="Eventform.controls.Height"></errors> -->
+            </div>
+            <div class="col-md-2 col-sm-2">
+              <input maxlength="2" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="inch" type="text" class="form-control" placeholder="Inch" />
+              <!-- <errors [control]="Eventform.controls.inch"></errors> -->
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-2 col-sm-3">
+              <span class="text-strong">Min. Age</span>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <select class="form-control" required formControlName="Age">
+                <option value="">--Select--</option>
+                <option *ngFor="let age of age" [value]="age">{{age}}</option>
+              </select>
+              <!-- <errors [control]="Eventform.controls.Age"></errors> -->
+            </div>
+          </div>
+
+        </div>
+
+          <div class="legend-box m-b-5 p-l-0 margin-top-20 margin-bottom-20">
+            <div class="col-md-12">
+              <span class="legend-title"><label class="biz-label">Add Salary/Other Details</label></span>
+            </div>
+
+
+            <div class="form-group m-t-10">
+              <div class="col-md-2 col-sm-3">
+                <span class="text-strong">Monthly CTC </span>
+              </div>
+              <div class="col-md-2 col-sm-3">
+                  <input maxlength="10" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="MonthCtc" type="text" class="form-control" placeholder="Min CTC" />
+                  <div class="clearfix"></div>
+                </div> 
+                    <div class="col-md-2 col-sm-3">
+                        <input maxlength="10" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="maxCtcMonth" type="text" class="form-control" placeholder="Max CTC" />
+                        <div class="clearfix"></div>
+                      </div>
+                
+            </div>
+
+            <div class="form-group m-t-10">
+              <div class="col-md-2 col-sm-3">
+                <span class="text-strong">In Hand Salary (INR)/Month</span>
+              </div>
+               
+                  <div class="col-md-2 col-sm-3">
+                    <input maxlength="10" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="minInHandSalary" type="text" class="form-control" placeholder="Min. Salary" />
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="col-md-2 col-sm-3 ">
+                    <input maxlength="10" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="InHandSalary" type="text" class="form-control" placeholder="Max. Salary" />
+                    <div class="clearfix"></div>
+                  </div>
+                 
+              <div class="col-md-2 col-sm-3">
+                <span class="text-strong">Number of Opening </span>
+              </div>
+              <div class="col-md-3 col-sm-3">
+                <input maxlength="10" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="NoOfOpening" type="text" class="form-control" placeholder="Number of Opening" />
+              </div>
+            </div> 
+            <div class="form-group m-t-10">
+              <div class="col-md-2 col-sm-3">
+                <span class="text-strong">State</span>
+              </div>
+              <div class="col-md-3 col-sm-3">
+                <select class="form-control" required formControlName="State" (change)="GetAllDistrict($event)">
+                  <option value="" selected>--Select--</option>
+                  <option *ngFor="let st of states" [value]="st.id">{{st.stateName}}</option>
+                </select>
+              </div>
+              <div class="col-md-2 col-sm-3">
+                <span class="text-strong">District</span>
+              </div>
+              <div class="col-md-3 col-sm-3">
+                <select class="form-control" #val required formControlName="District">
+                  <option value="" selected="selected">--Select--</option>
+                  <option *ngFor="let district of district" [value]="district.id">{{district.districtName}}</option>
+                </select>
+              </div>
+              <div class="col-md-2 col-sm-3 col-xs-6">
+                <button class="event-add" (click)="AddMorejob()">Add job Location </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="all-jobs-list">
+              <div id="" class="searchResults">
+                <ul class="joblist-wrapper">
+                  <ng-template #template>
+                    <div class="modal-body text-center">
+                      <p>Do you want to delete this Job Detail?</p>
+                      <br />
+                      <br />
+                      <button type="button" class="btn yl-btn no-rd" (click)="DeleteJobDetail()">Yes</button>
+                      <button type="button" (click)="declineBox()" class="btn bl-btn no-rd">No</button>
+                    </div>
+                  </ng-template>
+                  <li class="job-wrapper" *ngFor="let field of ShowPushData,let i=index">
+
+                    <div class="clearfix"></div>
+                    <h3 class="company-name"></h3>
+                    <div class="clearfix"></div>
+                    <ul class="jd-detail">
+                        <li>
+                            <strong>State:</strong> <span >{{field.stateId}}</span>
+                        </li>
+                        <li>
+                             <strong>District:</strong> <span >{{field.districtId}}</span>
+                       </li>
+                        <li>
+                             <strong>No Of Vacancy:</strong> <span >{{field.noOfVacancy}}</span>
+                       </li>
+                       <li>
+                              <strong>Max Ctc Month:</strong> <span >{{field.maxCtcMonth}}</span>
+                        </li>
+                        <li>
+                              <strong>Min Ctc Month:</strong> <span >{{field.minCtcMonth}}</span>
+                        </li>
+                        <li>
+                              <strong>In Hand Min Salary:</strong> <span >{{field.maxhandsonSalary}}</span>
+                        </li>
+
+                        <li>
+                            <strong>In Hand Max Salary:</strong> <span >{{field.handsonSalary}}</span>
+                      </li>
+                   
+
+                      </ul>
+                    <div class="form-group">
+                      <div class="job-list-action card-view-btns">
+                        <a href="javascript:void(0)" class="viewit" title="Delete this opening" (click)="PushedTemplate(template,i)">Delete</a>
+                      </div>
+                    </div>
+                    <div class="clearfix"></div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12 text-center">
+              <button class="btn btn-w-shadow no-rd" [disabled]="!(Eventform.controls.ContactDetail.valid)" (click)="FinalEventRegistration()" tabindex="0" type="submit">Submit</button>
+              <!-- [disabled]="!(Eventform.controls.JobTitle.valid && Eventform.controls.Age.valid  && Eventform.controls.MinEducation.valid && Eventform.controls.ContactDetail.valid)" -->
+            </div>
+          </div>
+</form>
+    <div class="clearfix"></div>
+    </div>
+</div>
+<!-- End Of Event Detail on registration Page -->
+
+<div  class="col-md-12" *ngIf="ShowRegisterEvent">
+    <div class="all-jobs-list">
+      <div id="" class="searchResults">
+        <ul class="joblist-wrapper">
+          <li class="job-wrapper ps-relative" *ngFor="let eventlist of EventRegistrationDetail">
+            <div class="form-group m-b-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="company-name" style="text-transform:capitalize"> </h3>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Job Title : </strong>{{eventlist.jobTitle ? eventlist.jobTitle:'NA'}} </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6"><strong>Age (in yrs): </strong> {{eventlist.ageMax ? eventlist.ageMax:'NA'}}</div>
+                <div class="col-md-6"><strong>Min Education : </strong> {{eventlist.minEducationName ? eventlist.minEducationName:'NA'}}<span></span></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6"><strong>Height (ft.inch): </strong> 
+                  {{eventlist.heightFeet!=''?eventlist.heightFeet:'Not Applicable'}} {{eventlist.heightFeet!=''?'FT.':''}}    {{eventlist.heightFeet!=''?eventlist.heightFeet:''}} {{eventlist.heightFeet!=''?'INCH.':''}}
+                </div>
+                <div class="col-md-6"><strong>Job Code: </strong>{{eventlist.jobCode ? eventlist.jobCode:'NA'}} </div>
+               
+              </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6"><strong>Weight (in kg) : </strong> {{eventlist.weight ? eventlist.weight:'NA'}}</div>
+                  <!-- <div class="col-md-6"><strong>Max Exp : </strong>{{eventlist.maxExp ? eventlist.maxExp:'NA'}} </div> -->
+                 
+                </div>
+              </div>
+            <!-- <div class="form-group">
+              <div class="row">                
+                <div class="col-md-12"><strong>Job Description : </strong> {{eventlist.jobDescription ? eventlist.jobDescription:'NA'}}<span></span></div>
+              </div>
+            </div> -->
+            <div class="form-group">
+              <div class="job-list-action card-view-btns">
+                <a href="javascript:void(0)" class="viewit" (click)="ViewJobDetail(JobDetail,eventlist)" title="View this job">View</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12" *ngIf="CandidateList">
+        <div class="dash-head">
+                <p>Candidate List</p>
+                <!-- <a class="btn btn-w-shadow no-rd pull-right" href="javascript:void(0)" (click)="ExcelExport()">
+                    <i class="fa fa-file-excel m-t-2" aria-hidden="true"></i>&nbsp;&nbsp;Export to Excel
+                </a> -->
+              </div>
+        <div>
+                <div class="ui-widget-header ui-widget-header-r">
+                  <input #gb type="text" pInputText size="100" placeholder="Global Filter">
+                </div>
+                <!-- {{EventRegisterCandidate|json}} -->
+                  <p-dataTable [value]="EventRegisterCandidate" [loading]="loading" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]" [sortField]="sortF" [sortOrder]="sortO" (onSort)="changeSort($event)" [globalFilter]="gb" scrollable="true"  scrollHeight="100%" scrollWidth="100%" [style]="{'margin-top':'30px'}">
+                      <p-column field="i"  header="S.No" [style]="{'width':'50px'}">
+                          <ng-template pTemplate="body" let-i="rowIndex" let-suite>
+                              {{i+1}}
+                          </ng-template>
+                      </p-column> 
+                    <p-column field="candName" header="Candidate Name" [style]="{'width':'100px'}" [sortable]="true"></p-column>
+                  
+                    
+                     <p-column field="email" header="Email" [style]="{'width':'100px'}" [sortable]="true">
+                      <ng-template field="email" let-item="rowData" pTemplate type="body">
+                         {{item.email ? item.email : 'NA'}}
+                      </ng-template>
+                     </p-column>
+
+                     <p-column field="mobile" header="Mobile" [style]="{'width':'100px'}" [sortable]="true"></p-column>
+
+                                       
+                     <p-column field="gender" header="Gender" [style]="{'width':'100px'}" [sortable]="true">
+                        <ng-template field="dob" let-item="rowData" pTemplate type="body">
+                           {{item.gender ? item.gender : 'NA'}}
+                        </ng-template>
+                    </p-column>
+
+                     <p-column field="dob" header="DOB" [style]="{'width':'100px'}" [sortable]="true">
+                            <ng-template field="dob" let-DOB="rowData" pTemplate type="body">
+                                {{DOB.dob | date: 'dd/MM/yyyy'}}
+                            </ng-template>
+                     </p-column>
+
+                     
+                     <p-column field="stateName" header="State Name" [style]="{'width':'100px'}" [sortable]="true">
+                      <ng-template field="stateName" let-item="rowData" pTemplate type="body">
+                         {{item.stateName ? item.stateName : 'NA'}}
+                      </ng-template>
+                     </p-column>
+                     
+                     <p-column field="districtName" header="District Name" [style]="{'width':'100px'}" [sortable]="true">
+                      <ng-template field="districtName" let-item="rowData" pTemplate type="body">
+                         {{item.districtName ? item.districtName : 'NA'}}
+                      </ng-template>
+                     </p-column>
+                     
+                     
+                     <p-column field="source" header="Source" [style]="{'width':'100px'}" [sortable]="true"></p-column>
+                    
+                     <p-column header="Designation" [sortable]="true" [style]="{'width':'200px'}">
+                      <ng-template pTemplate="body" let-i="rowIndex" let-suite let-item="rowData">
+                          <input id="Designation{{i}}" type="text" maxlength="200" *ngIf="item.offerLetterStatus==false">
+                          <label *ngIf="item.offerLetterStatus">
+                              {{item.designation}} </label>
+                      </ng-template>
+                    </p-column>
+                    
+
+                    <p-column header="Offer Date" [sortable]="true" [style]="{'width':'269px'}">
+                      <ng-template pTemplate="body" let-i="rowIndex" let-suite let-item="rowData">
+                          <div class="input-group" *ngIf="item.offerLetterStatus==false">
+                              <input type="text" id="OfferDate{{i}}" #validfrom="bsDatepicker" placeholder="Select Date"
+                                  disabled bsDatepicker [bsConfig]="{dateInputFormat: 'DD-MM-YYYY',showWeekNumbers:false }"
+                                  value="" class="form-control m-b-0" />
+                              <span class="input-group-addon" (click)="validfrom.toggle()" [attr.aria-expanded]="validfrom.isOpen"><i
+                                      class="fa fa-calendar"></i></span>
+                          </div>
+                          <label  *ngIf="item.offerLetterStatus">
+                              {{item.offerLetterDate ? item.offerLetterDate :'NA'}} </label>
+                      </ng-template>
+                  </p-column>
+
+
+                  <p-column header="Offer Letter Upload" [sortable]="true" [style]="{'width':'269px'}">
+                    <ng-template pTemplate="body" let-i="rowIndex" let-suite let-item="rowData">
+                        <input type="file" (change)="onUploadChange($event)" class="" id="type-file" *ngIf="item.offerLetterStatus==false">
+                        <a [href]="item.offerLetterImgPath" target="_blank" *ngIf="item.offerLetterStatus" class="pan-view" title="View offer letter"><i
+                          class="fa fa-eye" aria-hidden="true"></i></a>                      
+                    </ng-template>
+                </p-column>
+
+
+                <p-column header="Joining Date" [sortable]="true" [style]="{'width':'269px'}">
+                            <ng-template pTemplate="body" let-i="rowIndex" let-suite let-item="rowData">
+                                <div class="input-group" *ngIf="item.offerLetterStatus==false">
+                                    <input type="text" id="JoiningDate{{i}}" #validTo="bsDatepicker" placeholder="Select Date"
+                                        disabled bsDatepicker [bsConfig]="{dateInputFormat: 'DD-MM-YYYY',showWeekNumbers:false }"
+                                        value="" class="form-control m-b-0" />
+                                    <span class="input-group-addon" (click)="validTo.toggle()" [attr.aria-expanded]="validTo.isOpen"><i
+                                            class="fa fa-calendar"></i></span>
+                                </div>
+                                <label *ngIf="item.offerLetterStatus">
+                                    {{item.joiningDate ? item.joiningDate :'NA'}} </label>
+                            </ng-template>
+                        </p-column>
+                
+                        <p-column header="Action" [style]="{'width':'82px'}">
+                          <ng-template let-item="rowData" let-i="rowIndex" pTemplate type="body" let-item="rowData">
+                              <a href="javascript:void(0)" (click)="addCandidate(item,i)" *ngIf="!item.offerLetterStatus">
+                                  <span class="text-link">Add</span>
+                              </a>
+                            <span *ngIf="item.offerLetterStatus">
+                                -
+                            </span>
+                              <!-- <a href="javascript:void(0)" (click)="RevokeCandidate(item,i)" *ngIf="item.candStatus=='Offer Letter Released'">
+                                  <span class="text-link">Revoke</span>
+                              </a> -->
+                          </ng-template>
+                      </p-column>
+                   
+  
+                  <ng-template pTemplate="paginatorLeft">
+                          <button type="button" pButton icon="fa-refresh"></button>
+                      </ng-template>
+                      <ng-template pTemplate="paginatorRight">
+                          <button type="button" pButton icon="fa-cloud-upload"></button>
+                      </ng-template>
+                  </p-dataTable>
+      
+              </div>
+      </div>
+
+
+      <!-- Jobdetail popup -->
+  <ng-template #JobDetail>
+        <div class="modal-content">
+          <div class="modal-header" style="border-bottom: 1px solid #ddd;">
+            <h6 class="modal-title pull-left">View Job Details</h6>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefForJob.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body p-t-0">
+            <div>
+              <div class="col-md-12">
+                <div class="job-description">
+                  <div id="" class="searchResults">
+                    <div class="clearfix"></div>                  
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h3 class="company-name">Job Title : {{ViewJob.jobTitle}}</h3>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h3 class="company-name">Job Code :{{ViewJob.jobCode}}</h3>
+                        </div>
+                      </div>
+                    </div>
+                
+                    <div class="form-group">
+                        <div class="row">                          
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                            <span class="text-strong">Age (in yrs) : </span> <span>{{ViewJob.ageMax}}</span>
+                          </div>
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                              <span class="text-strong">Height : </span>
+                              <span>
+                                {{ViewJob.heightFeet!=''?ViewJob.heightFeet:'Not Applicable'}} {{ViewJob.heightFeet!=''?'FT.':''}}    {{ViewJob.heightFeet!=''?ViewJob.heightFeet:''}} {{ViewJob.heightFeet!=''?'INCH.':''}}
+                              </span>
+                            </div>
+
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <span class="text-strong">Weight (in kg) : </span><span>{{ViewJob.weight ? ViewJob.weight: 'NA'}}</span>
+                              </div>                            
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <span class="text-strong">Min Education : </span><span>{{ViewJob.minEducationName}}</span>
+                              </div>  
+                        </div>
+                      </div>
+                    <!-- <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <span class="text-strong">Job Description :</span>  {{ViewJob[0].jobDescription}}
+                        </div>
+                      </div>
+                    </div> -->
+                      <!-- <div class="form-group">
+                          <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                              <h6 class="m-b-0 m-t-10">Contact Person</h6>
+                            </div>
+                          </div>
+                  </div> -->
+                    <!-- <div *ngFor="let jobs of ViewJob.lstEventCtctDetail">
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                          <span class="text-strong">Name : </span> {{jobs.contacPersionName}}
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                          <span class="text-strong">Designation : </span>{{jobs.designation ? jobs.designation:'NA'}}
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                          <span class="text-strong">Mobile No. : </span> {{jobs.mobile}}
+                        </div>
+                      
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                          <span class="text-strong">Email : </span> {{jobs.email}}
+                        </div>
+                      </div>
+                    </div>
+                </div> -->
+      
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                          <h6 class="m-b-0 m-t-10">Location</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngFor="let Eventjobs of ViewJob.lstEvntJobDtals">
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                            <span>
+                              <span class="text-strong">State : {{Eventjobs.stateName}}</span>
+                            </span>
+                          </div>
+
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                            <span>
+                              <span class="text-strong">District : </span>{{Eventjobs.districtName}}
+
+                            </span>
+                          </div>
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                            <span>
+                              <span class="text-strong">No Of Vacancy : </span>{{Eventjobs.noOfVacancy}}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                            <span>
+                              <span class="text-strong">Max Ctc Month  : </span>{{Eventjobs.maxCtcMonth}}
+                            </span>
+                          </div>
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                            <span class="text-strong">Min Ctc Month: </span>{{Eventjobs.minCtcMonth}}
+                          </div>
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                            <span>
+                              <span class="text-strong">Max Inhand salary (month) : </span>{{Eventjobs.maxhandsonSalary}}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-4 col-sm-6 col-xs-12">
+                            <span>
+                              <span class="text-strong">Min Inhand salary (month) : {{Eventjobs.handsonSalary}}</span>
+                            </span>
+                          </div> 
+                        </div> 
+                      </div>
+                    </div>
+                 </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-w-shadow no-rd" (click)="modalRefForJob.hide()">Close</button>
+          </div>
+        </div>
+      </ng-template>
+    
+
+      <!-- screening popup -->

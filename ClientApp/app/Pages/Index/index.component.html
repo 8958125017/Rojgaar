@@ -1,0 +1,265 @@
+<div class="culmn rojgaar showIt" id="view3">
+  <app-PublicHeader></app-PublicHeader>
+  <section id="homeRojgaar" class="homeRojgaar">
+    <div class="rojgaar-banner">
+      <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+    </div>
+    <!--<div class="rojgaar-banner animate-area">
+  </div>-->
+  </section>
+  <div class="clearfix"></div>
+  <section id="mainContent">
+    <div class="container">
+      <div class="rojgaar-search">
+        <div class="sliderContent">
+          <div class="container">
+            <div class="searchjobs">
+              <ul class="" id="search">
+                <li class="textbox">
+                  <input [(ngModel)]="IndustryAreaSelected"
+                         [typeahead]="IndustryArea"
+                         typeaheadOptionField="industryName"
+                         (typeaheadOnSelect)="IndustryAreaOnSelect($event)"
+                         class="change"
+                         placeholder="Industry Area ...">
+                </li>
+                <li class="textbox">
+                  <input [(ngModel)]="FunctionAreaSelected"
+                         [typeahead]="FunctionArea"
+                         typeaheadOptionField="functionalAreaName"
+                         class="change"
+                         (typeaheadOnSelect)="FunctionAreaOnSelect($event)"
+                         placeholder="Functional Area ...">
+                </li>
+                <li class="textbox">
+                  <input [(ngModel)]="StatesSelected"
+                         [typeahead]="States"
+                         typeaheadOptionField="stateName"
+                         class="change"
+                         (typeaheadOnSelect)="StatesOnSelect($event)"
+                         placeholder="Location ...">
+                </li>
+                <li class="textbox">
+                  <input type="submit" id="go" name="" (click)="SearchJobHome(0)" value="Search Now" />
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="job-statics ">
+        <div class="amazing-header margin-top-40">
+          <p>
+            Job Statistics<br>
+            <span></span>
+            <span></span>
+            <span></span>
+          </p>
+        </div>
+        <div class="container-fluid">
+          <div class="col-md-5 col-sm-6 col-md-offset-1">
+            <div class="job-view">
+              <div>
+                <img src="/assets/images/jobs.png">
+              </div>
+              <div>
+                <p class="job-view-head">
+                  {{JobStatics?.jobPosted}}<br>
+                  <span class="job-statics-status">Vacancies</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <div class="job-view">
+              <div>
+                <img src="/assets/images/jobs.png">
+              </div>
+              <div>
+                <p class="job-view-head">
+                  {{JobStatics?.jobApplied}}<br>
+                  <span class="job-statics-status">Job Applied</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!--<div class="col-md-4">
+            <div class="job-view">
+              <div>
+                <img src="/assets/images/jobs.png">
+              </div>
+              <div>
+                <p class="job-view-head">
+                  {{JobStatics?.interviewScheduled}}<br>
+                  <span class="job-statics-status">Interview Scheduled</span>
+                </p>
+              </div>
+            </div>
+          </div>-->
+        </div>
+      </div>
+      <div class="clients-companies">
+        <div class="amazing-header">
+          <p>
+            Companies Associated<br />
+            <span></span>
+            <span></span>
+            <span></span>
+          </p>
+        </div>
+        <!-- {{CompaniesList|json}} -->
+        <div class="container-fluid clients-section">
+          <div class="col-md-12">
+            <ng-marquee duration="250">
+              <a title="{{item.companyName}}" href="javascript:void(0)" *ngFor="let item of CompaniesList; let first = first;" class="marquee-images">
+                <img alt="No image" src="{{item.imageName!=''?item.imagePath:'assets/images/NoImage.png'}}" />
+                <br />
+                <span>{{item.companyName}}</span>
+                <div class="hover-item">
+                  <h6 class="m-b-5 text-center">Description</h6>
+                  {{item.companyName}}
+                </div>
+              </a>
+            </ng-marquee>
+            <!--<div class="clients-logo">
+              <marquee direction="left" speed="slow" behavior="loop">
+                <a href="javascript:void(0)" *ngFor="let item of CompaniesList; let first = first;" class="marquee-images w200">
+                  <img alt="No image" src="{{item.imagePath!=''?item.imagePath:'assets/images/NoImage.png'}}" />
+                  <br />
+                  <span title="{{item.companyName}}">{{item.companyName}}</span>
+                </a>
+              </marquee>
+            </div>-->
+          </div>
+        </div>
+      </div>
+
+      <div class="job-categories">
+        <div class="amazing-header margin-top-40">
+          <p>
+            Jobs By Categories<br />
+            <span></span>
+            <span></span>
+            <span></span>
+          </p>
+        </div>
+        <div class="container-fluid">
+          <ul>
+            <li *ngFor="let item of FunctionAreaList">
+              <a (click)="jobSearch(item)" style="cursor:pointer;">
+                <span class="category-icon">
+                  <img src="{{item.image}}" />
+                </span>
+                <br />
+                <!-- <span class="category-title category-name-ellip" title="{{item.functionalAreaName}}" style="text-transform:capitalize">{{item.functionalAreaName | slice: 0:20 }}....</span><br /> -->
+                <span class="category-title category-name-ellip" title="{{item.functionalAreaName}}" style="text-transform:capitalize">{{item.alias  }}</span><br />
+                <span class="category-count">({{item.totalValidJob}} )</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="container-fluid text-center" *ngIf="viewAll">
+          <button (click)="GetViewAllFunctionArea()" class="btn btn-w-shadow no-rd">View all<span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+        </div>
+        <div class="container-fluid text-center" *ngIf="viewLess">
+          <button (click)="GetAllFunctionArea()" class="btn btn-w-shadow no-rd">View less<span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+        </div>
+      </div>
+
+    </div>
+    <div>
+     
+    </div>
+    
+  </section>
+  <app-PublicFooter></app-PublicFooter>
+</div>
+<div id="password_policy" class="modal" role="dialog" style="padding-right: 17px;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title login-title">Password <span class="theme-color">Policy</span></h4>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <div class="tab-content password-plcy">
+            <ul>
+              <li><span><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span> Atleast 1 small-case letter.</li>
+              <li><span><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span> Atleast 1 Capital letter.</li>
+              <li><span><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span> Atleast 1 Digit.</li>
+              <li><span><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span> Atleast 1 Special character.</li>
+              <li><span><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span> Length should be between 6-24 characters.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="mdRecoveryPassword" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-new">
+    <div class="modal-content">
+      <input type="hidden" id="checkLogintype" autocomplete="off">
+      <div class="modal-body">
+        <div class="login-table">
+          <div class="login-left-wrapper">
+            <div class="message-wrapper">
+              <p class="msg">Welcome Recruiters</p>
+              <p> <i class="fa fa-quote-left" aria-hidden="true"></i> You're not just recruiting employees, but are sowing the seeds of your reputation.<i class="fa fa-quote-right" aria-hidden="true"></i></p>
+            </div>
+          </div>
+          <div class="login-right-wrapper">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h4 class="modal-title">Reset <span class="theme-color">Password</span></h4>
+            <form (ngSubmit)="UpdateUserPassword()" [formGroup]="UpdatePassword" autocomplete="off">
+              <div class="col-md-12">
+                <div>
+                  <div>
+                    <div *ngIf="result!=null" class=" {{result.responseResult?'alert alert-success':'alert alert-danger'}}">
+                      {{result.message}}
+                    </div>
+                    <div *ngIf="ShowChangePassword">
+                      <div class="group-wrapper">
+                        <input type="password" class="" name="Password" formControlName="NewPassword" required>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <errors [control]="UpdatePassword.controls.NewPassword"></errors>
+                        <label>Password </label>
+                        <div class="pass-instructions">
+                          <img class="tool-new-img" src="../../../assets/images/info.png" width="20">
+                          <p class="tool-new-pass">
+                            Atleast 1 Digit.<br>
+                            Atleast 1 small-case letter.<br>
+                            Atleast 1 Capital letter.<br>
+                            Atleast 1 Special character.<br>
+                            Length should be between 6-24 characters.
+                          </p>
+                        </div>
+                      </div>
+                      <div class="group-wrapper">
+                        <input type="password" class="" name="ConfirmPassword" formControlName="ConfirmPassword" required>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <errors [control]="UpdatePassword.controls.ConfirmPassword"></errors>
+                        <label>Confirm Password </label>
+                      </div>
+                      <div class="form-group sign-in-btn">
+                        <button class="btn btn-w-shadow no-rd btn-block" id="btnLogin" type="submit" [disabled]="!UpdatePassword.valid">Submit <span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+                      </div>
+                    </div>
+                    <div class="form-group"></div>
+                    <div class="form-group"></div>
+                  </div>
+                  <a data-toggle="modal" data-target="#mdRecoveryPassword" #mdResetPasswordOpen></a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+/* For Firefox */
+
+.RemArr {
+    -moz-appearance:textfield;
+}
+/* Webkit browsers like Safari and Chrome */
+.RemArr::-webkit-inner-spin-button,
+.RemArr::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+
+

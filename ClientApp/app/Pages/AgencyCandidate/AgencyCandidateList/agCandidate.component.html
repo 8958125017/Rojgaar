@@ -1,0 +1,111 @@
+<div *ngIf="candidatelistshow=='0'">
+  <div class="dash-head">
+    <p>Candidate List </p>
+    <a class="btn btn-w-shadow no-rd pull-right" tabindex="0" [routerLink]="'/AddCandidate'">Add Candidate</a>
+  </div>
+  <!-- <div>
+    <a class="btn btn-w-shadow no-rd pull-right r-btn-group m-l-10" href="../../../../assets/download/candidateList.xlsx" target="_self" download>Download</a>
+    <a class="btn btn-w-shadow no-rd pull-right" tabindex="0" (click)="openDialogforexcel(uploadExcelTemplate)">Candidate bulk upload</a>
+  </div> -->
+ 
+  <ng-template #uploadExcelTemplate>
+      <div class="modal-header">
+        </div>
+        <div class="modal-body">
+          <div class="legend-box m-b-5">
+            <div class="col-md-12 row">
+              <span class="legend-title"><label class="biz-label">UploAd Excel File
+                </label></span>
+            </div>
+            
+            <form [formGroup]="uploadForm">
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <label>Uplolad File</label>
+                  <input required type="file" (change)="onUploadChange($event)"  class=""  formControlName="uploadfile" >
+                  <errors [control]="uploadForm.controls.uploadfile"></errors>
+                </div>
+              </div>
+            
+            </form>
+          </div>
+        </div>
+        <div class="modal-body p-t-0 text-right">
+          <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"
+                  (click)="submitUpload()" [disabled]="!uploadForm.valid">
+           Upload
+          </button>&nbsp;&nbsp;&nbsp;
+          <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="close()">Close</button>
+        </div>
+     
+  </ng-template>
+  <div class="cleafix"></div>
+  <div class="col-md-12">
+    <div class="all-jobs-list">
+      <div class="searchResults" id="">
+        <ul class="joblist-wrapper">
+          <li *ngFor="let cand of candidate" class="job-wrapper ps-relative"> 
+            <div class="form-group m-b-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <h2 class="job-title">
+                    {{cand.candName}}
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="company-name">{{cand.gender}} {{cand.dob|date}} (Age:{{cand.age}})</h3>
+                </div>
+              </div>
+            </div> 
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>Email Id : </strong> <span>{{cand.email}}</span></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6"><strong>Mobile : </strong> <span>{{cand.mobile}}</span></div>
+                <div class="col-md-6"><strong>Religion : </strong> <span>{{cand.religionName}}</span></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6"><strong>Country : </strong> <span>India</span></div>
+                <div class="col-md-6"><strong>State : </strong> <span>{{cand.stateName}}</span></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12"><strong>District : </strong> <span class="">{{cand.districtName}}</span></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="job-list-action card-view-btns">
+                <a href="javascript:void(0)" class="viewit" (click)="openModal(cand.candId)" title="View">View</a>
+                <a href="javascript:void(0)" class="postit" [routerLink]="'/UpdateCandidate'" [queryParams]="{candid: cand.candId}" title="Edit">Edit</a>
+                <a href="javascript:void(0)" class="viewit" (click)="confirmBox(confirm,cand.candId)" title="Delete">Delete</a>
+              </div>
+            </div>
+            <div class="clearfix"></div> 
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<app-CommonView-Layout></app-CommonView-Layout>
+<ng-template #confirm>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to delete candidate details?</p>
+    <br />
+    <br />
+    <button type="button" class="btn yl-btn no-rd" (click)="DeleteEmpCandidate()">Yes</button>
+    <button type="button" class="btn bl-btn no-rd" (click)="declineBox()">No</button>
+  </div>
+</ng-template>
+

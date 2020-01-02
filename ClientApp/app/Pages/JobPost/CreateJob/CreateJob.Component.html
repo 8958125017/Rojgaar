@@ -1,0 +1,790 @@
+
+<div class="dash-head">
+  <p>Job Post</p>
+  <a (click)="Back()" title="Go Back" class="btn btn-w-shadow no-rd pull-right" tabindex="0"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>
+  <!--<a (click)="Back()" class="back-button pull-right" href="javascript:void(0)" title="Go Back"><i aria-hidden="true" class="fa fa-arrow-left"></i></a>-->
+</div>
+<!-- <div class="col-md-12">
+  <label class="col-md-12 required-field" style="text-align: center;">Please make sure to <a [routerLink]="'/updateprofile'">Update Profile</a> and <a [routerLink]="'/companyprofile'">Company Profile</a> before creating and posting jobs</label>
+</div> -->
+<form #JobForms (ngSubmit)="submitJob(target)" [formGroup]="JobForm">
+  <div class="job-posting">
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Job Details</label></span>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Job Title <span style="color:red;"> *</span></label>
+              <input required oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" type="text"
+                     class="form-control" formControlName="JobTitle" placeholder="Job Title" maxlength="100"/>
+              <errors [control]="JobForm.controls.JobTitle"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Company Name <span style="color:red;"> *</span></label>
+              <input type="text"  required [attr.disabled]="Logintype=='Employer' ?  '':null " class="form-control" oninput="this.value = this.value.replace(/[!#$%\^*+=\-\[\]\\';,/{}|\\':<>\?]/g, '').replace(/(\..*)\./g, '$1');" formControlName="CompanyName" placeholder="Company Name" maxlength="200"/>
+              <errors [control]="JobForm.controls.CompanyName"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Valid upto <span style="color:red;"> *</span></label>
+              <div class="input-group">
+                <input type="text" #valid="bsDatepicker" placeholder="Select Date" disabled bsDatepicker
+                       [bsConfig]="{dateInputFormat: 'DD/MM/YYYY',showWeekNumbers:false }"
+                       value=""
+                       [minDate]="mintoDate"
+                       class="form-control" formControlName="ValidDate" />
+                <span class="input-group-addon" (click)="valid.toggle()" [attr.aria-expanded]="valid.isOpen"><i class="fa fa-calendar"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Joining Priority <span style="color:red;"> *</span></label>
+              <select class="form-control" formControlName="JoiningPriorityId">
+                <option value="" required class="" selected="selected">--Select--</option>
+                <option *ngFor="let item of joiningpriority" value="{{item.id}}">{{item.name}}</option>
+              </select>
+              <errors [control]="JobForm.controls.JoiningPriorityId"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Industry Area <span style="color:red;"> *</span></label>
+              <select class="form-control" formControlName="IndustryArea">
+                <option value="" required class="" selected="selected">--Select--</option>
+                <option *ngFor="let item of lstIndustryArea" value="{{item.id}}">{{item.industryName}}</option>
+              </select>
+              <errors [control]="JobForm.controls.IndustryArea"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Functional Area <span style="color:red;"> *</span></label>
+              <select class="form-control" formControlName="FunctionalArea">
+                <option value="" required class="" selected="selected">--Select--</option>
+                <option *ngFor="let item of lstFunctionalArea" value="{{item.id}}">{{item.functionalAreaName}}</option>
+              </select>
+              <errors [control]="JobForm.controls.FunctionalArea"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label>Job Description <span style="color:red;"> *</span></label>
+              <textarea class="form-control" required placeholder="Job Description" rows="2" formControlName="JobDescription"
+                        [ngClass]="{highlight: !jobFromvalid && JobForm.controls.JobDescription.errors}" maxlength="1000"> </textarea>
+
+              <errors [control]="JobForm.controls.JobDescription"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label>Roles and Responsibilities <span style="color:red;">*</span></label>
+              <textarea class="form-control" required placeholder="Roles and Responsibilities" rows="2" formControlName="RolesresPonsiblty" maxlength="1000"> </textarea>
+              <errors [control]="JobForm.controls.RolesresPonsiblty"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label>Keywords </label>
+              <input type="text" class="form-control" formControlName="Keyword" placeholder="Keywords" maxlength="1000"/>
+              <errors [control]="JobForm.controls.Keyword"></errors>
+            </div>
+          </div>
+
+          <!-- start screening questions section by pankaj joshi-->
+   
+          <div class="form-group">
+              <ng-template #questionTemplate>
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                  <div class="legend-box m-b-5">
+                      <div class="col-md-12 row">
+                          <span class="legend-title"><label class="biz-label">Screening Question</label></span>
+                        </div>
+
+                  <div class="form-group">                    
+                          <div class="col-md-5 col-sm-6 col-xs-12">
+                            <label class="text-strong">Select Group :</label>
+                          </div>
+                        <div class="col-md-6 col-sm-5 col-xs-12">
+                            <!-- <select class="form-control" (change)="getJobDetails($event.target.value)">
+                                <option value="" class="" selected>--Select--</option>
+                                <option *ngFor="let item of jobTitleCode" value="{{item.jobid}}" >{{item.jobcode}}</option>
+                              </select>  -->
+                              <select class="form-control" (change)="getJobDetails($event)">
+                                <option value="" required class="" selected="selected">--Select--</option>
+                                <option *ngFor="let item of jobTitleCode" value="{{item.groupid}}">{{item.groupname}}</option>
+                              </select>                     
+                        </div>                       
+                    </div>
+                    <div class="form-group" *ngIf="showquestion || addedquestStatus">                    
+                      <div class="col-md-5 col-sm-6 col-xs-12">
+                        <label class="text-strong">Question List :</label>
+                      </div>                                
+                    </div>
+                       <!-- Display Question List  section-->
+                       <br>
+                          <div *ngIf="showquestion">
+                           <div *ngFor="let item of questionList ; let i = index" class="col-md-12">
+                            <label><input type="checkbox" name="screening2" [checked]="quesionListCheck" id="screening{{i}}"  value="2" (change)="selectQuestion($event,item,i)" /> {{item.questions}}?</label> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" (click)="editQuestion(i,item.questions,'old')" class=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                          </div>
+                         </div>
+
+                        <!-- added question list -->
+
+                         <div *ngIf="addedquestStatus">                           
+                          <div *ngFor="let item of addedQuestion ; let i = index" class="col-md-12">
+                           <label><input type="checkbox" name="screening2" [checked]="checkedQ"  id="screening" value="2" (change)="selectQuestion($event,item,i)" /> {{item}}?</label> &nbsp;&nbsp;&nbsp;
+                           <!-- <a href="javascript:void(0)" (click)="editQuestion(i,item,'new')" class=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
+                         </div>
+                        </div>
+                        
+                        <div class="form-group margin-top-20" *ngIf="showEditForm">
+                        <div class="col-md-9 col-sm-8 col-xs-12 p-r-0" >
+                          <input type="text" class="form-control" formControlName="question"  placeholder="Create your question" />
+                       </div>
+                      <div class="col-md-3 col-sm-4 col-xs-12">
+                           <button class="btn btn-w-shadow no-rd"  type="button" (click)="addQuestion()">Update</button>
+                      </div>
+                    </div>                   
+                </div>
+              </div>
+                <div class="modal-footer p-t-0 text-right">
+                    <button class="btn btn-w-shadow no-rd" type="button" (click)="submitQuestion()">Submit</button>
+                    <button class="btn btn-w-shadow no-rd" type="button" (click)="declinequestion()">Close</button>
+                </div>
+               </ng-template>
+              <!-- close screening modal section-->
+
+           
+
+            <div class="col-md-4 col-sm-6 col-xs-12">
+              <label>Is screening required <span style="color:red;"> </span></label>
+              <a href="javascript:void(0)" class="screening-view-btn" *ngIf="isViewButtonshow" (click)="viewQuestion(questionTemplate,'view')">View</a> 
+              <div class="cleafix"></div>
+              <label>
+                  <input type="radio" name="screening" [checked]="isChecked" [checked]="isChecked" formControlName="screening" id="screening-1" value="true" (click)="createQuestion(questionTemplate)"/>
+               
+                Yes
+              </label>
+              <label>
+                <input type="radio" formControlName="screening"  (click)="isNotScreeming()" [checked]="!isChecked"  value="isChecked"  />
+                No
+              </label>
+            </div>
+          </div>
+
+          <!-- End screening questions section-->
+
+
+        </div>
+      </div>
+    </div>
+    <!-- Sector And Trade Section -->
+    <div class="form-group">
+        <form [formGroup]="SectorForm">
+        <div class="col-md-12">
+          <div class="legend-box">
+            <div class="col-md-12 row">
+              <span class="legend-title"><label class="biz-label">Training Sector And Trade</label></span>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>Training Sector <span class="mandatory"> </span></label>
+                <select class="form-control" formControlName="SectorID" (change)="Getalltrade($event.target.value)">
+                  <option value="">Select Sector</option>
+                  <option *ngFor="let sector of Sector" value="{{sector.id}}">{{sector.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label> Training Trade <span class="mandatory"> </span></label>
+                <select class="form-control" formControlName="TradeID">
+                  <option value="">Select Trade</option>
+                  <option *ngFor="let trade of Trade" value="{{trade.id}}">{{trade.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+                <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="AddSectorValue()">Add</button>
+              </div>
+            </div>
+            <div class="form-group">
+            <div class="col-md-12">
+                <div class="all-jobs-list">
+                    <div id="" class="searchResults">
+                      <ul class="joblist-wrapper">
+                        <li class="job-wrapper ps-relative" *ngFor="let sect of NewSectorShow; let i=index">
+                          <ng-template #templateSector>
+                            <div class="modal-body text-center">
+                              <p>Do you want to delete this Training Sector And Trade?</p>
+                              <br />
+                              <br />
+                              <button type="button" class="btn yl-btn no-rd" (click)="deleteSector(i)">Yes</button>
+                              <button type="button" (click)="declineBoxSecor()" class="btn bl-btn no-rd">No</button>
+                            </div>
+                          </ng-template>
+
+                          <div class="clearfix"></div>
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-md-12"><strong>Training  Sector : </strong> <span>{{sect.SectorID}}</span></div>
+                              <div class="col-md-12"><strong>Training Trade : </strong> <span>{{sect.TradeID}}</span></div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="job-list-action card-view-btns">
+                          <a class="viewit" href="javascript:void(0)" (click)="PusTemplateSector(templateSector)" title="Delete">Delete</a>
+                            </div>
+                          </div>
+                          <div class="clearfix"></div>
+                          <div class="clearfix"></div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+            </div>
+            </div>
+          </div>
+        </div>
+        </form>
+
+      </div>
+
+      <!-- Sector And Trade section ends here-->
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Contact Person</label></span>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Name <span style="color:red;"> *</span></label>
+              <input type="text" required class="form-control" maxlength="100" formControlName="Name" placeholder="Name" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" />
+              <errors [control]="JobForm.controls.Name"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Designation <span style="color:red;"> *</span></label>
+              <input type="text" required class="form-control" maxlength="100" formControlName="Designation" placeholder="Designation" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" />
+              <errors [control]="JobForm.controls.Designation"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Mobile No. <span style="color:red;"> *</span></label>
+              <input placeholder="Mobile No." maxlength="10" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="Mobile" />
+              <errors [control]="JobForm.controls.Mobile"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Landline No. <span style="color:red;"> </span></label>
+              <input maxlength="12" placeholder="Landline No."(keydown)="decimals($event)"  type="text" class="form-control" formControlName="LandlineNumber" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+              <errors [control]="JobForm.controls.LandlineNumber"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Email ID <span style="color:red;"> *</span></label>
+              <input type="text" class="form-control" maxlength="100" formControlName="Email" placeholder="Email ID" />
+              <errors [control]="JobForm.controls.Email"></errors>
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-12">
+              <label>&#160;</label>
+              <div class="cleafix"></div>
+              <label>
+                <input type="checkbox" value="false" id="publicemail" formControlName="EmailPublic"> Shared with job
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Sector & Trade</label></span>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4">
+              <label>Sector</label>
+              <input type="text" class="form-control" formControlName="Name" placeholder="Name"/>
+            </div>
+            <div class="col-md-4">
+              <label>Trade</label>
+              <input type="text" class="form-control" formControlName="Designation" placeholder="Designation"/>
+
+            </div>
+            <div class="col-md-4">
+              <label class="col-md-12">&nbsp;</label>
+
+              <button class="btn btn-w-shadow no-rd" tabindex="0" type="button">Add Sector & Trade</button>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div> -->
+
+
+    <div class="form-group" #target>
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Eligibility Criteria</label></span>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Min. Education <span style="color:red;"> *</span></label>
+              <select class="form-control" formControlName="MinEducation">
+                <option value="" required class="" selected="selected">--Select--</option>
+                <option *ngFor="let item of mineducation" value="{{item.id}}">{{item.name}}</option>
+              </select>
+              <errors [control]="JobForm.controls.MinEducation"></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Specialization   </label>
+              <!-- <input type="text" name="name" value="" placeholder="Specialization" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" class="form-control" formControlName="Specialization" /> -->
+              <input  name="name" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" type="text"
+              class="form-control" maxlength="100" formControlName="Specialization" placeholder="Specialization" />
+
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Experience (in yrs)<span style="color:red;"> </span>: </label>
+              <div class="cleafix"></div>
+              <div class="col-md-12 p-d-0">
+                <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+
+                  <input disabled value="{{minExp}}" maxlength="3" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                         (focusout)="ValidateExperience(JobForm.value.MinExp,JobForm.value.MaxExp)" class="form-control"
+                         formControlName="MinExp" placeholder="Min">
+                  <div class="clearfix"></div>
+                  <errors [control]="JobForm.controls.MinExp"></errors>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+                  <input disabled value="{{maxExp}}" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" (focusout)="ValidateExperience(JobForm.value.MinExp,JobForm.value.MaxExp)" type="text" class="form-control" formControlName="MaxExp" placeholder="Max">
+                  <div class="clearfix"></div>
+                  <errors [control]="JobForm.controls.MaxExp"></errors>
+                  <p class="mandatory" *ngIf="!ExpMsg">Please enter valid experience</p>
+                </div>
+                <div class="custom-slider">
+                  <ng5-slider [(value)]="minExp" [(highValue)]="maxExp" [options]="ExpOptions"></ng5-slider>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Height <span style="color:red;"> </span></label>
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 p-l-0"><input maxlength="2" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="heightFeet" type="text" class="form-control" placeholder="Feet" /></div>
+                <div class="col-md-6 col-sm-6 col-xs-6 p-r-0"><input maxlength="2" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" formControlName="heightInch" type="text" class="form-control" placeholder="Inch" /></div>
+                <errors></errors>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Weight (in kg) <span style="color:red;"> </span></label>
+              <input placeholder="Weight" type="text" maxlength="3" formControlName="Weight" (focusout)="validateWeight(JobForm.value.Weight)" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'a-zA-Z']/g, '').replace(/(\..*)\./g, '$1');" class="form-control" />
+              <!-- <input type="text" maxlength="3" placeholder="Weight" class="form-control" formControlName="Weight" /> -->
+              <errors></errors>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <label>Age (in Yrs.)<span style="color:red;"> </span>: </label>
+              <div class="cleafix"></div>
+              <div class="col-md-12 p-d-0">
+                <div class="col-md-6 col-sm-6 col-xs-6 p-l-0">
+                  <input disabled value="{{minAge}}" maxlength="2" (focusout)="ValidateAge(JobForm.value.AgeMin,JobForm.value.AgeMax)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="AgeMin" placeholder="Min">
+                  <div class="clearfix"></div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+                  <input disabled value="{{maxAge}}" maxlength="2" (focusout)="ValidateAge(JobForm.value.AgeMin,JobForm.value.AgeMax)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="AgeMax" placeholder="Max">
+                  <div class="clearfix"></div>
+                  <errors [control]="JobForm.controls.AgeMax"></errors>
+                  <p class="mandatory" *ngIf="!AgeMsg">Please enter valid Age</p>
+                </div>
+                <div class="custom-slider">
+                  <ng5-slider [(value)]="minAge" [(highValue)]="maxAge" [options]="ageOptions" (click)="onClickMe()"></ng5-slider>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="col-md-2 col-sm-6 col-xs-12">
+              <label>Probation Period <span style="color:red;"> </span></label>
+              <div class="cleafix"></div>
+              <label>
+                <input type="radio" formControlName="ISprobationtime" name="ISprobationtime" value="true" (click)="SetProbation(1)" />
+                Yes
+              </label>
+              <label>
+                <input type="radio" formControlName="ISprobationtime" checked="checked" name="ISprobationtime" value="false" (click)="SetProbation(0)" />
+                No
+              </label>
+            </div>
+
+            <div class="col-md-2 col-sm-6 col-xs-12">
+              <label>Duration (in days)</label>
+              <input maxlength="3" (input)="ValidProbation()" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" [attr.disabled]="!(!probation)? null : false" type="text" [disabled]="probation"
+                     formControlName="ProbationDuration" class="form-control" placeholder="Probation Days" />
+              <errors [control]="JobForm.controls.ProbationDuration"></errors>
+            </div>
+            <div class="col-md-2 col-sm-6 col-xs-12">
+              <label>Is OJT <span style="color:red;"> </span></label>
+              <div class="cleafix"></div>
+              <label>
+                <input type="radio" formControlName="IsOjt" (click)="SetOjt(1)" value="true" />
+                Yes
+              </label>
+              <label>
+                <input type="radio" formControlName="IsOjt" (click)="SetOjt(0)" value="false" checked />
+                No
+              </label>
+            </div>
+            <div class="col-md-2 col-sm-6 col-xs-12">
+              <label>OJT ( in hrs. )</label>
+              <input type="text" maxlength="5" (input)="ValidOjt()" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" formControlName="ojtDuration" [attr.disabled]="!(!ojt)? null : false" placeholder="OJT Hours" />
+              <errors></errors>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+              <label>Gender <span style="color:red;"> *</span></label>
+              <div class="clearfix"></div>
+              <label>
+                <input type="checkbox" name="Male" formControlName="Male" id="Gender-1" value="1" /> Male
+              </label>
+              <label>
+                <input type="checkbox" name="Female" formControlName="Female" id="Gender-2" value="2" /> Female
+              </label>
+              <label>
+                <input type="checkbox" name="Transgender" formControlName="Transgender" id="Gender-3" value="3" /> Transgender
+              </label>
+              <errors [control]="JobForm.controls.Gender"></errors>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-12 col-xs-12">
+              <label>Job Type <span style="color:red;"> </span></label>
+              <div class="cleafix"></div>
+
+              <select  class="form-control" (change)="onChangeJobType(JobForm.value.ShiftTime)" formControlName="ShiftTime">
+                <option value="" selected>--Select--</option>
+                <option value="FullTime"  selected>FullTime</option>
+                <option value="PartTime"  selected>PartTime</option>
+                <option value="contractual" selected>Contractual</option>
+                <option value="Freelancer" selected>Freelancer</option>
+              </select>
+
+              <errors [control]="JobForm.controls.ShiftTime"></errors>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Other Details<span style="color:red;"> </span></label></span>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <label>Other Detail <span style="color:red;"> </span></label>
+              <textarea type="text" maxlength="1000" placeholder="Other Detail" class="form-control" formControlName="OtherDetail"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        <div class="legend-box">
+          <div class="col-md-12 row">
+            <span class="legend-title"><label class="biz-label">Opening</label></span>
+          </div>
+          <div class="">
+            <div class="form-group">
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>State <span style="color:red;"> *</span></label>
+                <select (change)="onChangeState(JobForm.value.StateID);codeAddres($event.target.value,'ST')" class="form-control" formControlName="StateID">
+                  <option value="" class="" selected>--Select--</option>
+                  <option *ngFor="let item of lstState" value="{{item.id}}">{{item.stateName}}</option>
+                </select>
+                <errors [control]="JobForm.controls.StateID"></errors>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>District <span style="color:red;"> </span></label>
+                  <select class="form-control" (change)="codeAddres($event.target.value,'DT')" formControlName="DistrictID">
+                  <option value="" class="" selected="selected">--Select--</option>
+                  <option *ngFor="let item of district" value="{{item.id}}">{{item.districtName}}</option>
+                </select>
+                <errors [control]="JobForm.controls.DistrictID"></errors>
+              </div>
+
+               <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label>City <span style="color:red;"> </span></label>
+                    <select class="form-control"  formControlName="CityID">
+                      <option value="" class="" selected="selected">--Select--</option>
+                      <option *ngFor="let item of city" value="{{item.id}}">{{item.cityname}}</option>
+                    </select>
+                    <errors [control]="JobForm.controls.CityID"></errors>
+                  </div>
+
+
+
+            </div>
+            <div class="form-group">
+
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <label>No. of Vacancy <span style="color:red;"> *</span></label>
+                    <input type="text" placeholder="No. of Vacancy" (keydown)="decimals($event)" class="form-control" maxlength="5" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" (keypress)="onlyNumber($event)"
+                           formControlName="NoOfVacancy" maxlength="10"/>
+                    <errors [control]="JobForm.controls.NoOfVacancy"></errors>
+                  </div>
+
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>CTC (per Month) INR : <span style="color:red;" *ngIf="mandatorySign">*</span> </label>
+                <div class="cleafix"></div>
+                <div class="col-md-12 p-d-0">
+                  <div class="col-md-6 col-sm-6 col-xs-6 p-l-0"> <!-- (keyup)="changeSiider($event)"  -->
+                    <input  value="{{minCtc}}" disabled maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" (focusout)="ValidateCtc(JobForm.value.MinCtc,JobForm.value.MaxCtc)" type="text" formControlName="MinCtc" class="form-control" placeholder="Min">
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="col-md-6 col-sm-6 col-xs-6 p-r-0">
+                    <input  value="{{maxCtc}}" disabled maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" (focusout)="ValidateCtc(JobForm.value.MinCtc,JobForm.value.MaxCtc)" type="text" formControlName="MaxCtc"
+                           class="form-control" placeholder="Max">
+                    <div class="clearfix"></div>
+                    <p class="mandatory" *ngIf="!CtcMsg">Please enter valid CTC</p>
+                  </div>
+                  <div class="custom-slider" (click)="ctcClick()">
+                    <ng5-slider [(value)]="minCtc" [(highValue)]="maxCtc" [options]="CtcOptions" ></ng5-slider>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label>In Hand Salary (per Month) INR: </label>
+                <div class="cleafix"></div>
+                <input type="text" formControlName="NetSalary" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="" class="form-control" placeholder="In Hand Salary" maxlength="6">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4 col-sm-8 col-xs-12 language-details">
+                <label>Language Preference <span style="color:red;"> </span></label>
+                <select  style="display:none" class="form-control" formControlName="LanguageId">
+                  <option value="" class="" selected="selected">--Select--</option>
+                  <option [ngValue]="item.id" *ngFor="let item of lstAllLanguage">{{item.name}}</option>
+                </select>
+                <ng-multiselect-dropdown [placeholder]="'Please select language'"
+                                         [data]="lstAllLanguage"
+                                         formControlName="LanguageId"
+                                         [settings]="dropdownSettings"
+                                         (onDeSelect)="onItemDeSelect($event)"
+                                         (onSelect)="onItemSelect($event)"
+                                         (onSelectAll)="onSelectAll($event)"
+                                         (onDeSelectAll)="onDeSelectAll($event)"  >
+
+                </ng-multiselect-dropdown>
+
+                <errors [control]="JobForm.controls.LanguageId"></errors>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <label class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+                <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="addContactForOpening(openingContactModal,'add')" *ngIf="showAddButton">Add Contact</button>
+                <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="addContactForOpening(openingContactModal,'view')" *ngIf="showviewButton">View Contact</button>
+                <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="geoLocation(geolocationModal,'view')">Geo Location</button>
+                <br/>
+                <button class="btn btn-w-shadow no-rd m-t-10" tabindex="0" type="button" [disabled]="!(JobForm.controls.StateID.valid)" (click)="addFieldValue()">Add Openings</button>    
+                
+                <ng-template #geolocationModal>
+                  <div class="modal-header">
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="legend-box">
+                          <div class="col-md-12 row">
+                            <span class="legend-title"><label class="biz-label">Geo Location</label></span>
+                          </div>
+                          <div class="form-group">  
+                               <Geolocation (myOutput)="getLatLang($event)">
+                              </Geolocation>       
+                          </div>
+                          <div class="form-group">  
+                          <div class="job-list-action card-view-btns r-btn-group"> 
+                            
+                              <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="addGeoLocation()">Add</button>
+                              <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="closeViewModal()" >Close</button>
+                            </div> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              </ng-template>
+              
+                <!--<button type="button" [disabled]="!(JobForm.controls.StateID.valid)" (click)="addFieldValue()" class="btn bl-btn add-button"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add</button>-->
+                <ng-template #openingContactModal>
+                    <div class="modal-header">
+                      </div>
+                      <div class="form-group">
+                          <div class="col-md-12">
+                            <div class="legend-box">
+                              <div class="col-md-12 row">
+                                <span class="legend-title"><label class="biz-label">Contact Person</label></span>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <label>Name <span style="color:red;"> *</span></label>
+                                  <input type="text"  class="form-control" formControlName="ContactName" placeholder="Name" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" maxlength="200" />
+                                  <errors [control]="JobForm.controls.ContactName"></errors>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <label>Designation <span style="color:red;"> *</span></label>
+                                  <input type="text" class="form-control" formControlName="ContactDesignation"  placeholder="Designation" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" maxlength="200"/>
+                                  <errors [control]="JobForm.controls.ContactDesignation"></errors>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <label>Mobile No. <span style="color:red;"> *</span></label>
+                                  <input placeholder="Mobile No." maxlength="10" (keydown)="decimals($event)" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="ContactMobile"  />
+                                  <errors [control]="JobForm.controls.ContactMobile"></errors>
+                                </div>
+                              </div>
+                              <div class="form-group">  
+                                  <div class="col-md-4 col-sm-4 col-xs-12">
+                                      <label>Landline No. <span style="color:red;"> </span></label>
+                                      <input maxlength="12" placeholder="Landline No."(keydown)="decimals($event)"  type="text" class="form-control" formControlName="ContactLandlineNumber" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                      <errors [control]="JobForm.controls.ContactLandlineNumber"></errors>
+                                    </div>                             
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <label>Email ID <span style="color:red;"> *</span></label>
+                                  <input type="text" class="form-control" formControlName="ContactEmail" placeholder="Email ID" maxlength="50"/>
+                                  <errors [control]="JobForm.controls.ContactEmail"></errors>
+                                </div> 
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label>&#160;</label>
+                                    <div class="cleafix"></div>
+                                    <label>
+                                      <input type="checkbox" value="false" id="publicemail2" formControlName="ContactEmailPublic"> Shared with job
+                                    </label>
+                                  </div>                   
+                              </div>
+                              <div class="form-group">  
+                              <div class="job-list-action card-view-btns r-btn-group"> 
+                                  <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" *ngIf="showAddButton" [disabled]="!(JobForm.controls.ContactName.valid && JobForm.controls.ContactDesignation.valid&& JobForm.controls.ContactEmail.valid && JobForm.controls.ContactMobile.valid)"  (click)="addContactInopening()">Add</button>                                 
+                                  <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" *ngIf="showviewButton" [disabled]="!(JobForm.controls.ContactName.valid && JobForm.controls.ContactDesignation.valid&& JobForm.controls.ContactEmail.valid && JobForm.controls.ContactMobile.valid)"  (click)="addContactInopening()">Update</button>
+                                  <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="closeContactModal()" *ngIf="showAddButton">Close</button>
+                                  <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="closeViewModal()" *ngIf="showviewButton">Close</button>
+                                </div> 
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    
+                </ng-template>
+                <ng-template #geolocationModal>
+                    <div class="modal-header">
+                        <!-- <button class="btn btn-w-shadow no-rd pull-right" tabindex="0" type="button"  (click)="closeViewModal()" >Close</button> -->
+                      </div>
+                      <div class="form-group">
+                        <div class="col-md-12">
+                          <div class="legend-box">
+                            <div class="col-md-12 row">
+                              <span class="legend-title"><label class="biz-label">Geo Location</label>
+                                </span>
+                            </div>
+                            <div class="form-group">  
+                                <Geolocation (LatLogEvent)=getLatLang($event)>
+                                </Geolocation>       
+                            </div>
+                            <div class="form-group">  
+                            <div class="job-list-action card-view-btns r-btn-group"> 
+                                <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="addGeoLocation()">Add</button>
+                                <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="closeViewModal()" >Close</button>
+                              </div> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </ng-template>
+              </div>
+       
+              
+            </div>
+            <div class="form-group">                 
+                <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                  <label class="col-md-12 col-sm-12 col-xs-12">&nbsp;</label>
+                  
+                </div>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h4 *ngIf="!newAttributeShow">
+      Job Listing View
+    </h4>
+    <div class="col-md-12">
+      <div class="all-jobs-list">
+        <div id="" class="searchResults">
+          <ul class="joblist-wrapper">
+            <ng-template #template>
+              <div class="modal-body text-center">
+                <p>Do you want to delete this Opening?</p>
+                <br />
+                <br />
+                <button type="button" class="btn yl-btn no-rd" (click)="deleteWalkin()">Yes</button>
+                <button type="button" (click)="declineBox()" class="btn bl-btn no-rd">No</button>
+              </div>
+            </ng-template>
+            <li class="job-wrapper" *ngFor="let field of newAttributeShow,let i=index">
+              <h2 class="job-title"><a href="javascript:void(0)">{{field.CompanyName!=''?field.CompanyName:'Not Applicable'}}</a></h2>
+              <div class="clearfix"></div>
+              <h3 class="company-name"></h3>
+              <div class="clearfix"></div>
+              <!-- <a href="javascript:void(0)" ><i class="fa fa-trash pull-right" style='color:red;font-size:16px' aria-hidden="true"></i></a> -->
+              <ul class="jd-detail">
+                <li><strong>Number of Vacancies:</strong> <span class="">{{field.vacancycount}}</span></li>
+                <li><strong>State:</strong> <span class="">{{field.statename}}</span></li>
+                <li><strong>District:</strong> <span class="">{{field.districtname!=''?field.districtname:'Not applicable'}}</span></li>
+                <li><strong>City:</strong> <span class="">{{field.cityname!=''?field.cityname:'Not applicable'}}</span></li>
+
+                <li class="lang-ellip" title="{{ field.languageanme }}"><strong>Language:</strong> <span class=""><span></span> {{ field.languageanme!=''?field.languageanme:'Not applicable' }},  </span></li>
+                <li>
+                  <strong>CTC:</strong> <span *ngIf="field.MinCtc != '0' && field.MaxCtc != '0' ">{{field.MinCtc}}-{{field.MaxCtc}}</span>
+                  <span class="" *ngIf="field.MinCtc == '0' && field.MaxCtc=='0' ">NA</span>
+                </li>
+                <li *ngIf="field.NetSalary!=''"><strong>In Hand Salary:</strong> <span class="">{{field.NetSalary}}</span></li>
+              </ul>
+              <!-- {{field | json}} -->
+              <ul class="jd-detail" *ngIf="field.ContactName !=''">
+                <li><strong>Contact Person:</strong> </li>
+              </ul>
+
+              <ul class="jd-detail" *ngIf="field.ContactName !=''">
+                <li><strong>Name:</strong> <span class="">{{field.ContactName ? field.ContactName :'Not applicable' }}</span></li>
+                <li><strong>Designation:</strong> <span class="">{{field.ContactDesignation ? field.ContactDesignation :'Not applicable'}}</span></li>
+                <li><strong>Mobile:</strong> <span class="">{{field.ContactMobile!=''?field.ContactMobile:'Not applicable'}}</span></li>
+                <li><strong>Landline No.:</strong> <span class="">{{field.ContactLandlineNumber!=''?field.ContactLandlineNumber:'Not applicable'}}</span></li>
+                <li><strong>Email:</strong> <span class="">{{field.ContactEmail!=''?field.ContactEmail:'Not applicable'}}</span></li>
+                <li><strong>Shared with job:</strong> <span class="">{{field.ContactEmailPublic!=''?true:'Not applicable'}}</span></li>
+              </ul>
+              <div class="form-group">
+                <div class="job-list-action card-view-btns">
+                  <a href="javascript:void(0)" class="viewit" title="Delete this opening" (click)="PushedTemplate(template,i)">Delete</a>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12 text-center p-r-0">
+        <button class="btn btn-w-shadow no-rd" tabindex="0" type="submit" [disabled]="!(JobForm.valid && btnsts==true)">Submit</button>
+        <!--<button type="submit" [disabled]="!(JobForm.valid && jobFromvalid && JobFormDesable)" class="btn yl-btn">Submit</button>-->
+      </div>
+    </div>
+  </div>
+</form>
+
+

@@ -1,0 +1,79 @@
+
+      <div class="dash-head">
+        <p>Users</p> <a [routerLink]="'/ShowUser'"><button class="pull-right btn btn-primary">Back</button></a>
+      </div>
+      <div class="cleafix"></div>
+<!-- create sub user form statts here-->
+      <div  class="creat-user-wrapper">
+        <div class="form-group">
+            <form novalidate [formGroup]="CreateUserForm" (ngSubmit)="createUser()">
+          <div class="col-md-12">
+              <div class="form-group">
+                      <div class="col-md-12">
+                            <div class="col-sm-6">
+                                  <label>User Name <span style="color:red;"> *</span></label>
+                                  <input formControlName="UserName" name="UserName" type="text"  (change)="onKeychangeuser($event)" class="form-control" autocomplete="off"/>
+                                  <errors [control]="CreateUserForm.controls.UserName"></errors>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label>Name <span style="color:red;"> *</span></label>
+                                <input formControlName="FirstName" name="FirstName" type="text" class="form-control" autocomplete="off"/>
+                                <errors [control]="CreateUserForm.controls.FirstName"></errors>
+                            </div>
+
+                      </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                          <div class="col-sm-6">
+                                <label>Email<span style="color:red;"> *</span></label>
+                                <input formControlName="Email"(focusout)="CheckEmail($event)" name="Email" type="text" class="form-control" autocomplete="off" />
+                                <errors [control]="CreateUserForm.controls.Email"></errors>
+                          </div>
+
+                          <div class="col-sm-6">
+                              <label>Mobile<span style="color:red;"> *</span></label>
+                              <input formControlName="PhoneNo"  (change)="CheckMobile($event)"name="PhoneNo" onkeyup="this.value = this.value.replace(/^(\d{0,4}\.\d{0,5}|\d{0,9}|\.\d{0,8}).*/, '$1');"  type="text" maxlength="10" class="form-control" autocomplete="off" />
+                              <errors [control]="CreateUserForm.controls.PhoneNo"></errors>
+                          </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-12">
+                        <div class="col-sm-6">
+                              <label>Password<span style="color:red;"> *</span></label>
+                              <input formControlName="Password" name="Password" type="password" class="form-control" autocomplete="off" />
+                              <errors [control]="CreateUserForm.controls.Password"></errors>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label>Confirm Password<span style="color:red;"> *</span></label>
+                            <input formControlName="ConfirmPassword" name="ConfirmPassword" type="password" class="form-control" (change)="ValidatePasswordMacht(CreateUserForm.value.Password,CreateUserForm.value.ConfirmPassword)" autocomplete="off" />
+                            <errors [control]="CreateUserForm.controls.ConfirmPassword"></errors>
+                        </div>
+
+                  </div>
+              </div>
+
+
+              <div class="form-group">
+                        <div class="col-md-12 text-right">
+                                <button [disabled]="!(CreateUserForm.valid && usernameavail=='1' && checkverifymail==true && checkverifymobile==true &&  this.confpass==true)" type="submit" class="btn btn-primary">submit</button>
+                        </div>
+              </div>
+          </div>
+        </form>
+      </div>
+
+
+  </div>
+
+  <!-- create sub user form end here-->
+
+
+  <div class="cleafix"></div>
+

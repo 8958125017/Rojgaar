@@ -1,0 +1,63 @@
+<header id="main_menu" class="header navbar-fixed-top">
+    <div class="head-strip">
+      <div class="container">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <ul>
+            <li>
+              <span>
+                <i class="fa fa-phone" aria-hidden="true"></i>
+              </span> +91-120-4786300
+            </li>
+            <li>
+              <span><i class="fa fa-envelope" aria-hidden="true"></i></span> <a href="mailto:info@hstpl.com">info@hstpl.com</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-2 hidden-xs hide">
+          <ul class="pull-right icon-effect icon-effect-1a">
+            <li>
+              <span>
+                <a href="javascript:void(0)" class="icon"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+              </span>
+            </li>
+            <li>
+              <span>
+                <a href="javascript:void(0)" class="icon"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="main_menu_bg">
+      <div class="container">
+        <div class="row">
+          <div class="nave_menu">
+            <nav class="navbar navbar-default">
+              <div class="container-fluid">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                  <a class="navbar-brand rojgaar-head-logo swapLogo2 wow bounce animated" (click)="IndexPage()" data-wow-duration="1s" href="javascript:void(0)">
+                    <span class="hidden-xs"><img src="/assets/images/rojgaar-logo.png" alt="Logo" /></span>
+                    <span class="visible-xs"><img src="/assets/images/rojgaar-xs-logo.png" alt="Logo" /></span>
+                  </a>
+                </div>
+                <span class="mobile-tgl-menu"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav navbar-right homeNav">
+                    <li routerLinkActive="active"><a [routerLink]="'/regisration'" [queryParams]="{for: 'login'}">LOGIN</a></li>
+                    <li routerLinkActive="active"><a [routerLink]="'/regisration'" [queryParams]="{for: 'Registration'}">REGISTRATION</a></li>
+                    <li routerLinkActive="active"> <a href="javascript:void(0)">CONTACT US</a></li>
+                    <li routerLinkActive="active"><a href="javascript:void(0)" class="" title="Event" [routerLink]="'/events'">Event</a></li>
+                    <li routerLinkActive="active"><a href="javascript:void(0)" class="" title="gallery" [routerLink]="'/gallery'">Gallery</a></li>
+                    <li routerLinkActive="active"><a href="javascript:void(0)" class="" title="Feedback" [routerLink]="'/feedback'">Feedback</a></li>
+                    <li routerLinkActive="active"><a href="javascript:void(0)" class="" title="subcription" [routerLink]="'/subscription'">subscription</a></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>

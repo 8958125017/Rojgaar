@@ -1,0 +1,526 @@
+<div class="culmn rojgaar registration-page">
+  <app-PublicHeader></app-PublicHeader>   
+  <div class="clearfix"></div>
+  <div class="loginPage">
+    <div class="bg-overlay">
+      <div class="loginWrapper {{login}}">
+        <div class="container-forms">
+          <div class="container-info">
+            <div class="info-item">
+              <div class="table">
+                <div class="table-cell">
+                  <p>
+                    Have an account?
+                  </p>
+                  <button class="btn btn-w-shadow no-rd switchIt">Login <span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+
+                </div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="table">
+                <div class="table-cell">
+                  <p>
+                    Don't have an account?
+                  </p>
+                  <button class="btn btn-w-shadow no-rd switchIt shadow-fff" (click)="ResetFinalCount()">Sign Up <span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container-form">
+            <div class="form-item log-in">
+              <div class="table">
+                <div class="table-cell">
+                  <h4>Login</h4>
+                  <div class="reg-form-wrapper">
+                    <div class="rojgaar-fav">
+                      <img src="/assets/images/rojgaar-fav.png" />
+                    </div>
+                    <form [formGroup]="LoginForm" (ngSubmit)="UserLogin()">
+                      <div class="group-wrapper">
+                        <input type="text" class="" required formControlName="username" (keydown)="RestrictSpace($event)">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <errors [control]="LoginForm.controls.username"></errors>
+                        <label>Enter Username <span class="mandatory">*</span></label>
+                      </div>
+                      <div class="group-wrapper">
+                        <input type="password" class="" required formControlName="password">
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <errors [control]="LoginForm.controls.password"></errors>
+                        <label>Enter Password <span class="mandatory">*</span></label>
+                      </div>
+                      <button [disabled]="!LoginForm.valid" class="btn btn-w-shadow no-rd btn-block" type="submit" id="btnLogin">Login <span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+                      <div class="forgot-login m-t-5">
+                        <div class="login-forget text-right"> <a href="javascript:void(0)" data-dismiss="modal" data-toggle="modal" data-target="#forgotPasswordModal">Forgot Password?</a> </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-item sign-up">
+              <div class="table">
+                <div class="table-cell">
+                  <h4>Sign Up</h4>
+                  <div class="">
+                    <div class="reg-form-wrapper margin-top-20">
+                      <form [formGroup]="EmployerForm" *ngIf="employerShowStape==0">
+                        <div class="tab">
+
+                          <div class="tab-header margin-bottom-20">
+                            <span>Validate Your Organization</span>
+                          </div>
+                          <div class="group-wrapper ">
+                            <input type="text" class="" style="text-transform:uppercase" formControlName="gsteen_pan" (keydown)="RestrictSpace($event)" (change)="onKeychangegsteen_pan($event)" oninput="this.value = this.value.replace(/[!#$%\^&*()+=\\[\]\\';,/{}|\\':<>\?'']/g, '').replace(/(\..*)\./g, '$1');" minlength="10" maxlength="15" required>
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <errors [control]="EmployerForm.controls.gsteen_pan"></errors>
+                            <label>Organization GSTIN/PAN <span class="mandatory">*</span> </label>
+                            <div class="pass-instructions">
+                              <img class="tool-new-img" src="../../../assets/images/info.png" width="20">
+                              <p class="tool-new-pass">
+                                Please verify your<br/> company using GSTIN/PAN.
+                              </p>
+                            </div>
+
+                          </div>
+                          <div class="username">
+                            <div class="group-wrapper m-b-10">
+                              <input type="text" class="" formControlName="orgName" [attr.disabled]="!(isname=='' || isname=='false')? false : null" required maxlength="200">
+                              <span class="highlight"></span>
+                              <span class="bar"></span>
+                              <errors [control]="EmployerForm.controls.orgName"></errors>
+                              <label>Organization Name <span class="mandatory">*</span> </label>
+                            </div>
+                          </div>
+
+
+                          <div class="tab-header">
+                            <label>Contact Person <span class="mandatory">*</span> </label>
+                          </div>
+                          <div class="margin-bottom-20">
+                            <label><input type="radio" name="UsernameType" formControlName="UsernameType" [attr.disabled]="!(isname=='' || isname=='false')? false : null" value="Employer" checked> Company Recruiter, HR Professional </label>
+                            <div class="clearfix"></div>
+                            <label><input type="radio" name="UsernameType" formControlName="UsernameType" [attr.disabled]="!(isname=='' || isname=='false')? false : null" value="Agency"> Recruitment/Placement Consultant	</label>
+                          </div>
+
+                          <div class="group-wrapper">
+                            <input type="text" class="" formControlName="contactname" required maxlength="200">
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <errors [control]="EmployerForm.controls.contactname"></errors>
+                            <label>Name <span class="mandatory">*</span></label>
+                          </div>
+                          <div class="group-wrapper">
+                          <input type="text" maxlength="200" class="" formControlName="designation" required oninput="this.value = this.value.replace(/[^a-z A-Z.]/g, '').replace(/(\..*)\./g, '$1');" >
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <errors [control]="EmployerForm.controls.designation"></errors>
+                            <label>Designation <span class="mandatory">*</span></label>
+                          </div>
+
+                          <div class="group-wrapper">
+                            <input type="text" class="" formControlName="email" (change)="CheckEmail($event)" required maxlength="300">
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <errors [control]="EmployerForm.controls.email"></errors>
+                            <label>Email <span class="mandatory">*</span></label>
+                          </div>
+
+                          <div class="group-wrapper m-b-20">
+                            <input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="" maxlength="10" minlength="10" formControlName="phone" (change)="CheckMobile($event)" required>
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <errors [control]="EmployerForm.controls.phone"></errors>
+                            <label>Mobile No. <span class="employerShowStape mandatory">*</span></label>
+                          </div>
+
+                          <div class="group-wrapper" *ngIf="GeoLocationText">
+                            <input type="text" class="" formControlName="geolocation" value="" placeholder="Geo Location Address">
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <errors [control]="EmployerForm.controls.geolocation"></errors>
+                            <label>Geo Location Address </label>
+                          </div>
+
+
+                          <div class="text-right">
+                            <button type="submit" [disabled]="!(EmployerForm.valid && checkverifymail=='1' && checkverifymobile=='1')" class="btn btn-w-shadow no-rd" tabindex="0" (click)="SignEmployer()">Next<span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+                            <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="geoLocation(geolocationModal,'view')">Geo Location</button>
+                            
+                            <ng-template #geolocationModal>
+                              <div class="modal-header">
+                                </div>
+                                <div class="form-group">
+                                  <div class="col-md-12">
+                                    <div class="legend-box">
+                                      <div class="col-md-12 row">
+                                        <span class="legend-title"><label class="biz-label">Geo Location</label></span>
+                                      </div>
+                                      <div class="form-group">  
+                                           <app-geo-location-common (myOutput)="getLatLang($event)">
+                                          </app-geo-location-common>       
+                                      </div>
+                                      <div class="form-group">  
+                                      <div class="job-list-action card-view-btns r-btn-group"> 
+                                        
+                                          <button class="btn btn-w-shadow no-rd" tabindex="0" type="button" (click)="AddGoogleMapLocation()">Add</button>
+                                          <button class="btn btn-w-shadow no-rd" tabindex="0" type="button"  (click)="closeViewModal()" >Close</button>
+                                        </div> 
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </ng-template>
+
+                       </div>
+                        </div>
+                      </form>
+                      <form  [formGroup]="finalEmployerForm" *ngIf="finalShowStape==1">
+                        <div class="tab">
+                          <div class="tab-header margin-bottom-60">
+                            <span>Registration Details</span>
+                          </div>
+                          <div class="username">
+                            <div class="group-wrapper">
+                              <input [attr.disabled]="!(temp=='' || temp=='undefined')? false : null"
+                                      formControlName="UserName" class="" (change)="onKeychangeuser($event)"
+                                     type="text" required>
+                              <div class="custom-user">
+                                <span><input type="radio" formControlName="typeUserName" name="typeUserName" value="Email" (click)="SetUserName(EmployerForm.value.email,'user')"> Email</span>
+                                <span><input type="radio" formControlName="typeUserName" name="typeUserName" value="Mobile" (click)="SetUserName(EmployerForm.value.phone,'user')"> Mobile</span>
+                                <span><input type="radio" formControlName="typeUserName" name="typeUserName" value="" (click)="SetUserName('')"> Custom</span>
+                              </div>
+                              <span class="highlight"></span>
+                              <span class="bar"></span>
+                              <errors [control]="finalEmployerForm.controls.UserName"></errors>
+                              <label>Username <span class="mandatory">*</span></label>
+                            </div>
+                          </div>
+                          <div class="group-wrapper margin-bottom-30">
+                            <input type="password" class="" formControlName="pass" required autocomplete="new-password">
+
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <errors [control]="finalEmployerForm.controls.pass"></errors>
+                            <label>Password <span class="mandatory">*</span> </label>
+                            <div class="pass-instructions">
+                              <img class="tool-new-img" src="../../../assets/images/info.png" width="20">
+                              <p class="tool-new-pass">
+                                Atleast 1 Digit.<br>
+                                Atleast 1 small-case letter.<br>
+                                Atleast 1 Capital letter.<br>
+                                Atleast 1 Special character.<br>
+                                Length should be between 6-24 characters.
+                              </p>
+                            </div>
+                          </div>
+
+                          <div class="group-wrapper margin-bottom-30">
+                            <input type="password" class="" formControlName="cpass" (change)="ValidatePasswordMacht(finalEmployerForm.value.pass,finalEmployerForm.value.cpass)" required>
+                                                       <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <errors [control]="finalEmployerForm.controls.cpass"></errors>
+                            <label>Confirm Password <span class="mandatory">*</span> </label>
+                          
+                          </div>
+                         
+
+
+                          <div class="otp-wrapper">
+                            <div class="group-wrapper">
+                              <input type="text" class="" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" formControlName="otp" required >
+                              <!-- <a class="resend" href="javascript:void(0);" (click)="GenerateOTP(EmployerForm.value.phone)">Resend OTP</a>
+                              <a class="validate" href="javascript:void(0);" (click)="CheckOTP(finalEmployerForm.value.otp)">Validate OTP</a> -->
+                              <button class="btn resend" [disabled]="status" (click)="ResendOTP(EmployerForm.value.phone)">Resend OTP</button>
+                              <button class="btn validate" [disabled]="!finalEmployerForm.controls.otp.valid" (click)="CheckOTP(finalEmployerForm.value.otp)">Validate OTP</button>
+                              <span class="highlight"></span>
+                              <span class="bar"></span>
+                              <errors [control]="finalEmployerForm.controls.otp" ></errors>
+                              <label>OTP <span class="mandatory">*</span> </label>
+                              <p style="color:red" *ngIf="timer" class="text-right">Resend OTP again after {{this.counter}} sec </p>
+                            </div>
+                          </div>
+
+
+
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div>
+                          <div class="text-right pre-next">
+                            <button type="button" class="btn btn-w-shadow no-rd" tabindex="0" (click)="prev_form()" *ngIf="finalShowStape==1">Previous </button>
+
+                            <!--<button type="button" id="prevBtn" (click)="prev_form()" *ngIf="finalShowStape==1">Previous</button>-->
+
+                            <button type="submit" class="btn btn-w-shadow no-rd m-l-30" tabindex="0" [disabled]="!(finalEmployerForm.valid  && count && checkverifyuser=='1' && confpass=='1' && otpverify=='1' )" (click)="SignfinalEmployer()">Submit<span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+                            <!--<button type="submit" id="nextBtn" [disabled]="!(finalEmployerForm.valid  && checkverifyuser=='1' && confpass=='1' && otpverify=='1' )">Submit</button>-->
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </form>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+
+<div id="welcomeModel" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-body">
+        <div class="modal-content-sec text-center">
+          <div class="clearfix margin-bottom-30"></div>
+          <H2>
+            Thanks for Registration!
+          </H2>
+          <div class="clearfix margin-bottom-20"></div>
+          <h4>Now you can Login to Rojgaar.</h4>
+          <div class="clearfix margin-bottom-30"></div>
+
+          <button class="btn btn-w-shadow no-rd shadow-fff switchIt" data-dismiss="modal">Login <span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+          <div class="clearfix margin-bottom-30"></div>
+          <a data-target="#welcomeModel" data-toggle="modal" #welcomeModelOpen></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="forgotPasswordModal" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-new">
+    <div class="modal-content">
+      <input type="hidden" id="checkLogintype" autocomplete="off">
+      <div class="modal-body">
+        <div class="login-table">
+          <div class="login-left-wrapper">
+            <div class="message-wrapper">
+              <p class="msg">Welcome Recruiters</p>
+              <p> <i class="fa fa-quote-left" aria-hidden="true"></i> You're not just recruiting employees, but are showing the seeds of your reputation.<i class="fa fa-quote-right" aria-hidden="true"></i></p>
+            </div>
+
+          </div>
+          <div class="login-right-wrapper">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h4 class="modal-title">Forget <span class="theme-color">Password</span></h4>
+
+            <form [formGroup]="ForgotPasswordForm" (ngSubmit)="ForgotPassword()" autocomplete="off">
+              <div *ngIf="result!=null" class="alert {{result.responseResult?'alert-success':'alert-danger'}}">
+                {{result.message}}
+              </div>
+              <div class="group-wrapper">
+                <input type="text" class="" formControlName="UserName" [ngClass]="" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+
+                <label>Enter Username </label>
+              </div>
+              <button class="btn btn-w-shadow no-rd btn-block" id="btnLogins" type="submit" [disabled]="!ForgotPasswordForm.valid">Reset Password <span><i aria-hidden="true" class="fa fa-chevron-right"></i></span></button>
+
+              <div class="forgot-login m-t-5">
+                <div class="lezend"> <span>Or</span> </div>
+                <div class="login-dont text-center">Have an account? <a href="javascript:void(0)" data-toggle="modal" data-target="#signInModal" data-dismiss="modal" (click)="reset_forgot()"><b>Sign in</b></a></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<ng-template #subcription>
+  <div class="modal-content">
+    <input autocomplete="off" id="checkLogintype" type="hidden">
+    <div class="modal-body">
+      <div class="login-table">
+        <div class="login-left-wrapper">
+          <div class="message-wrapper">
+            <!--<p class="msg">Your feedback is importance to us</p>-->
+            <p> <i aria-hidden="true" class="fa fa-quote-left"></i> Your subscribe is very important to us. We appreciate your subscribe and will use it to evaluate changes and make improvements in our site.<i aria-hidden="true" class="fa fa-quote-right"></i></p>
+          </div>
+        </div>
+        <div class="login-right-wrapper">
+          <div class="feedback-form">
+            <button class="close" aria-label="Close" (click)="subcripclose()" type="button">×</button>
+            <h4 class="modal-title">subscribe</h4>
+            <form #JobForms [formGroup]="subcripForm" class="feedback-wrapper">
+              <div class="form-group">
+                <!--<label>Name <span style="color:red;"> *</span></label>-->
+                <!-- <input type="text" class="form-control" formControlName="name" placeholder="Name *" oninput="this.value = this.value.replace(/[!@#$%\^&*()+=\-\[\]\\';,/{}|\\':<>\?'0-9']/g, '').replace(/(\..*)\./g, '$1');" /> -->
+                <input type="text" class="form-control" formControlName="name" placeholder="Name *" required (keypress)="removeSpecialnamechar($event)" maxlength="50">
+                <errors [control]="subcripForm.controls.name"></errors>
+              </div>
+              <div class="form-group">
+                <!--<label>Email ID <span style="color:red;"> *</span></label>-->
+      <input type="text" class="form-control" formControlName="email" (change)="CheckEmailSub($event)" placeholder="Email ID *" (keypress)="removeSpecialemailchar($event)" maxlength="50"/>
+                <errors [control]="subcripForm.controls.email"></errors>
+              </div>
+              <div class="form-group">
+                <!--<label>Mobile No. <span style="color:red;"> *</span></label>-->
+                <input placeholder="Mobile No. *" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="mobile"   (change)="CheckMobileSub($event)" />
+                <errors [control]="subcripForm.controls.mobile"></errors>
+              </div>
+               <div class="form-group">
+                <!-- <select class="form-control" required formControlName="industry">
+                  <option value="" class="" selected="selected">-- Select Industry --</option>
+                <option *ngFor="let indust of IndustryArea" [value]="indust.id">{{indust.industryName}}</option>
+                </select> -->
+
+                <ng-multiselect-dropdown [placeholder]="' Select Industry'"
+                [data]="IndustryArea"
+                formControlName="industry"
+                [settings]="dropdownSettings"
+                (onDeSelect)="onItemDeSelect($event)"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+                (onDeSelectAll)="onDeSelectAll($event)"
+                >
+                </ng-multiselect-dropdown>
+                <errors [control]="subcripForm.controls.industry"></errors>
+              </div>
+              <div class="form-group">
+                <ng-multiselect-dropdown [placeholder]="' Select Functional Area'"
+                [data]="FunctionArea"
+                formControlName="functionalarea"
+                [settings]="dropdownSettings2"
+                (onDeSelect)="FunctionalonItemDeSelect($event)"
+                (onSelect)="FunctionalonItemSelect($event)"
+                (onSelectAll)="FunctionalonSelectAll($event)"
+                (onDeSelectAll)="FunctionalononDeSelectAll($event)"
+                >
+                </ng-multiselect-dropdown>
+                <errors [control]="subcripForm.controls.functionalarea"></errors>
+              </div>
+              <div class="form-group">
+                <select class="form-control"  formControlName="zones"  (change)="GetAllRegion($event.target.value)">
+                  <option value="" class="" selected="selected">-- Select Zones --</option>
+                  <option *ngFor="let zone of zoneList" [value]="zone.id">{{zone.zoneName}}</option>
+                </select>
+                <errors [control]="subcripForm.controls.zones"></errors>
+              </div>
+              <div class="form-group">
+                <select class="form-control"  formControlName="regional" (change)="GetAllSubRegion($event.target.value)">
+                  <option value="" class="" selected="selected">-- Select Regional --</option>
+                  <option *ngFor="let reg of AllRegion" [value]="reg.id">{{reg.regionname}}</option>
+                </select>
+                <errors [control]="subcripForm.controls.regional"></errors>
+              </div>
+              <div class="form-group">
+                <select class="form-control"  formControlName="subregional">
+                  <option value="" class="" selected="selected">-- Select Sub Regional --</option>
+                  <option *ngFor="let subreg of SubAllRegion" [value]="subreg.id">{{subreg.subRegionName}}</option>
+                </select>
+                <errors [control]="subcripForm.controls.subregional"></errors>
+              </div>
+
+              <div class="form-group">
+                <select class="form-control"  formControlName="employer" >
+                  <option value="" class="" selected="selected">-- Select Employer --</option>
+                  <option *ngFor="let emp of Getallemployer" [value]="emp.companyId">{{emp.companyName}}</option>
+                </select>
+                <errors [control]="subcripForm.controls.employer"></errors>
+              </div>
+              <div class="form-group">
+                <re-captcha  #invisible    (resolved)="resolved($event)" formControlName="captcha" siteKey="6Lf8A2cUAAAAAGgMF0eRboCS0VrzTzjNw86jimjP"></re-captcha>
+              </div>
+              <div class="form-group text-center m-t-10">
+              <button class="btn btn-w-shadow no-rd" (click)=subcripsubmit() tabindex="0" type="submit" [disabled]="!(subcripForm.valid && this.checkmobvalsuscribe==true)">Submit</button>
+                <button type="button" class="btn btn-w-shadow no-rd m-l-10" aria-label="Close" (click)="subcripclose();" >
+                  Close
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #template>
+  <div class="modal-content">
+    <input autocomplete="off" id="checkLogintype" type="hidden">
+    <div class="modal-body">
+      <div class="login-table">
+        <div class="login-left-wrapper">
+          <div class="message-wrapper">
+            <!--<p class="msg">Your feedback is importance to us</p>-->
+            <p> <i aria-hidden="true" class="fa fa-quote-left"></i> Your feedback is very important to us. We appreciate your feedback and will use it to evaluate changes and make improvements in our site.<i aria-hidden="true" class="fa fa-quote-right"></i></p>
+          </div>
+        </div>
+        <div class="login-right-wrapper">
+          <div class="feedback-form">
+            <button class="close" aria-label="Close" (click)="close()" type="button">×</button>
+            <h4 class="modal-title">Feedback</h4>
+            <form #JobForms [formGroup]="feedbackForm" class="feedback-wrapper">
+              <div class="form-group">
+                <label>Company Type <span style="color:red;"> *</span></label>
+                <div class="clearfix"></div>
+                <label class="fnt-normal m-b-0"><input type="radio" name="usertype" formControlName="usertype" value="Employer" checked> Company Recruiter, HR Professional </label>
+                <div class="clearfix"></div>
+                <label class="fnt-normal"><input type="radio" name="usertype" formControlName="usertype" value="Agency"> Recruitment/Placement Consultant	</label>
+              </div>
+              <div class="form-group">
+                <!--<label>Name <span style="color:red;"> *</span></label>-->
+                <input type="text" class="form-control" maxlength="200" formControlName="name" placeholder="Name *" (keypress)="removeSpecialnamechar($event)"/>
+                <errors [control]="feedbackForm.controls.name"></errors>
+              </div>
+              <div class="form-group">
+                <!--<label>Company Name <span style="color:red;"> *</span></label>-->
+                <input type="text" required class="form-control" maxlength="200" (keypress)="removeSpecialnamechar($event)" formControlName="companyName" placeholder="Company Name *" />
+                <errors [control]="feedbackForm.controls.companyName"></errors>
+              </div>
+              <div class="form-group">
+                <!--<label>Mobile No. <span style="color:red;"> *</span></label>-->
+                <input placeholder="Mobile No. *" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" formControlName="mobile" />
+                <errors [control]="feedbackForm.controls.mobile"></errors>
+              </div>
+              <div class="form-group">
+                <!--<label>Email ID <span style="color:red;"> *</span></label>-->
+                <input type="text" class="form-control" formControlName="email" placeholder="Email ID *" (keypress)="removeSpecialemailchar($event)" />
+                <errors [control]="feedbackForm.controls.email"></errors>
+              </div>
+              <div class="form-group">
+                <!--<label>Landline No. <span style="color:red;"> </span></label>-->
+                <input maxlength="12" placeholder="Landline No." type="number" class="form-control" formControlName="landlineNumber"  (focusout)="Validationforlandline($event.target.value)"/>
+                <errors [control]="feedbackForm.controls.landlineNumber"></errors>
+
+              </div>
+              <div class="form-group">
+                <!--<label>Feedback <span style="color:red;"> *</span></label>-->
+                <textarea class="form-control" placeholder="Feedback *" maxlength="1000" rows="2" formControlName="feedback"
+                          [ngClass]="{highlight: feedbackForm.controls.feedback.errors}"> </textarea>
+                <errors [control]="feedbackForm.controls.feedback"></errors>
+              </div>
+              <div class="form-group">
+                <re-captcha (resolved)="resolved($event)" formControlName="captcha" siteKey="6Lf8A2cUAAAAAGgMF0eRboCS0VrzTzjNw86jimjP"></re-captcha>
+              </div>
+              <div class="form-group text-center m-t-10">
+                <button class="btn btn-w-shadow no-rd" (click)=submit() tabindex="0" type="submit" [disabled]="!(feedbackForm.valid && btnsts==true)">Submit</button>
+                <button type="button" class="btn btn-w-shadow no-rd m-l-10" aria-label="Close" (click)="close()">
+                  Close
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
